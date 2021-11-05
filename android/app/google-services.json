@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "815414135964",
+    "project_id": "houseydeneme",
+    "storage_bucket": "houseydeneme.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:815414135964:android:fed9271550a006305d3159",
+        "android_client_info": {
+          "package_name": "com.example.housey"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "815414135964-8u8rub8c7818cd9i23nj7c30d395nnsr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdjKW7xf_-eYBTQdHI8vTM8X-e9oZLZYg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "815414135964-8u8rub8c7818cd9i23nj7c30d395nnsr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
