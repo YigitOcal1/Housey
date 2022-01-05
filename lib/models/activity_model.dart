@@ -1,21 +1,24 @@
 import 'user_model.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class ActivityModel {
   String? id;
   String? title;
   DateTime? date;
-  int? maxPeople;
+  String? maxPeople;
   String? location;
-  UserModel? activityOwner;
+  //UserModel? activityOwner;
 
   ActivityModel(
-      {this.id,
-      this.title,
-      this.date,
-      this.maxPeople,
-      this.location,
-      this.activityOwner});
+      {this.id, this.title, this.date, this.maxPeople, this.location});
 
+  ActivityModel.fromSnapshot(DataSnapshot snapshot) {
+    id = snapshot.key;
+    title = snapshot.value['title'];
+    date = snapshot.value['date'];
+    maxPeople = snapshot.value['maxPeople'];
+    location = snapshot.value['location'];
+  }
   factory ActivityModel.fromMap(map) {
     return ActivityModel(
       id: map['id'],
@@ -23,7 +26,6 @@ class ActivityModel {
       date: map['date'],
       maxPeople: map['maxPeople'],
       location: map['location'],
-      activityOwner: map['activityOwner'],
     );
   }
   Map<String, dynamic> toMap() {
@@ -33,7 +35,6 @@ class ActivityModel {
       'date': date,
       'maxPeople': maxPeople,
       'location': location,
-      'activityOwner': activityOwner,
     };
   }
 }

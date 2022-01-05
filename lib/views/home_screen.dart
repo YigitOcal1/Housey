@@ -71,7 +71,7 @@ class _HomePageState extends State<HomePage> {
               ),
               ListTile(
                 leading: Icon(Icons.login),
-                title: Text('Login'),
+                title: Text('Giriş yap'),
                 onTap: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => LoginScreen()));
@@ -79,7 +79,7 @@ class _HomePageState extends State<HomePage> {
               ),
               ListTile(
                 leading: Icon(Icons.account_circle),
-                title: Text('Register'),
+                title: Text('Kayıt ol'),
                 onTap: () {
                   Navigator.push(
                       context,

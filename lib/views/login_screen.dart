@@ -71,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
         return null;
       },
       onSaved: (value) {
-        email_controller.text = value!;
+        password_controller.text = value!;
       },
       textInputAction: TextInputAction.done,
       decoration: InputDecoration(
@@ -95,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
           logIn(email_controller.text, password_controller.text);
         },
         child: Text(
-          "Login",
+          "Giriş Yap",
           textAlign: TextAlign.center,
           style: TextStyle(
               fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),

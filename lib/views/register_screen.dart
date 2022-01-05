@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:housey/views/main_page.dart';
 import 'package:housey/models/user_model.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -21,6 +22,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final usernamecontroller = new TextEditingController();
   final confirmpasswordcontroller = new TextEditingController();
   String? errormsg;
+  final databaseRef = FirebaseDatabase.instance.reference().child('users');
+  final authstate = FirebaseAuth.instance.currentUser;
 
   void register(String email, String password) async {
     if (_formkey.currentState!.validate()) {
@@ -35,6 +38,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
         errormsg = "Kayıt başarısız";
       }
       Fluttertoast.showToast(msg: errormsg!);
+    }
+  }
+
+  Future AddUser(
+    String username,
+    String email,
+    String password,
+  ) async {
+    try {
+      databaseRef.push().set({
+        'username': username,
+        'email': email,
+        'password': password,
+        'userid': authstate!.uid,
+      }).then((uid) => {Fluttertoast.showToast(msg: 'Hesap oluşturuldu.')});
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'Hata! Hesap oluşturulamadı.');
     }
   }
 
@@ -127,6 +147,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
           register(emailcontroller.text, passwordcontroller.text);
+          AddUser(usernamecontroller.text, emailcontroller.text,
+              passwordcontroller.text);
         },
         child: Text(
           "Kayıt ol",
