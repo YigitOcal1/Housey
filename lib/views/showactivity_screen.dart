@@ -24,6 +24,7 @@ class _ShowActivityState extends State<ShowActivity> {
   String displayTitle = 'burada görünecek';
   String displayDate = 'burada görünecek';
   String displayMaxpeople = 'burada görünecek';
+  String displayError = '';
   List<String> titleList = [];
   List<String> dateList = [];
   List<String> maxpeopleList = [];
@@ -31,6 +32,7 @@ class _ShowActivityState extends State<ShowActivity> {
   Future getActivity() async {
     String authid = authstate!.uid;
     return await databaseRef
+
         //child olarak yazınca da oluyor activite id sini nasıl çekcem
         .once()
         .then((DataSnapshot dataSnapshot) {
@@ -39,6 +41,38 @@ class _ShowActivityState extends State<ShowActivity> {
         Map<dynamic, dynamic> values = dataSnapshot.value;
         values.forEach((key, values) {
           lists.add(values);
+
+          print(lists);
+          print(values["userid"]);
+          displayTitle = values['title'];
+          //print("titledebug  " + displayTitle);
+          //print(values["title"]);
+          displayDate = values['date'];
+          displayMaxpeople = values['peoplenumber'];
+        });
+        //activity = ActivityModel.fromSnapshot(dataSnapshot.value);
+      });
+    });
+  }
+
+  Future getActivitywithword(String word) async {
+    String authid = authstate!.uid;
+    return await databaseRef
+
+        //child olarak yazınca da oluyor activite id sini nasıl çekcem
+        .once()
+        .then((DataSnapshot dataSnapshot) {
+      //print('savpaerlövşwövlşavöclşdscvöwdlşavcöw + ${dataSnapshot.value}');
+      setState(() {
+        Map<dynamic, dynamic> values = dataSnapshot.value;
+        values.forEach((key, values) {
+          if (values['title'] == word || values['title'] == word + " ") {
+            lists.add(values);
+          } else {
+            displayError =
+                "SONUÇ BULUNAMADI. Lütfen doğru arama yaptığınızdan emin olunuz.";
+          }
+
           print(lists);
           print(values["userid"]);
           displayTitle = values['title'];
@@ -95,7 +129,9 @@ class _ShowActivityState extends State<ShowActivity> {
                         decoration: InputDecoration.collapsed(
                             hintText:
                                 'Aktivite aramak için bir sözcük giriniz.'),
-                        onSubmitted: (value) {},
+                        onSubmitted: (value) {
+                          getActivitywithword(value);
+                        },
                       ),
                     ),
                     InkWell(
@@ -147,6 +183,7 @@ class _ShowActivityState extends State<ShowActivity> {
                   );
                 }),
           ),
+          Text(displayError),
           ElevatedButton(
             onPressed: () {
               getActivity();
