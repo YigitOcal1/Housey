@@ -179,8 +179,9 @@ class _MainPageState extends State<MainPage> {
             } else {
               return Container(
                 child: Column(
+               
                   children: <Widget>[
-                    SizedBox(height: 120.0),
+                    SizedBox(height: 50.0),
                     Padding(
                       padding: EdgeInsets.all(15.0),
                       child: titlefield,
