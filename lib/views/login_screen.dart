@@ -140,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                            "Hesabınız yoksa kaydolmak için tıklayabilirsiniz.  "),
+                            "Hesabınız yoksa kaydolmak için tıklayabilirsiniz."),
                         GestureDetector(
                           onTap: () {
                             Navigator.push(

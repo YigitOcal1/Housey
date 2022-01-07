@@ -35,12 +35,10 @@ class _ShowActivityState extends State<ShowActivity> {
       setState(() {
         Map<dynamic, dynamic> values = dataSnapshot.value;
         values.forEach((key, values) {
-          lists.add(values);
-          
+          lists.add(values);        
           print(lists);
           print(values["userid"]);
           displayTitle = values['title'];
-          
           //print("titledebug  " + displayTitle);
           //print(values["title"]);
           displayDate = values['date'];
@@ -63,32 +61,41 @@ class _ShowActivityState extends State<ShowActivity> {
         appBar: AppBar(
           title: Text("widget.title!"),
             actions: <Widget>[
-          IconButton(
-            onPressed: () {
-              getActivity();
-            },
-            icon: Icon(Icons.get_app),
-          ),
+         
         ],
         ),
-        body:   ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: lists.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Card(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text("Başlık: " + lists[index]["title"]),
-                            Text("Tarih: " + lists[index]["date"]),
-                            Text("Kişi sayısı: " + lists[index]["peoplenumber"]),
-                             
-                          ],
-                        ),
-                        
-                      );
-                    })
-          
+        body:   Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: lists.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Card(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text("Başlık: " + lists[index]["title"]),
+                                  Text("Tarih: " + lists[index]["date"]),
+                                  Text("Kişi sayısı: " + lists[index]["peoplenumber"]),                                  
+                                ],
+                              ),                              
+                            );
+                          }),
+            ),
+           ElevatedButton(
+                        onPressed: () {
+                         getActivity();
+                        },
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.redAccent,
+                            minimumSize: Size(85.0, 40.0),
+                            shape: new RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(50.0))),
+                        child: Text('Aktivite listele'),
+                      ),
+          ],
+        ),         
             );
   }}
 
