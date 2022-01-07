@@ -68,7 +68,7 @@ class _ShowActivityState extends State<ShowActivity> {
         values.forEach((key, values) {
           if (values['title'] == word || values['title'] == word + " ") {
             lists.add(values);
-          } else {
+          } else { //bir kere daha boş olarak geldiği için else dönüyor.
             displayError =
                 "SONUÇ BULUNAMADI. Lütfen doğru arama yaptığınızdan emin olunuz.";
           }
