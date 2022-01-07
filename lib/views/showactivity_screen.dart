@@ -18,6 +18,7 @@ class _ShowActivityState extends State<ShowActivity> {
   final databaseRef = FirebaseDatabase.instance.reference().child('activities');
   final authstate = FirebaseAuth.instance.currentUser;
   late ActivityModel activity;
+  List<Map<dynamic, dynamic>> lists = [];
 
   final Future<FirebaseApp> _future = Firebase.initializeApp();
   String displayTitle = 'burada görünecek';
@@ -37,10 +38,10 @@ class _ShowActivityState extends State<ShowActivity> {
       setState(() {
         Map<dynamic, dynamic> values = dataSnapshot.value;
         values.forEach((key, values) {
+          lists.add(values);
+          print(lists);
           print(values["userid"]);
           displayTitle = values['title'];
-          titleList.add(values['title']);
-          print("olllllllllllllllllllllllll  " + values['title'].toString());
           //print("titledebug  " + displayTitle);
           //print(values["title"]);
           displayDate = values['date'];
@@ -62,9 +63,54 @@ class _ShowActivityState extends State<ShowActivity> {
     //printFirebase();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: (Colors.orange[300]),
-        title: Text('Aktivite listeleme ekranı'),
+        elevation: 5.0,
+        backgroundColor: (Colors.deepPurple),
+        title: Text(
+          'Aktivite listeleme',
+          style: TextStyle(color: Colors.black),
+        ),
+        centerTitle: true,
         automaticallyImplyLeading: false,
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight),
+          child: Container(
+            //  padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.white,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Material(
+                color: Colors.white,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Icon(
+                      Icons.search,
+                      color: Colors.grey,
+                    ),
+                    Expanded(
+                      child: TextField(
+                        decoration: InputDecoration.collapsed(
+                            hintText:
+                                'Aktivite aramak için bir sözcük giriniz.'),
+                        onSubmitted: (value) {},
+                      ),
+                    ),
+                    InkWell(
+                      child: Icon(
+                        Icons.local_activity,
+                        color: Colors.grey,
+                      ),
+                      onTap: () {},
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
         actions: <Widget>[
           Padding(
             padding: EdgeInsets.only(right: 20.0),
@@ -82,47 +128,38 @@ class _ShowActivityState extends State<ShowActivity> {
           )
         ],
       ),
-      body: FutureBuilder(
-          future: _future, // buraya methodu eklersen direkt çağırır
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Text(snapshot.error.toString());
-            } else {
-              return Container(
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(height: 250.0),
-                    Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: TextField(
-                        controller: titlecontroller,
-                      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: lists.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Card(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text("Başlık: " + lists[index]["title"]),
+                        Text("Tarih: " + lists[index]["date"]),
+                        Text("Kişi sayısı: " + lists[index]["peoplenumber"]),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Column(
-                          children: []), //to do: liste şeklinde göstermedd
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Text(displayDate),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Text(displayMaxpeople),
-                    ),
-                    SizedBox(height: 30.0),
-                    Center(
-                        child: ElevatedButton(
-                            child: Text("Aktivite göster"),
-                            onPressed: () {
-                              getActivity();
-                            })),
-                  ],
-                ),
-              );
-            }
-          }),
+                  );
+                }),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              getActivity();
+            },
+            style: ElevatedButton.styleFrom(
+                primary: Colors.redAccent,
+                minimumSize: Size(85.0, 40.0),
+                shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(50.0))),
+            child: Text('Aktivite listele'),
+          ),
+        ],
+      ),
     );
   }
 }
