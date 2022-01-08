@@ -196,24 +196,7 @@ class _MainPageState extends State<MainPage> {
                       child: locationfield,
                     ),
                     Center(child: activityAddButton),
-                    Padding(
-                      padding: EdgeInsets.only(top: 40.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ShowActivity()),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                            primary: Colors.redAccent,
-                            minimumSize: Size(85.0, 40.0),
-                            shape: new RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(50.0))),
-                        child: Text('Aktivite listele'),
-                      ),
-                    )
+                   
                   ],
                 ),
               );
