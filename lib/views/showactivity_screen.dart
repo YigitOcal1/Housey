@@ -61,7 +61,7 @@ class _ShowActivityState extends State<ShowActivity> {
         values.forEach((key, values) {
           lists.add(values);
 
-          print(lists);
+          
           print(values["userid"]);
           displayTitle = values['title'];
           //print("titledebug  " + displayTitle);
