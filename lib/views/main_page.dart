@@ -32,8 +32,12 @@ class _MainPageState extends State<MainPage> {
         maxPeople: maxpeople,
         location: location);
     try {
-      databaseRef.child('activities').push().set(activityModel.toMap()).then(
-          (ownerid) => {Fluttertoast.showToast(msg: 'Aktivite oluşturuldu.')});
+      databaseRef
+          .child('activities/$ownerid')
+          .push()
+          .set(activityModel.toMap())
+          .then((ownerid) =>
+              {Fluttertoast.showToast(msg: 'Aktivite oluşturuldu.')});
     } catch (e) {
       Fluttertoast.showToast(msg: 'Hata! Aktivite oluşturulamadı.');
     }
@@ -201,7 +205,6 @@ class _MainPageState extends State<MainPage> {
                       child: locationfield,
                     ),
                     Center(child: activityAddButton),
-                   
                   ],
                 ),
               );
