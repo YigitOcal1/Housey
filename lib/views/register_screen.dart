@@ -22,7 +22,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final usernamecontroller = new TextEditingController();
   final confirmpasswordcontroller = new TextEditingController();
   String? errormsg;
-  final databaseRef = FirebaseDatabase.instance.reference().child('users');
+  final databaseRef = FirebaseDatabase.instance.reference();
   final authstate = FirebaseAuth.instance.currentUser;
 
   void register(String email, String password) async {
@@ -42,17 +42,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Future AddUser(
+    String userid,
     String username,
     String email,
     String password,
   ) async {
+    final UserModel usermodel = UserModel(
+        uid: authstate!.uid,
+        email: email,
+        password: password,
+        username: username);
     try {
-      databaseRef.push().set({
-        'username': username,
-        'email': email,
-        'password': password,
-        'userid': authstate!.uid,
-      }).then((uid) => {Fluttertoast.showToast(msg: 'Hesap oluşturuldu.')});
+      databaseRef
+          .child('users/$userid')
+          .push()
+          .set(usermodel.toMap())
+          .then((uid) => {Fluttertoast.showToast(msg: 'Hesap oluşturuldu.')});
     } catch (e) {
       Fluttertoast.showToast(msg: 'Hata! Hesap oluşturulamadı.');
     }
@@ -147,7 +152,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
           register(emailcontroller.text, passwordcontroller.text);
-          AddUser(usernamecontroller.text, emailcontroller.text,
+          AddUser(authstate!.uid, usernamecontroller.text, emailcontroller.text,
               passwordcontroller.text);
         },
         child: Text(

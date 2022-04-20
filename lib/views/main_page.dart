@@ -17,22 +17,23 @@ class _MainPageState extends State<MainPage> {
   final date_controller = TextEditingController();
   final maxpeople_controller = TextEditingController();
   final location_controller = TextEditingController();
-  final databaseRef = FirebaseDatabase.instance.reference().child('activities');
+  final databaseRef = FirebaseDatabase.instance.reference();
   final authstate = FirebaseAuth.instance.currentUser;
+  final activityIdRandom = DateTime.now().toString();
   final Future<FirebaseApp> _future = Firebase.initializeApp();
 
-  Future addData(
-    String title,
-    String date,
-    String maxpeople_controller,
-  ) async {
+  Future addData(String ownerid, String activityid, String title, String date,
+      String maxpeople, String location) async {
+    ActivityModel activityModel = ActivityModel(
+        ownerid: ownerid,
+        activityid: activityid,
+        title: title,
+        date: date,
+        maxPeople: maxpeople,
+        location: location);
     try {
-      databaseRef.push().set({
-        'userid': authstate!.uid,
-        'title': title,
-        'date': date,
-        'peoplenumber': maxpeople_controller
-      }).then((uid) => {Fluttertoast.showToast(msg: 'Aktivite oluşturuldu.')});
+      databaseRef.child('activities').push().set(activityModel.toMap()).then(
+          (ownerid) => {Fluttertoast.showToast(msg: 'Aktivite oluşturuldu.')});
     } catch (e) {
       Fluttertoast.showToast(msg: 'Hata! Aktivite oluşturulamadı.');
     }
@@ -143,8 +144,13 @@ class _MainPageState extends State<MainPage> {
         minWidth: MediaQuery.of(context).size.width,
         height: 40.0,
         onPressed: () {
-          addData(title_controller.text, date_controller.text,
-              maxpeople_controller.text);
+          addData(
+              authstate!.uid,
+              activityIdRandom,
+              title_controller.text,
+              date_controller.text,
+              maxpeople_controller.text,
+              location_controller.text);
         },
         child: Text(
           "Aktivite Oluştur",
@@ -179,7 +185,6 @@ class _MainPageState extends State<MainPage> {
             } else {
               return Container(
                 child: Column(
-               
                   children: <Widget>[
                     SizedBox(height: 50.0),
                     Padding(
