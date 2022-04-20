@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:housey/models/activity_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:housey/views/main_page.dart';
 
 class ShowActivity extends StatefulWidget {
   @override
@@ -29,6 +30,24 @@ class _ShowActivityState extends State<ShowActivity> {
   List<String> dateList = [];
   List<String> maxpeopleList = [];
 
+  Route _createRouteCreateActivity() {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => MainPage(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(0.0, 1.0);
+      const end = Offset.zero;
+      const curve = Curves.ease;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
+  );
+}
+
   Future getActivity() async {
     String authid = authstate!.uid;
     return await databaseRef
@@ -42,7 +61,7 @@ class _ShowActivityState extends State<ShowActivity> {
         values.forEach((key, values) {
           lists.add(values);
 
-          print(lists);
+          
           print(values["userid"]);
           displayTitle = values['title'];
           //print("titledebug  " + displayTitle);
@@ -68,7 +87,7 @@ class _ShowActivityState extends State<ShowActivity> {
         values.forEach((key, values) {
           if (values['title'] == word || values['title'] == word + " ") {
             lists.add(values);
-          } else {
+          } else { //bir kere daha boş olarak geldiği için else dönüyor.
             displayError =
                 "SONUÇ BULUNAMADI. Lütfen doğru arama yaptığınızdan emin olunuz.";
           }
@@ -100,8 +119,9 @@ class _ShowActivityState extends State<ShowActivity> {
         elevation: 5.0,
         backgroundColor: (Colors.deepPurple),
         title: Text(
-          'Aktivite listeleme',
-          style: TextStyle(color: Colors.black),
+          'Aktivite Arama',
+          style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold
+         ),
         ),
         centerTitle: true,
         automaticallyImplyLeading: false,
@@ -149,16 +169,16 @@ class _ShowActivityState extends State<ShowActivity> {
         ),
         actions: <Widget>[
           Padding(
-            padding: EdgeInsets.only(right: 20.0),
+            padding: EdgeInsets.only(right: 10.0),
             child: ElevatedButton(
               onPressed: () {
                 Navigator.pop(context);
               },
               style: ElevatedButton.styleFrom(
                   primary: Colors.purple[400],
-                  minimumSize: Size(55.0, 40.0),
+                  minimumSize: Size(35.0, 40.0),
                   shape: new RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(50.0))),
+                      borderRadius: new BorderRadius.circular(30.0))),
               child: Text('Geri Dön'),
             ),
           )
@@ -195,6 +215,18 @@ class _ShowActivityState extends State<ShowActivity> {
                     borderRadius: new BorderRadius.circular(50.0))),
             child: Text('Aktivite listele'),
           ),
+       ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).push(_createRouteCreateActivity());
+            },
+            style: ElevatedButton.styleFrom(
+                primary: Colors.orange[800],
+                minimumSize: Size(85.0, 40.0),
+                shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(50.0))),
+            child: Text('Yeni Aktivite Oluştur'),
+          ),
+      
         ],
       ),
     );

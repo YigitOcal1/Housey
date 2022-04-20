@@ -8,7 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:housey/views/main_page.dart';
 import 'package:housey/models/user_model.dart';
 import 'package:firebase_database/firebase_database.dart';
-
+import 'package:housey/views/showactivity_screen.dart';
 class RegisterScreen extends StatefulWidget {
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
@@ -40,7 +40,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
       Fluttertoast.showToast(msg: errormsg!);
     }
   }
+Route _createRouteMain() {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => ShowActivity(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(0.0, 1.0);
+      const end = Offset.zero;
+      const curve = Curves.ease;
 
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
+  );
+}
   Future AddUser(
     String userid,
     String username,
@@ -73,8 +89,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     await firestore.collection("users").doc(user.uid).set(usermodel.toMap());
     Fluttertoast.showToast(msg: "Hesap oluşturuldu");
-    Navigator.pushAndRemoveUntil(context,
-        MaterialPageRoute(builder: (context) => MainPage()), (route) => false);
+     Navigator.of(context).push(_createRouteMain());
   }
 
   @override
