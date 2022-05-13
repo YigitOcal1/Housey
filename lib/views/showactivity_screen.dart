@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -16,9 +18,9 @@ class _ShowActivityState extends State<ShowActivity> {
   final titlecontroller = TextEditingController();
   final datecontroller = TextEditingController();
   final maxpeople = TextEditingController();
-  final databaseRef = FirebaseDatabase.instance.reference().child('activities');
+ final databaseRef = FirebaseDatabase.instance.reference();
   final authstate = FirebaseAuth.instance.currentUser;
-  late ActivityModel activity;
+  ActivityModel activity=ActivityModel();
   List<Map<dynamic, dynamic>> lists = [];
 
   final Future<FirebaseApp> _future = Firebase.initializeApp();
@@ -29,6 +31,7 @@ class _ShowActivityState extends State<ShowActivity> {
   List<String> titleList = [];
   List<String> dateList = [];
   List<String> maxpeopleList = [];
+  
 
   Route _createRouteCreateActivity() {
   return PageRouteBuilder(
@@ -47,24 +50,38 @@ class _ShowActivityState extends State<ShowActivity> {
     },
   );
 }
-
+  Future deneme() async{
+    //FirebaseDatabase.instance.setPersistenceEnabled(true);
+      //final snapshot=await databaseRef.child('activities').get();
+       await databaseRef.child('activities').once().then((DataSnapshot datasnaphot){
+         
+          print("wqewqewqe qwedfasd ollll "+datasnaphot.value.toString());
+       });
+      
+  }
   Future getActivity() async {
     String authid = authstate!.uid;
-    return await databaseRef
 
         //child olarak yazınca da oluyor activite id sini nasıl çekcem
-        .once()
-        .then((DataSnapshot dataSnapshot) {
+         return await databaseRef
+        .child('activities').once().then((DataSnapshot dataSnapshot) {
+          //final LinkedHashMap value =dataSnapshot.value;
+          
+          //print(value);
+          //print("data okundu ::   "+dataSnapshot.value.toString());
+          //rint("wqewq fasdxxx "+value['title']);
+          //activity=ActivityModel.fromMap(value);
+          
+          //print("title demene "+activity.toString());
       //print('savpaerlövşwövlşavöclşdscvöwdlşavcöw + ${dataSnapshot.value}');
       setState(() {
         Map<dynamic, dynamic> values = dataSnapshot.value;
         values.forEach((key, values) {
           lists.add(values);
-
-          
-          print(values["userid"]);
+          print(values.toString());
+          //print(values["userid"]);
           displayTitle = values['title'];
-          //print("titledebug  " + displayTitle);
+          print("titledebug  " + displayTitle);
           //print(values["title"]);
           displayDate = values['date'];
           displayMaxpeople = values['peoplenumber'];
@@ -76,12 +93,14 @@ class _ShowActivityState extends State<ShowActivity> {
 
   Future getActivitywithword(String word) async {
     String authid = authstate!.uid;
+    print("method çalıştı gelen kelime"+ word);
     return await databaseRef
 
         //child olarak yazınca da oluyor activite id sini nasıl çekcem
+        .child('activities')
         .once()
         .then((DataSnapshot dataSnapshot) {
-      //print('savpaerlövşwövlşavöclşdscvöwdlşavcöw + ${dataSnapshot.value}');
+      print('savpaerlövşwövlşavöclşdscvöwdlşavcöw + ${dataSnapshot.value}');
       setState(() {
         Map<dynamic, dynamic> values = dataSnapshot.value;
         values.forEach((key, values) {
@@ -98,7 +117,7 @@ class _ShowActivityState extends State<ShowActivity> {
           //print("titledebug  " + displayTitle);
           //print(values["title"]);
           displayDate = values['date'];
-          displayMaxpeople = values['peoplenumber'];
+          displayMaxpeople = values['maxPeople'];
         });
         //activity = ActivityModel.fromSnapshot(dataSnapshot.value);
       });
@@ -195,9 +214,11 @@ class _ShowActivityState extends State<ShowActivity> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
+                        Text(displayDate),
+                        Text(displayTitle),
                         Text("Başlık: " + lists[index]["title"]),
                         Text("Tarih: " + lists[index]["date"]),
-                        Text("Kişi sayısı: " + lists[index]["peoplenumber"]),
+                        Text("Kişi sayısı: " + lists[index]["maxPeople"]),
                       ],
                     ),
                   );
@@ -206,6 +227,7 @@ class _ShowActivityState extends State<ShowActivity> {
           Text(displayError),
           ElevatedButton(
             onPressed: () {
+              //deneme();
               getActivity();
             },
             style: ElevatedButton.styleFrom(

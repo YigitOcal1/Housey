@@ -19,13 +19,21 @@ class _MainPageState extends State<MainPage> {
   final location_controller = TextEditingController();
   final databaseRef = FirebaseDatabase.instance.reference();
   final authstate = FirebaseAuth.instance.currentUser;
+  String? userDisplayName=FirebaseAuth.instance.currentUser?.email.toString();
+  String delimiter='/@';
+       
+
+
   final activityIdRandom = DateTime.now().toString();
   final Future<FirebaseApp> _future = Firebase.initializeApp();
 
-  Future addData(String ownerid, String activityid, String title, String date,
-      String maxpeople, String location) async {
+  Future addData(String ownerid, String ownername,String activityid, String title, String date,
+      String maxpeople, String location)
+       async { 
+       
     ActivityModel activityModel = ActivityModel(
         ownerid: ownerid,
+        ownername: ownername ,
         activityid: activityid,
         title: title,
         date: date,
@@ -33,7 +41,7 @@ class _MainPageState extends State<MainPage> {
         location: location);
     try {
       databaseRef
-          .child('activities/$ownerid')
+          .child('activities')
           .push()
           .set(activityModel.toMap())
           .then((ownerid) =>
@@ -41,11 +49,13 @@ class _MainPageState extends State<MainPage> {
     } catch (e) {
       Fluttertoast.showToast(msg: 'Hata! Aktivite oluşturulamadı.');
     }
+     
   }
 
   void printFirebase() {
     databaseRef.once().then((DataSnapshot snapshot) {
       print('Data : ${snapshot.value}');
+      print("USER ADI     "+authstate!.email.toString());
     });
   }
 
@@ -148,13 +158,15 @@ class _MainPageState extends State<MainPage> {
         minWidth: MediaQuery.of(context).size.width,
         height: 40.0,
         onPressed: () {
-          addData(
+           addData(
               authstate!.uid,
+              userDisplayName!,
               activityIdRandom,
               title_controller.text,
               date_controller.text,
               maxpeople_controller.text,
               location_controller.text);
+        
         },
         child: Text(
           "Aktivite Oluştur",

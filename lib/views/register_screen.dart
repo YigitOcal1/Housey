@@ -74,6 +74,7 @@ Route _createRouteMain() {
           .push()
           .set(usermodel.toMap())
           .then((uid) => {Fluttertoast.showToast(msg: 'Hesap oluşturuldu.')});
+           Navigator.of(context).push(_createRouteMain());
     } catch (e) {
       Fluttertoast.showToast(msg: 'Hata! Hesap oluşturulamadı.');
     }
