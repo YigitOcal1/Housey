@@ -27,6 +27,7 @@ class _ShowActivityState extends State<ShowActivity> {
   String displayTitle = 'burada görünecek';
   String displayDate = 'burada görünecek';
   String displayMaxpeople = 'burada görünecek';
+  String displayUsername='';
   String displayError = '';
   List<String> titleList = [];
   List<String> dateList = [];
@@ -107,17 +108,19 @@ class _ShowActivityState extends State<ShowActivity> {
           if (values['title'] == word || values['title'] == word + " ") {
             lists.add(values);
           } else { //bir kere daha boş olarak geldiği için else dönüyor.
+          
             displayError =
                 "SONUÇ BULUNAMADI. Lütfen doğru arama yaptığınızdan emin olunuz.";
           }
 
           print(lists);
           print(values["userid"]);
-          displayTitle = values['title'];
+          //displayTitle = values['title'];
+          //displayUsername=values['ownername'];
           //print("titledebug  " + displayTitle);
           //print(values["title"]);
-          displayDate = values['date'];
-          displayMaxpeople = values['maxPeople'];
+          //displayDate = values['date'];
+          //displayMaxpeople = values['maxPeople'];
         });
         //activity = ActivityModel.fromSnapshot(dataSnapshot.value);
       });
@@ -214,11 +217,11 @@ class _ShowActivityState extends State<ShowActivity> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(displayDate),
-                        Text(displayTitle),
+                        
                         Text("Başlık: " + lists[index]["title"]),
                         Text("Tarih: " + lists[index]["date"]),
                         Text("Kişi sayısı: " + lists[index]["maxPeople"]),
+                        Text("Aktivite sahibi: "+lists[index]["ownername"]),
                       ],
                     ),
                   );
