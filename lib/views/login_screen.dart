@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:housey/views/main_page.dart';
 import 'package:housey/views/register_screen.dart';
 import 'package:housey/views/showactivity_screen.dart';
+import 'anasayfa_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -20,23 +21,25 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   String? errormsg;
 
-Route _createRouteMain() {
-  return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) => ShowActivity(),
-    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      const begin = Offset(0.0, 1.0);
-      const end = Offset.zero;
-      const curve = Curves.ease;
+  Route _createRouteMain() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => AnasayfaScreen(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.0, 1.0);
+        const end = Offset.zero;
+        const curve = Curves.ease;
 
-      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
-      return SlideTransition(
-        position: animation.drive(tween),
-        child: child,
-      );
-    },
-  );
-}
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
+  }
+
   void logIn(String email, String password) async {
     if (_formKey.currentState!.validate()) {
       try {
@@ -44,9 +47,7 @@ Route _createRouteMain() {
             .signInWithEmailAndPassword(email: email, password: password)
             .then((uid) => {
                   Fluttertoast.showToast(msg: 'Giriş Başarılı'),
-                  
-                  Navigator.pushReplacement(
-                      context, _createRouteMain()),
+                  Navigator.pushReplacement(context, _createRouteMain()),
                 });
       } on FirebaseAuthException catch (error) {
         errormsg = "Giriş başarısız";
