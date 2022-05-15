@@ -82,6 +82,7 @@ class _ShowActivityState extends State<ShowActivity> {
       //print('savpaerlövşwövlşavöclşdscvöwdlşavcöw + ${dataSnapshot.value}');
       setState(() {
         Map<dynamic, dynamic> values = dataSnapshot.value;
+        lists.clear();
         values.forEach((key, values) {
           lists.add(values);
           print(values.toString());
@@ -110,10 +111,8 @@ class _ShowActivityState extends State<ShowActivity> {
         values.forEach((key, values) {
           if (values['title'].contains(word)) {
             lists.add(values);
-<<<<<<< HEAD
-=======
+
             displayError = "";
->>>>>>> origin/main
           } else {
             //bir kere daha boş olarak geldiği için else dönüyor.
 
