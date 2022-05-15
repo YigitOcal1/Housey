@@ -86,11 +86,8 @@ class _ShowActivityState extends State<ShowActivity> {
           lists.add(values);
           print(values.toString());
           //print(values["userid"]);
-          displayTitle = values['title'];
-          print("titledebug  " + displayTitle);
+
           //print(values["title"]);
-          displayDate = values['date'];
-          displayMaxpeople = values['peoplenumber'];
         });
         //activity = ActivityModel.fromSnapshot(dataSnapshot.value);
       });
@@ -109,9 +106,14 @@ class _ShowActivityState extends State<ShowActivity> {
       print('savpaerlövşwövlşavöclşdscvöwdlşavcöw + ${dataSnapshot.value}');
       setState(() {
         Map<dynamic, dynamic> values = dataSnapshot.value;
+        lists.clear();
         values.forEach((key, values) {
-          if (values['title'] == word || values['title'] == word + " ") {
+          if (values['title'].contains(word)) {
             lists.add(values);
+<<<<<<< HEAD
+=======
+            displayError = "";
+>>>>>>> origin/main
           } else {
             //bir kere daha boş olarak geldiği için else dönüyor.
 
@@ -119,7 +121,7 @@ class _ShowActivityState extends State<ShowActivity> {
                 "SONUÇ BULUNAMADI. Lütfen doğru arama yaptığınızdan emin olunuz.";
           }
 
-          print(lists);
+          //print(lists);
           print(values["userid"]);
           //displayTitle = values['title'];
           //displayUsername=values['ownername'];
@@ -237,7 +239,6 @@ class _ShowActivityState extends State<ShowActivity> {
                   );
                 }),
           ),
-          Text(displayError),
           ElevatedButton(
             onPressed: () {
               //deneme();
