@@ -18,62 +18,67 @@ class _ShowActivityState extends State<ShowActivity> {
   final titlecontroller = TextEditingController();
   final datecontroller = TextEditingController();
   final maxpeople = TextEditingController();
- final databaseRef = FirebaseDatabase.instance.reference();
+  final databaseRef = FirebaseDatabase.instance.reference();
   final authstate = FirebaseAuth.instance.currentUser;
-  ActivityModel activity=ActivityModel();
+  ActivityModel activity = ActivityModel();
   List<Map<dynamic, dynamic>> lists = [];
 
   final Future<FirebaseApp> _future = Firebase.initializeApp();
   String displayTitle = 'burada görünecek';
   String displayDate = 'burada görünecek';
   String displayMaxpeople = 'burada görünecek';
-  String displayUsername='';
+  String displayUsername = '';
   String displayError = '';
   List<String> titleList = [];
   List<String> dateList = [];
   List<String> maxpeopleList = [];
-  
 
   Route _createRouteCreateActivity() {
-  return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) => MainPage(),
-    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      const begin = Offset(0.0, 1.0);
-      const end = Offset.zero;
-      const curve = Curves.ease;
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => MainPage(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.0, 1.0);
+        const end = Offset.zero;
+        const curve = Curves.ease;
 
-      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
-      return SlideTransition(
-        position: animation.drive(tween),
-        child: child,
-      );
-    },
-  );
-}
-  Future deneme() async{
-    //FirebaseDatabase.instance.setPersistenceEnabled(true);
-      //final snapshot=await databaseRef.child('activities').get();
-       await databaseRef.child('activities').once().then((DataSnapshot datasnaphot){
-         
-          print("wqewqewqe qwedfasd ollll "+datasnaphot.value.toString());
-       });
-      
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
   }
+
+  Future deneme() async {
+    //FirebaseDatabase.instance.setPersistenceEnabled(true);
+    //final snapshot=await databaseRef.child('activities').get();
+    await databaseRef
+        .child('activities')
+        .once()
+        .then((DataSnapshot datasnaphot) {
+      print("wqewqewqe qwedfasd ollll " + datasnaphot.value.toString());
+    });
+  }
+
   Future getActivity() async {
     String authid = authstate!.uid;
 
-        //child olarak yazınca da oluyor activite id sini nasıl çekcem
-         return await databaseRef
-        .child('activities').once().then((DataSnapshot dataSnapshot) {
-          //final LinkedHashMap value =dataSnapshot.value;
-          
-          //print(value);
-          //print("data okundu ::   "+dataSnapshot.value.toString());
-          //rint("wqewq fasdxxx "+value['title']);
-          //activity=ActivityModel.fromMap(value);
-          
-          //print("title demene "+activity.toString());
+    //child olarak yazınca da oluyor activite id sini nasıl çekcem
+    return await databaseRef
+        .child('activities')
+        .once()
+        .then((DataSnapshot dataSnapshot) {
+      //final LinkedHashMap value =dataSnapshot.value;
+
+      //print(value);
+      //print("data okundu ::   "+dataSnapshot.value.toString());
+      //rint("wqewq fasdxxx "+value['title']);
+      //activity=ActivityModel.fromMap(value);
+
+      //print("title demene "+activity.toString());
       //print('savpaerlövşwövlşavöclşdscvöwdlşavcöw + ${dataSnapshot.value}');
       setState(() {
         Map<dynamic, dynamic> values = dataSnapshot.value;
@@ -81,11 +86,8 @@ class _ShowActivityState extends State<ShowActivity> {
           lists.add(values);
           print(values.toString());
           //print(values["userid"]);
-          displayTitle = values['title'];
-          print("titledebug  " + displayTitle);
+
           //print(values["title"]);
-          displayDate = values['date'];
-          displayMaxpeople = values['peoplenumber'];
         });
         //activity = ActivityModel.fromSnapshot(dataSnapshot.value);
       });
@@ -94,7 +96,7 @@ class _ShowActivityState extends State<ShowActivity> {
 
   Future getActivitywithword(String word) async {
     String authid = authstate!.uid;
-    print("method çalıştı gelen kelime"+ word);
+    print("method çalıştı gelen kelime" + word);
     return await databaseRef
 
         //child olarak yazınca da oluyor activite id sini nasıl çekcem
@@ -104,16 +106,19 @@ class _ShowActivityState extends State<ShowActivity> {
       print('savpaerlövşwövlşavöclşdscvöwdlşavcöw + ${dataSnapshot.value}');
       setState(() {
         Map<dynamic, dynamic> values = dataSnapshot.value;
+        lists.clear();
         values.forEach((key, values) {
-          if (values['title'] == word || values['title'] == word + " ") {
+          if (values['title'].contains(word)) {
             lists.add(values);
-          } else { //bir kere daha boş olarak geldiği için else dönüyor.
-          
+            displayError = "";
+          } else {
+            //bir kere daha boş olarak geldiği için else dönüyor.
+
             displayError =
                 "SONUÇ BULUNAMADI. Lütfen doğru arama yaptığınızdan emin olunuz.";
           }
 
-          print(lists);
+          //print(lists);
           print(values["userid"]);
           //displayTitle = values['title'];
           //displayUsername=values['ownername'];
@@ -142,8 +147,7 @@ class _ShowActivityState extends State<ShowActivity> {
         backgroundColor: (Colors.deepPurple),
         title: Text(
           'Aktivite Arama',
-          style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold
-         ),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         automaticallyImplyLeading: false,
@@ -217,17 +221,15 @@ class _ShowActivityState extends State<ShowActivity> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        
                         Text("Başlık: " + lists[index]["title"]),
                         Text("Tarih: " + lists[index]["date"]),
                         Text("Kişi sayısı: " + lists[index]["maxPeople"]),
-                        Text("Aktivite sahibi: "+lists[index]["ownername"]),
+                        Text("Aktivite sahibi: " + lists[index]["ownername"]),
                       ],
                     ),
                   );
                 }),
           ),
-          Text(displayError),
           ElevatedButton(
             onPressed: () {
               //deneme();
@@ -240,7 +242,7 @@ class _ShowActivityState extends State<ShowActivity> {
                     borderRadius: new BorderRadius.circular(50.0))),
             child: Text('Aktivite listele'),
           ),
-       ElevatedButton(
+          ElevatedButton(
             onPressed: () {
               Navigator.of(context).push(_createRouteCreateActivity());
             },
@@ -251,7 +253,6 @@ class _ShowActivityState extends State<ShowActivity> {
                     borderRadius: new BorderRadius.circular(50.0))),
             child: Text('Yeni Aktivite Oluştur'),
           ),
-      
         ],
       ),
     );
