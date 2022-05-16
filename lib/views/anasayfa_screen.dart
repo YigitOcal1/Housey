@@ -7,8 +7,10 @@ import 'package:housey/models/activity_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:housey/views/main_page.dart';
 import 'profile_screen.dart';
+import 'package:housey/widgets/BottomNavBar.dart';
 
 class AnasayfaScreen extends StatefulWidget {
+  const AnasayfaScreen({Key? key}) : super(key: key);
   @override
   _AnasayfaScreenState createState() => _AnasayfaScreenState();
 }
@@ -83,16 +85,17 @@ class _AnasayfaScreenState extends State<AnasayfaScreen> {
       });
     });
   }
+ 
 
   @override
   Widget build(BuildContext context) {
-    getActivity();
+    //getActivity();
     return Scaffold(
       appBar: AppBar(
         elevation: 5.0,
         backgroundColor: (Colors.deepPurple),
         title: Text(
-          'Home',
+          'Ana Sayfa',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -140,8 +143,13 @@ class _AnasayfaScreenState extends State<AnasayfaScreen> {
                   );
                 }),
           ),
+          // hata veriyor app çöküyor
+          //_widgetOptions.elementAt(_currentIndex)
+        
         ],
       ),
+      bottomNavigationBar:Bottom()
+    
     );
   }
 }
