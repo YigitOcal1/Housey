@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -60,22 +61,15 @@ class _AnasayfaScreenState extends State<AnasayfaScreen> {
     //child olarak yazınca da oluyor activite id sini nasıl çekcem
     return await databaseRef
         .child('activities')
+        .limitToLast(3)
         .once()
         .then((DataSnapshot dataSnapshot) {
-      //final LinkedHashMap value =dataSnapshot.value;
-
-      //print(value);
-      //print("data okundu ::   "+dataSnapshot.value.toString());
-      //rint("wqewq fasdxxx "+value['title']);
-      //activity=ActivityModel.fromMap(value);
-
-      //print("title demene "+activity.toString());
-      //print('savpaerlövşwövlşavöclşdscvöwdlşavcöw + ${dataSnapshot.value}');
       setState(() {
         Map<dynamic, dynamic> values = dataSnapshot.value;
         lists.clear();
         values.forEach((key, values) {
           lists.add(values);
+
           print(values.toString());
           //print(values["userid"]);
 
@@ -85,71 +79,87 @@ class _AnasayfaScreenState extends State<AnasayfaScreen> {
       });
     });
   }
- 
 
   @override
   Widget build(BuildContext context) {
-    //getActivity();
+    getActivity();
     return Scaffold(
-      appBar: AppBar(
-        elevation: 5.0,
-        backgroundColor: (Colors.deepPurple),
-        title: Text(
-          'Ana Sayfa',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        actions: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(right: 10.0),
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              style: ElevatedButton.styleFrom(
-                  primary: Colors.purple[400],
-                  minimumSize: Size(35.0, 40.0),
-                  shape: new RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(30.0))),
-              child: Text('Geri Dön'),
+        appBar: AppBar(
+          elevation: 5.0,
+          backgroundColor: (Colors.deepPurple),
+          title: Text(
+            'Ana Sayfa',
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          ),
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+          actions: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(right: 10.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.purple[400],
+                    minimumSize: Size(35.0, 40.0),
+                    shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(30.0))),
+                child: Text('Geri Dön'),
+              ),
             ),
-          ),
-          IconButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ProfileScreen()));
-              },
-              icon: Icon(Icons.portrait_rounded))
-        ],
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: lists.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Card(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text("Başlık: " + lists[index]["title"]),
-                        Text("Tarih: " + lists[index]["date"]),
-                        Text("Kişi sayısı: " + lists[index]["maxPeople"]),
-                        Text("Aktivite sahibi: " + lists[index]["ownername"]),
-                      ],
-                    ),
-                  );
-                }),
-          ),
-          // hata veriyor app çöküyor
-          //_widgetOptions.elementAt(_currentIndex)
-        
-        ],
-      ),
-      bottomNavigationBar:Bottom()
-    
-    );
+          ],
+        ),
+        body: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(top: 15.0),
+              child: Text(
+                'Sizin için önerilen aktiviteler',
+                style: TextStyle(fontSize: 25.0, fontStyle: FontStyle.italic),
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: lists.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Card(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          ListTile(
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 10.0, vertical: 10.0),
+                            leading: Container(
+                              padding: EdgeInsets.only(right: 12.0),
+                              decoration: new BoxDecoration(
+                                  border: new Border(
+                                      right: new BorderSide(
+                                          width: 1.0, color: Colors.white24))),
+                              child: Icon(Icons.autorenew, color: Colors.white),
+                            ),
+                            title: Text("Başlık: " +
+                                lists[index]["title"] +
+                                "\nTarih: " +
+                                lists[index]["date"] +
+                                "\nKişi sayısı: " +
+                                lists[index]["maxPeople"] +
+                                "\nAktivite Sahibi: " +
+                                lists[index]["ownername"]),
+                            trailing: Icon(Icons.local_activity),
+                          ),
+                          //Text("Başlık: " + lists[index]["title"]),
+                          //Text("Tarih: " + lists[index]["date"]),
+                          //Text("Kişi sayısı: " + lists[index]["maxPeople"]),
+                          //Text("Aktivite sahibi: " + lists[index]["ownername"]),
+                        ],
+                      ),
+                    );
+                  }),
+            ),
+          ],
+        ),
+        bottomNavigationBar: Bottom());
   }
 }

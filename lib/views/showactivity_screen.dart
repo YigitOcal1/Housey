@@ -7,6 +7,7 @@ import 'package:housey/models/activity_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:housey/views/main_page.dart';
 import 'profile_screen.dart';
+import 'package:housey/widgets/BottomNavBar.dart';
 
 class ShowActivity extends StatefulWidget {
   @override
@@ -196,20 +197,20 @@ class _ShowActivityState extends State<ShowActivity> {
           ),
         ),
         actions: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(right: 10.0),
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              style: ElevatedButton.styleFrom(
-                  primary: Colors.purple[400],
-                  minimumSize: Size(35.0, 40.0),
-                  shape: new RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(30.0))),
-              child: Text('Geri Dön'),
-            ),
-          ),
+          // Padding(
+          //   padding: EdgeInsets.only(right: 10.0),
+          //   child: ElevatedButton(
+          //     onPressed: () {
+          //       Navigator.pop(context);
+          //     },
+          //     style: ElevatedButton.styleFrom(
+          //         primary: Colors.purple[400],
+          //         minimumSize: Size(35.0, 40.0),
+          //         shape: new RoundedRectangleBorder(
+          //             borderRadius: new BorderRadius.circular(30.0))),
+          //     child: Text('Geri Dön'),
+          //   ),
+          // ),
           IconButton(
               onPressed: () {
                 Navigator.push(context,
@@ -229,27 +230,46 @@ class _ShowActivityState extends State<ShowActivity> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text("Başlık: " + lists[index]["title"]),
-                        Text("Tarih: " + lists[index]["date"]),
-                        Text("Kişi sayısı: " + lists[index]["maxPeople"]),
-                        Text("Aktivite sahibi: " + lists[index]["ownername"]),
+                        //Text("Tarih: " + lists[index]["date"]),
+                        //Text("Kişi sayısı: " + lists[index]["maxPeople"]),
+                        ListTile(
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 10.0, vertical: 10.0),
+                          leading: Container(
+                            padding: EdgeInsets.only(right: 12.0),
+                            decoration: new BoxDecoration(
+                                border: new Border(
+                                    right: new BorderSide(
+                                        width: 1.0, color: Colors.white24))),
+                            child: Icon(Icons.autorenew, color: Colors.white),
+                          ),
+                          title: Text("Başlık: " +
+                              lists[index]["title"] +
+                              "\nTarih: " +
+                              lists[index]["date"] +
+                              "\nKişi sayısı: " +
+                              lists[index]["maxPeople"] +
+                              "\nAktivite Sahibi: " +
+                              lists[index]["ownername"]),
+                          trailing: Icon(Icons.local_activity),
+                        ),
                       ],
                     ),
                   );
                 }),
           ),
-          ElevatedButton(
-            onPressed: () {
-              //deneme();
-              getActivity();
-            },
-            style: ElevatedButton.styleFrom(
-                primary: Colors.redAccent,
-                minimumSize: Size(85.0, 40.0),
-                shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(50.0))),
-            child: Text('Aktivite listele'),
-          ),
+          // ElevatedButton(
+          //   onPressed: () {
+          //     //deneme();
+          //     getActivity();
+          //   },
+          //   style: ElevatedButton.styleFrom(
+          //       primary: Colors.redAccent,
+          //       minimumSize: Size(85.0, 40.0),
+          //       shape: new RoundedRectangleBorder(
+          //           borderRadius: new BorderRadius.circular(50.0))),
+          //   child: Text('Aktivite listele'),
+          // ),
           ElevatedButton(
             onPressed: () {
               Navigator.of(context).push(_createRouteCreateActivity());
@@ -263,6 +283,7 @@ class _ShowActivityState extends State<ShowActivity> {
           ),
         ],
       ),
+      bottomNavigationBar: Bottom(),
     );
   }
 }

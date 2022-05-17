@@ -13,6 +13,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:housey/views/main_page.dart';
 import 'login_screen.dart';
 import 'register_screen.dart';
+import 'package:housey/widgets/BottomNavBar.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -225,6 +226,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ],
         ),
+        bottomNavigationBar: Bottom(),
       ),
     );
   }
