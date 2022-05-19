@@ -53,16 +53,6 @@ class _ShowActivityState extends State<ShowActivity> {
     );
   }
 
-  Future deneme() async {
-    //FirebaseDatabase.instance.setPersistenceEnabled(true);
-    //final snapshot=await databaseRef.child('activities').get();
-    await databaseRef
-        .child('activities')
-        .once()
-        .then((DataSnapshot datasnaphot) {
-      print("wqewqewqe qwedfasd ollll " + datasnaphot.value.toString());
-    });
-  }
 
   Future getActivity() async {
     String authid = authstate!.uid;

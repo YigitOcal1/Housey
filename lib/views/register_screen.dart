@@ -63,19 +63,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Future AddUser(
-    String userid,
+   
     String username,
     String email,
     String password,
   ) async {
     final UserModel usermodel = UserModel(
-        uid: authstate!.uid,
+        
         email: email,
         password: password,
         username: username);
     try {
       databaseRef
-          .child('users/$userid')
+          .child('users')
           .push()
           .set(usermodel.toMap())
           .then((uid) => {Fluttertoast.showToast(msg: 'Hesap oluşturuldu.')});
@@ -90,7 +90,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     User? user = _auth.currentUser;
     UserModel usermodel = UserModel();
     usermodel.email = user!.email;
-    usermodel.uid = user.uid;
     usermodel.username = usernamecontroller.text;
 
     await firestore.collection("users").doc(user.uid).set(usermodel.toMap());
@@ -173,7 +172,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
           register(emailcontroller.text, passwordcontroller.text);
-          AddUser(authstate!.uid, emailcontroller.text.replaceAll("@gmail.com", ""), emailcontroller.text,
+          AddUser( emailcontroller.text.replaceAll("@gmail.com", ""), emailcontroller.text,
               passwordcontroller.text);
         },
         child: Text(
