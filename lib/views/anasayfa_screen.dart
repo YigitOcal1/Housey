@@ -94,9 +94,7 @@ Route _createRouteCreateHomePage() {
           print(values.toString());
       setState(() {
        isLoading=false;
-          //print(values["userid"]);
-
-          //print(values["title"]);
+         
         });
         //activity = ActivityModel.fromSnapshot(dataSnapshot.value);
       });
