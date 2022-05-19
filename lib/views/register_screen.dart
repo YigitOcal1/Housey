@@ -9,6 +9,8 @@ import 'package:housey/views/main_page.dart';
 import 'package:housey/models/user_model.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:housey/views/showactivity_screen.dart';
+import 'anasayfa_screen.dart';
+
 class RegisterScreen extends StatefulWidget {
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
@@ -40,23 +42,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
       Fluttertoast.showToast(msg: errormsg!);
     }
   }
-Route _createRouteMain() {
-  return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) => ShowActivity(),
-    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      const begin = Offset(0.0, 1.0);
-      const end = Offset.zero;
-      const curve = Curves.ease;
 
-      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+  Route _createRouteMain() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => AnasayfaScreen(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.0, 1.0);
+        const end = Offset.zero;
+        const curve = Curves.ease;
 
-      return SlideTransition(
-        position: animation.drive(tween),
-        child: child,
-      );
-    },
-  );
-}
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
+  }
+
   Future AddUser(
     String userid,
     String username,
@@ -74,7 +79,7 @@ Route _createRouteMain() {
           .push()
           .set(usermodel.toMap())
           .then((uid) => {Fluttertoast.showToast(msg: 'Hesap oluşturuldu.')});
-           Navigator.of(context).push(_createRouteMain());
+      Navigator.of(context).push(_createRouteMain());
     } catch (e) {
       Fluttertoast.showToast(msg: 'Hata! Hesap oluşturulamadı.');
     }
@@ -90,7 +95,7 @@ Route _createRouteMain() {
 
     await firestore.collection("users").doc(user.uid).set(usermodel.toMap());
     Fluttertoast.showToast(msg: "Hesap oluşturuldu");
-     Navigator.of(context).push(_createRouteMain());
+    Navigator.of(context).push(_createRouteMain());
   }
 
   @override
@@ -168,7 +173,7 @@ Route _createRouteMain() {
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
           register(emailcontroller.text, passwordcontroller.text);
-          AddUser(authstate!.uid, usernamecontroller.text, emailcontroller.text,
+          AddUser(authstate!.uid, emailcontroller.text.replaceAll("@gmail.com", ""), emailcontroller.text,
               passwordcontroller.text);
         },
         child: Text(
@@ -197,13 +202,11 @@ Route _createRouteMain() {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      height: 100,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: username,
-                    ),
+                    
+                    // Padding(
+                    //   padding: const EdgeInsets.all(8.0),
+                    //   child: username,
+                    // ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: email,
