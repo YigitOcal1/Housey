@@ -36,7 +36,13 @@ class _AnasayfaScreenState extends State<AnasayfaScreen> {
   List<String> titleList = [];
   List<String> dateList = [];
   List<String> maxpeopleList = [];
+  bool isLoading=true;
 
+  @override
+  void initState(){
+    super.initState();
+    getActivity();
+  }
   Route _createRouteCreateActivity() {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => MainPage(),
@@ -74,21 +80,20 @@ Route _createRouteCreateHomePage() {
     );
   }
   Future getActivity() async {
-    String authid = authstate!.uid;
-
-    //child olarak yazınca da oluyor activite id sini nasıl çekcem
-    return await databaseRef
+   
+     await databaseRef
         .child('activities')
         .limitToLast(3)
         .once()
         .then((DataSnapshot dataSnapshot) {
-      setState(() {
-        Map<dynamic, dynamic> values = dataSnapshot.value;
+           Map<dynamic, dynamic> values = dataSnapshot.value;
         lists.clear();
         values.forEach((key, values) {
           lists.add(values);
 
           print(values.toString());
+      setState(() {
+       isLoading=false;
           //print(values["userid"]);
 
           //print(values["title"]);
@@ -100,7 +105,7 @@ Route _createRouteCreateHomePage() {
 
   @override
   Widget build(BuildContext context) {
-    getActivity();
+    
     return Scaffold(
         appBar: AppBar(
           elevation: 5.0,
@@ -128,8 +133,10 @@ Route _createRouteCreateHomePage() {
             ),
           ],
         ),
-        body: Column(
+        body:  Column(
+          
           children: [
+          
             Padding(
               padding: EdgeInsets.only(top: 15.0),
               child: Text(
