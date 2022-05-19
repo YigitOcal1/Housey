@@ -4,6 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'views/login_screen.dart';
 import 'views/register_screen.dart';
 import 'views/home_screen.dart';
+import 'views/anasayfa_screen.dart';
+import 'views/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +21,19 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'deneme',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: HomePage(title: "Housey"),
+      home:StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (ctx, snapShot) {
+            if (snapShot.connectionState == ConnectionState.waiting) {
+              return SplashScreen();
+            }
+            if (snapShot.hasData) {
+              return AnasayfaScreen();
+            } else {
+              return HomePage(title: 'Housey',);
+            }
+          },
+        )
     );
   }
 }

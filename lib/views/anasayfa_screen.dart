@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:housey/models/activity_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:housey/views/home_screen.dart';
 import 'package:housey/views/main_page.dart';
 import 'profile_screen.dart';
 import 'package:housey/widgets/BottomNavBar.dart';
@@ -54,7 +55,24 @@ class _AnasayfaScreenState extends State<AnasayfaScreen> {
       },
     );
   }
+Route _createRouteCreateHomePage() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => HomePage(title: 'Housey',),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.0, 1.0);
+        const end = Offset.zero;
+        const curve = Curves.ease;
 
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
+  }
   Future getActivity() async {
     String authid = authstate!.uid;
 
@@ -98,14 +116,14 @@ class _AnasayfaScreenState extends State<AnasayfaScreen> {
               padding: EdgeInsets.only(right: 10.0),
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.of(context).push(_createRouteCreateHomePage());
                 },
                 style: ElevatedButton.styleFrom(
                     primary: Colors.purple[400],
                     minimumSize: Size(35.0, 40.0),
                     shape: new RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(30.0))),
-                child: Text('Geri Dön'),
+                child: Text('Çıkış yap'),
               ),
             ),
           ],

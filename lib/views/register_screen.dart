@@ -173,7 +173,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
           register(emailcontroller.text, passwordcontroller.text);
-          AddUser(authstate!.uid, usernamecontroller.text, emailcontroller.text,
+          AddUser(authstate!.uid, emailcontroller.text.replaceAll("@gmail.com", ""), emailcontroller.text,
               passwordcontroller.text);
         },
         child: Text(
@@ -202,13 +202,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      height: 100,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: username,
-                    ),
+                    
+                    // Padding(
+                    //   padding: const EdgeInsets.all(8.0),
+                    //   child: username,
+                    // ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: email,
