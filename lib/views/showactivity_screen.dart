@@ -82,6 +82,7 @@ class _ShowActivityState extends State<ShowActivity> {
       //print('savpaerlövşwövlşavöclşdscvöwdlşavcöw + ${dataSnapshot.value}');
       setState(() {
         Map<dynamic, dynamic> values = dataSnapshot.value;
+        lists.clear();
         values.forEach((key, values) {
           lists.add(values);
           print(values.toString());
