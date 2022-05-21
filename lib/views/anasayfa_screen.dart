@@ -109,9 +109,12 @@ Route _createRouteCreateHomePage() {
   Widget build(BuildContext context) {
     
     return Scaffold(
+      //backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
         appBar: AppBar(
-          elevation: 5.0,
-          backgroundColor: (Colors.deepPurple),
+          elevation: 0.1,
+      backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
+          //elevation: 5.0,
+          //backgroundColor: (Colors.deepPurple),
           title: Text(
             'Ana Sayfa',
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),

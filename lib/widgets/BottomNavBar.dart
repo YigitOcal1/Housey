@@ -86,10 +86,10 @@ class _BottomState extends State<Bottom> {
     return BottomNavigationBar(
         showSelectedLabels: true,
         showUnselectedLabels: true,
-        backgroundColor: Colors.purple[300],
+        backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blueAccent[400],
+        selectedItemColor: Colors.blueAccent[100],
         unselectedItemColor: Colors.white,
         items: [
           BottomNavigationBarItem(
