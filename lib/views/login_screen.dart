@@ -58,9 +58,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
     final emailfield = TextFormField(
       controller: email_controller,
       keyboardType: TextInputType.emailAddress,
+      style: TextStyle(
+              color: Colors.black,
+              fontFamily: 'OpenSans',
+            ),
       validator: (value) {
         if (value!.isEmpty) {
           return ("Geçerli bir email adresi giriniz.");
@@ -72,8 +77,10 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-        prefixIcon: Icon(Icons.email),
-        contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+        
+        prefixIcon: Icon(Icons.email,
+        color: Colors.white),
+        contentPadding: EdgeInsets.fromLTRB(20, 20, 20, 20),
         hintText: "Email",
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -84,6 +91,10 @@ class _LoginScreenState extends State<LoginScreen> {
     final passwordfield = TextFormField(
       controller: password_controller,
       obscureText: true,
+      style: TextStyle(
+              color: Colors.black,
+              fontFamily: 'OpenSans',
+            ),
       validator: (value) {
         if (value!.isEmpty) {
           return ("Şifre giriniz.");
@@ -95,8 +106,8 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       textInputAction: TextInputAction.done,
       decoration: InputDecoration(
-        prefixIcon: Icon(Icons.password),
-        contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+        prefixIcon: Icon(Icons.password,color: Colors.white),
+        contentPadding: EdgeInsets.fromLTRB(20, 20, 20, 20),
         hintText: "Şifre",
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -109,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
       borderRadius: BorderRadius.circular(50),
       color: Colors.deepPurpleAccent[400],
       child: MaterialButton(
-        padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+        padding: EdgeInsets.all(20.0),
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
           logIn(email_controller.text, password_controller.text);
@@ -118,7 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
           "Giriş Yap",
           textAlign: TextAlign.center,
           style: TextStyle(
-              fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+              fontSize: 22,   color: const Color(0xFF527DAA), fontWeight: FontWeight.bold,letterSpacing: 2,fontFamily: 'OpenSans',),
         ),
       ),
     ));
@@ -130,57 +141,83 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       backgroundColor: Colors.deepPurple[200],
       body: Center(
-        child: SingleChildScrollView(
-          child: Container(
-            color: Colors.deepPurple[200],
-            child: Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 100,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: emailfield,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: passwordfield,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: loginButton,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                            "Hesabınız yoksa kaydolmak için tıklayabilirsiniz."),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => RegisterScreen()),
-                            );
-                          },
-                          child: Text(
-                            "Kaydol",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15),
+        child: Container(
+           height: double.infinity,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color(0xFF73AEF5),
+                      Color(0xFF61A4F1),
+                      Color(0xFF478DE0),
+                      Color(0xFF398AE5),
+                    ],
+                    stops: [0.1, 0.4, 0.7, 0.9],
+                  ),
+                ),
+          //color: Colors.deepPurple[200],
+          child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 100,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: emailfield,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: passwordfield,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: loginButton,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => RegisterScreen()),
+                          );
+                        },
+                        child: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "Hesabınız yoksa kaydolmak için tıklayabilirsiniz. ",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              TextSpan(
+                                text: 'Kayıt ol',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),

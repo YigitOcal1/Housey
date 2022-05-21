@@ -10,6 +10,7 @@ import 'package:housey/models/user_model.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:housey/views/showactivity_screen.dart';
 import 'anasayfa_screen.dart';
+import 'login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -21,7 +22,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _formkey = GlobalKey<FormState>();
   final emailcontroller = new TextEditingController();
   final passwordcontroller = new TextEditingController();
-  final usernamecontroller = new TextEditingController();
+  //final usernamecontroller = new TextEditingController();
   final confirmpasswordcontroller = new TextEditingController();
   String? errormsg;
   final databaseRef = FirebaseDatabase.instance.reference();
@@ -34,12 +35,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
             .createUserWithEmailAndPassword(email: email, password: password)
             .then((value) => {sendFirestore()})
             .catchError((e) {
-          Fluttertoast.showToast(msg: e!.message);
+          Fluttertoast.showToast(msg:  'Hata! Hesap oluşturulamadı.');
         });
       } on FirebaseAuthException catch (error) {
         errormsg = "Kayıt başarısız";
       }
-      Fluttertoast.showToast(msg: errormsg!);
+      
     }
   }
 
@@ -62,12 +63,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Future AddUser(
+  Future addUser(
    
     String username,
     String email,
     String password,
   ) async {
+    if(email!=""){
     final UserModel usermodel = UserModel(
         
         email: email,
@@ -81,7 +83,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
           .then((uid) => {Fluttertoast.showToast(msg: 'Hesap oluşturuldu.')});
       Navigator.of(context).push(_createRouteMain());
     } catch (e) {
-      Fluttertoast.showToast(msg: 'Hata! Hesap oluşturulamadı.');
+      Fluttertoast.showToast(msg: 'Hata! Hesap oluşturulamadı.');}
+    }
+    else{
+       Fluttertoast.showToast(msg: 'Hata! Hesap oluşturulamadı.');
     }
   }
 
@@ -90,7 +95,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     User? user = _auth.currentUser;
     UserModel usermodel = UserModel();
     usermodel.email = user!.email;
-    usermodel.username = usernamecontroller.text;
+    
 
     await firestore.collection("users").doc(user.uid).set(usermodel.toMap());
     Fluttertoast.showToast(msg: "Hesap oluşturuldu");
@@ -99,49 +104,56 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final username = TextFormField(
-        keyboardType: TextInputType.name,
-        autofocus: false,
-        controller: usernamecontroller,
-        onSaved: (value) {
-          usernamecontroller.text = value!;
-        },
-        textInputAction: TextInputAction.next,
-        decoration: InputDecoration(
-          prefixIcon: Icon(Icons.account_circle),
-          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: "Kullanıcı adı",
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-        ));
-    final email = TextFormField(
+    // final username = TextFormField(
+    //     keyboardType: TextInputType.name,
+    //     autofocus: false,
+    //     controller: usernamecontroller,
+    //     onSaved: (value) {
+    //       usernamecontroller.text = value!;
+    //     },
+    //     textInputAction: TextInputAction.next,
+    //     decoration: InputDecoration(
+    //       prefixIcon: Icon(Icons.account_circle),
+    //       contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+    //       hintText: "Kullanıcı adı",
+    //       border: OutlineInputBorder(
+    //         borderRadius: BorderRadius.circular(20),
+    //       ),
+    //     ));
+    final emailfield = TextFormField(
       keyboardType: TextInputType.emailAddress,
       autofocus: false,
       controller: emailcontroller,
       onSaved: (value) {
-        usernamecontroller.text = value!;
-      },
+        emailcontroller.text = value!;
+      }, style: TextStyle(
+              color: Colors.black,
+              fontFamily: 'OpenSans',
+            ),
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-          prefixIcon: Icon(Icons.email),
-          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+        //fillColor: Colors.amber,
+        filled: true,
+            
+          prefixIcon: Icon(Icons.email,color: Colors.white),
+          contentPadding: EdgeInsets.fromLTRB(20, 20, 20, 20),
           hintText: "Email",
+          
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
           )),
     );
-    final password = TextFormField(
+    final passwordfield = TextFormField(
       obscureText: true,
       autofocus: false,
       controller: passwordcontroller,
       onSaved: (value) {
-        usernamecontroller.text = value!;
+        passwordcontroller.text = value!;
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-          prefixIcon: Icon(Icons.password_outlined),
-          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          prefixIcon: Icon(Icons.password_outlined,color: Colors.white),
+          contentPadding: EdgeInsets.fromLTRB(20, 20, 20, 20),
           hintText: "Şifre",
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
@@ -156,30 +168,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
       },
       textInputAction: TextInputAction.done,
       decoration: InputDecoration(
-          prefixIcon: Icon(Icons.password_outlined),
-          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          prefixIcon: Icon(Icons.password_outlined,color: Colors.white),
+          contentPadding: EdgeInsets.fromLTRB(20, 20, 20, 20),
           hintText: "Şifrenizi onaylayınız",
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
           )),
     );
-    final loginButton = (Material(
+    final registerButton = (Material(
       elevation: 10,
-      borderRadius: BorderRadius.circular(30),
+      borderRadius: BorderRadius.circular(50),
       color: Colors.deepPurpleAccent[400],
       child: MaterialButton(
-        padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+        padding: EdgeInsets.all(20),
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
           register(emailcontroller.text, passwordcontroller.text);
-          AddUser( emailcontroller.text.replaceAll("@gmail.com", ""), emailcontroller.text,
+          addUser( emailcontroller.text.replaceAll("@gmail.com", ""), emailcontroller.text,
               passwordcontroller.text);
         },
         child: Text(
           "Kayıt ol",
           textAlign: TextAlign.center,
-          style: TextStyle(
-              fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+           style: TextStyle(
+              fontSize: 22,   color: const Color(0xFF527DAA), fontWeight: FontWeight.bold,letterSpacing: 2,fontFamily: 'OpenSans'),
+        
         ),
       ),
     ));
@@ -190,40 +203,87 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
       backgroundColor: Colors.deepPurple[200],
       body: Center(
-        child: SingleChildScrollView(
-          child: Container(
-            color: Colors.deepPurple[200],
-            child: Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Form(
-                key: _formkey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    
-                    // Padding(
-                    //   padding: const EdgeInsets.all(8.0),
-                    //   child: username,
-                    // ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: email,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: password,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: confirmPasswordField,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: loginButton,
-                    ),
-                  ],
+        child: Container(
+           height: double.infinity,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color(0xFF73AEF5),
+                      Color(0xFF61A4F1),
+                      Color(0xFF478DE0),
+                      Color(0xFF398AE5),
+                    ],
+                    stops: [0.1, 0.4, 0.7, 0.9],
+                  ),
                 ),
+          //color: Colors.deepPurple[200],
+          child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Form(
+              key: _formkey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 100,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: emailfield,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: passwordfield,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: confirmPasswordField,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: registerButton,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => LoginScreen()),
+                          );
+                        },
+                        child: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "Hesabınız varsa giriş için tıklayabilirsiniz. ",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              TextSpan(
+                                text: 'Giriş yap',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),

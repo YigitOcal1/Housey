@@ -74,6 +74,45 @@ Route _createRouteRegister() {
 }
   @override
   Widget build(BuildContext context) {
+    final loginButton = (Material(
+      elevation: 5,
+      borderRadius: BorderRadius.circular(50),
+      color: Colors.deepPurpleAccent[400],
+      child: MaterialButton(
+        padding: EdgeInsets.all(20.0),
+        minWidth: MediaQuery.of(context).size.width,
+        onPressed: () {
+         Navigator.of(context).push(_createRouteLogin());
+        },
+        child: Text(
+          "Giriş Yap",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 22,   color: const Color(0xFF527DAA), fontWeight: FontWeight.bold,letterSpacing: 2,fontFamily: 'OpenSans',),
+        ),
+      ),
+    ));
+
+     final registerButton = (Material(
+      elevation: 5,
+      borderRadius: BorderRadius.circular(50),
+      color: Colors.deepPurpleAccent[400],
+      child: MaterialButton(
+        padding: EdgeInsets.all(20),
+        minWidth: MediaQuery.of(context).size.width,
+        onPressed: () {
+          Navigator.of(context).push(_createRouteRegister());
+        },
+        child: Text(
+          "Kayıt ol",
+          textAlign: TextAlign.center,
+           style: TextStyle(
+              fontSize: 22,   color: const Color(0xFF527DAA), fontWeight: FontWeight.bold,letterSpacing: 2,fontFamily: 'OpenSans'),
+        
+        ),
+      ),
+    ));
+    double screenHeight = MediaQuery.of(context).size.height;
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -161,33 +200,32 @@ Route _createRouteRegister() {
           ],
         ),
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    primary: Colors.deepOrangeAccent[400],
-                    minimumSize: Size(155.0, 45.0),
-                    shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(100.0))),
-                onPressed: () {
-                Navigator.of(context).push(_createRouteLogin());
-                },
-                child: Text('Giriş Yap'),
-              ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    primary: Colors.pinkAccent,
-                    minimumSize: Size(155.0, 45.0),
-                    shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(100.0))),
-                onPressed: () {
-                  Navigator.of(context).push(_createRouteRegister());
-                },
-                child: Text('Kayıt Ol'),
-              ),
-            ],
+          child: Container(
+             height: double.infinity,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color(0xFF73AEF5),
+                      Color(0xFF61A4F1),
+                      Color(0xFF478DE0),
+                      Color(0xFF398AE5),
+                    ],
+                    stops: [0.1, 0.4, 0.7, 0.9],
+                  ),
+                ),
+            child: Column(
+              
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+               loginButton,
+               SizedBox(height: 15.0),
+                registerButton
+              ],
+            ),
           ),
         ),
       ),
