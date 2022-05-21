@@ -5,13 +5,9 @@ import 'package:housey/views/showactivity_screen.dart';
 import 'package:housey/views/profile_screen.dart';
 import 'package:housey/views/home_screen.dart';
 
-int _selectedIndex = 0;
+class Animation  {
 
-class Bottom extends StatefulWidget {
-  @override
-  _BottomState createState() => _BottomState();
 }
-
 Route _createRouteCreateAnasayfa() {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) => AnasayfaScreen(),
@@ -79,59 +75,4 @@ Route _createRouteCreateAddActivity() {
       );
     },
   );
-}
-class _BottomState extends State<Bottom> {
-  @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        backgroundColor: Colors.purple[300],
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blueAccent[400],
-        unselectedItemColor: Colors.white,
-        items: [
-          BottomNavigationBarItem(
-            icon: const Icon(
-              Icons.home,
-            ),
-            label: "Ana sayfa",
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(
-              Icons.explore_off_rounded,
-            ),
-            label: "Keşfet",
-          ),
-          BottomNavigationBarItem(
-              icon: const Icon(
-                Icons.portrait_rounded,
-              ),
-              label: "Profil"),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.create_rounded,
-              ),
-              label: "Aktivite Oluştur"),
-        ],
-        onTap: (int index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-          if (_selectedIndex == 0) {
-            var route = Navigator.pushReplacement(
-                context, _createRouteCreateAnasayfa());
-          } else if (_selectedIndex == 1) {
-            var route = Navigator.pushReplacement(
-                context, _createRouteCreateExplore());
-          } else if (_selectedIndex == 2) {
-            var route = Navigator.pushReplacement(
-                context, _createRouteCreateProfile());
-          } else if (_selectedIndex == 3) {
-            var route = Navigator.pushReplacement(
-                context, _createRouteCreateAddActivity());
-          }
-        });
-  }
 }

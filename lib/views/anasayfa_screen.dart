@@ -142,8 +142,14 @@ Route _createRouteCreateHomePage() {
             Padding(
               padding: EdgeInsets.only(top: 15.0),
               child: Text(
-                'Sizin için önerilen aktiviteler',
-                style: TextStyle(fontSize: 25.0, fontStyle: FontStyle.italic),
+              'Sizin için önerilen aktiviteler',
+               style: TextStyle(
+                 fontSize: 22.0,
+                 fontStyle: FontStyle.italic,
+                 fontWeight: FontWeight.w300,
+                color: Colors.black,
+                letterSpacing: 1.5,
+               ),
               ),
             ),
             Expanded(
