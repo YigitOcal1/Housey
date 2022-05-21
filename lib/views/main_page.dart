@@ -77,7 +77,7 @@ class _MainPageState extends State<MainPage> {
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
         prefixIcon: Icon(Icons.title),
-        contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+        contentPadding: EdgeInsets.all(20),
         hintText: "Başlık",
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -99,7 +99,7 @@ class _MainPageState extends State<MainPage> {
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
         prefixIcon: Icon(Icons.date_range),
-        contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+        contentPadding: EdgeInsets.all(20),
         hintText: "Tarih",
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -121,7 +121,7 @@ class _MainPageState extends State<MainPage> {
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
         prefixIcon: Icon(Icons.people),
-        contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+        contentPadding: EdgeInsets.all(20),
         hintText: "Kişi sayısı",
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -143,7 +143,7 @@ class _MainPageState extends State<MainPage> {
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
         prefixIcon: Icon(Icons.location_city),
-        contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+        contentPadding: EdgeInsets.all(20),
         hintText: "Aktivitenin yer alacağı konum",
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),

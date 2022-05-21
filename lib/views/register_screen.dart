@@ -33,7 +33,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
       try {
         await _auth
             .createUserWithEmailAndPassword(email: email, password: password)
-            .then((value) => {sendFirestore()})
+            .then((value) => {sendFirestore()}
+            )
+            
             .catchError((e) {
           Fluttertoast.showToast(msg:  'Hata! Hesap oluşturulamadı.');
         });
@@ -43,7 +45,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
       
     }
   }
+sendFirestore() async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    User? user = _auth.currentUser;
+    UserModel usermodel = UserModel();
+    usermodel.email = user!.email;
+    usermodel.uid=user.uid;
+    usermodel.username=user.email!.replaceAll("@gmail.com", "");
+    
 
+    await firestore.collection("users").doc(user.uid).set(usermodel.toMap());
+    
+    Fluttertoast.showToast(msg: "Hesap oluşturuldu");
+    Navigator.of(context).push(_createRouteMain());
+  }
   Route _createRouteMain() {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => AnasayfaScreen(),
@@ -90,17 +105,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
-  sendFirestore() async {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-    User? user = _auth.currentUser;
-    UserModel usermodel = UserModel();
-    usermodel.email = user!.email;
-    
-
-    await firestore.collection("users").doc(user.uid).set(usermodel.toMap());
-    Fluttertoast.showToast(msg: "Hesap oluşturuldu");
-    Navigator.of(context).push(_createRouteMain());
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -124,6 +129,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
       keyboardType: TextInputType.emailAddress,
       autofocus: false,
       controller: emailcontroller,
+      validator: (value) {
+          if (value!.isEmpty) {
+            return ("Lütfen email adresinizi giriniz");
+          }
+          // reg expression for email validation
+          if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+              .hasMatch(value)) {
+            return ("Lütfen geçerli bir email adresi giriniz");
+          }
+          return null;
+        },
       onSaved: (value) {
         emailcontroller.text = value!;
       }, style: TextStyle(
@@ -140,13 +156,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
           hintText: "Email",
           
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(10),
           )),
     );
     final passwordfield = TextFormField(
       obscureText: true,
       autofocus: false,
       controller: passwordcontroller,
+      validator: (value) {
+          RegExp regex = new RegExp(r'^.{6,}$');
+          if (value!.isEmpty) {
+            return ("Kayıtt olabilmek için şifre giriniz");
+          }
+          if (!regex.hasMatch(value)) {
+            return ("Geçerli bir şifre giriniz.(Min. 6 Karakter)");
+          }
+        },
       onSaved: (value) {
         passwordcontroller.text = value!;
       },
@@ -156,13 +181,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
           contentPadding: EdgeInsets.fromLTRB(20, 20, 20, 20),
           hintText: "Şifre",
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(10),
           )),
     );
     final confirmPasswordField = TextFormField(
       autofocus: false,
       controller: confirmpasswordcontroller,
       obscureText: true,
+      validator: (value) {
+          if (confirmpasswordcontroller.text !=
+              passwordcontroller.text) {
+            return "Şifreler eşleşmiyor";
+          }
+          return null;
+        },
       onSaved: (value) {
         confirmpasswordcontroller.text = value!;
       },
@@ -172,7 +204,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           contentPadding: EdgeInsets.fromLTRB(20, 20, 20, 20),
           hintText: "Şifrenizi onaylayınız",
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(10),
           )),
     );
     final registerButton = (Material(
@@ -184,8 +216,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
           register(emailcontroller.text, passwordcontroller.text);
-          addUser( emailcontroller.text.replaceAll("@gmail.com", ""), emailcontroller.text,
-              passwordcontroller.text);
+          //addUser( emailcontroller.text.replaceAll("@gmail.com", ""), emailcontroller.text,
+              //passwordcontroller.text);
         },
         child: Text(
           "Kayıt ol",
@@ -228,9 +260,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    height: 100,
-                  ),
+                  
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: emailfield,

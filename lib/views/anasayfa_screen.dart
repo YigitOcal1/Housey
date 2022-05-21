@@ -79,6 +79,10 @@ Route _createRouteCreateHomePage() {
       },
     );
   }
+  Future<void> logout(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+     Navigator.of(context).push(_createRouteCreateHomePage());
+  }
   Future getActivity() async {
    
      await databaseRef
@@ -119,7 +123,7 @@ Route _createRouteCreateHomePage() {
               padding: EdgeInsets.only(right: 10.0),
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).push(_createRouteCreateHomePage());
+                 logout(context);
                 },
                 style: ElevatedButton.styleFrom(
                     primary: Colors.purple[400],
