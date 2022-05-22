@@ -165,8 +165,16 @@ Route _createRouteRegister() {
         ),
         backgroundColor: Colors.deepPurple[200],
         appBar: AppBar(
-          title: Text("HOUSEY"),
-          backgroundColor: Colors.deepPurple[600],
+          title: Text("HOUSEY",
+          // style: TextStyle( 
+          //            fontSize: 16,
+          //            height: 0.9, //line height 90% of actual height
+          //            color: Colors.orangeAccent,
+          //            decoration: TextDecoration.lineThrough,
+          //         ),),
+          ),
+          elevation: 0.1,
+          backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
           automaticallyImplyLeading: false,
           leading: Builder(
             builder: (context) => IconButton(

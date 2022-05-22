@@ -119,8 +119,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 5.0,
-        backgroundColor: (Colors.deepPurple),
+        elevation: 0.1,
+        backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
         title: Text(
           'Profil',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
@@ -144,75 +144,89 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ],
       ),
-      body: Column(
-        
-        children: [
-           IconButton(
-               onPressed: () {
-              //getActivitywithword('');
-               },
-               icon: Icon(Icons.portrait_rounded)),
-                   Text(
-                    authEmail!.replaceAll("@gmail.com", "").toString(),
-                    //lists[0]["username"],
-                 style: TextStyle(
-                        fontSize: 22.0,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 60.0),
-           Padding(
+      body: Container(
+        height: double.infinity,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color(0xFF73AEF5),
+                      Color(0xFF61A4F1),
+                      Color(0xFF478DE0),
+                      Color(0xFF398AE5),
+                    ],
+                    stops: [0.1, 0.4, 0.7, 0.9],
+                  ),),
+        child: Column(
+          children: [
+            IconButton(
+                onPressed: () {
+                  //getActivitywithword('');
+                },
+                icon: Icon(Icons.portrait_rounded)),
+            Text(
+              authEmail!.replaceAll("@gmail.com", "").toString(),
+              //lists[0]["username"],
+              style: TextStyle(
+                  fontSize: 22.0,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 60.0),
+            Padding(
               padding: EdgeInsets.only(top: 15.0),
-              child:   Text(
-              'Oluşturduğum aktiviteler',
-               style: TextStyle(
-                 fontSize: 22.0,
-                 fontStyle: FontStyle.italic,
-                 fontWeight: FontWeight.w300,
-                color: Colors.black,
-                letterSpacing: 1.5,
-               ),
+              child: Text(
+                'Oluşturduğum aktiviteler',
+                style: TextStyle(
+                  fontSize: 22.0,
+                  fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.w300,
+                  color: Colors.black,
+                  letterSpacing: 1.5,
+                ),
               ),
             ),
-            
-          Expanded(
-            child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: activitylists.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Card(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        //Text("Tarih: " + lists[index]["date"]),
-                        //Text("Kişi sayısı: " + lists[index]["maxPeople"]),
-                        ListTile(
-                          contentPadding: EdgeInsets.symmetric(
-                              horizontal: 10.0, vertical: 10.0),
-                          leading: Container(
-                            padding: EdgeInsets.only(right: 12.0),
-                            decoration: new BoxDecoration(
-                                border: new Border(
-                                    right: new BorderSide(
-                                        width: 1.0, color: Colors.white24))),
-                            child: Icon(Icons.autorenew, color: Colors.white),
+            Expanded(
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: activitylists.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Card(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          //Text("Tarih: " + lists[index]["date"]),
+                          //Text("Kişi sayısı: " + lists[index]["maxPeople"]),
+                          ListTile(
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 10.0, vertical: 10.0),
+                            leading: Container(
+                              padding: EdgeInsets.only(right: 12.0),
+                              decoration: new BoxDecoration(
+                                  border: new Border(
+                                      right: new BorderSide(
+                                          width: 1.0, color: Colors.white24))),
+                              child: Icon(Icons.autorenew, color: Colors.white),
+                            ),
+                            title: Text("Başlık: " +
+                                activitylists[index]["title"] +
+                                "\nTarih: " +
+                                activitylists[index]["date"] +
+                                "\nKişi sayısı: " +
+                                activitylists[index]["maxPeople"] +
+                                "\nAktivite Sahibi: " +
+                                activitylists[index]["ownername"]),
+                            trailing: Icon(Icons.local_activity),
                           ),
-                          title: Text("Başlık: " +
-                              activitylists[index]["title"] +
-                              "\nTarih: " +
-                              activitylists[index]["date"] +
-                              "\nKişi sayısı: " +
-                              activitylists[index]["maxPeople"] +
-                              "\nAktivite Sahibi: " +
-                              activitylists[index]["ownername"]),
-                          trailing: Icon(Icons.local_activity),
-                        ),
-                      ],
-                    ),
-                  );
-                }),
-          ),
-        ],
+                        ],
+                      ),
+                    );
+                  }),
+            ),
+          ],
+        ),
       ),
       //     body: Column(
       //        crossAxisAlignment: CrossAxisAlignment.center,

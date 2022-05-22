@@ -20,43 +20,34 @@ class _MainPageState extends State<MainPage> {
   final location_controller = TextEditingController();
   final databaseRef = FirebaseDatabase.instance.reference();
   final authstate = FirebaseAuth.instance.currentUser;
-  String? userDisplayName=FirebaseAuth.instance.currentUser?.email.toString();
-  String delimiter='/@';
-       
-
+  String? userDisplayName = FirebaseAuth.instance.currentUser?.email.toString();
+  String delimiter = '/@';
 
   final activityIdRandom = DateTime.now().toString();
   final Future<FirebaseApp> _future = Firebase.initializeApp();
 
-  Future addData(String ownerid, String ownername,String activityid, String title, String date,
-      String maxpeople, String location)
-       async { 
-       
+  Future addData(String ownerid, String ownername, String activityid,
+      String title, String date, String maxpeople, String location) async {
     ActivityModel activityModel = ActivityModel(
         ownerid: ownerid,
-        ownername: ownername ,
+        ownername: ownername,
         activityid: activityid,
         title: title,
         date: date,
         maxPeople: maxpeople,
         location: location);
     try {
-      databaseRef
-          .child('activities')
-          .push()
-          .set(activityModel.toMap())
-          .then((ownerid) =>
-              {Fluttertoast.showToast(msg: 'Aktivite oluşturuldu.')});
+      databaseRef.child('activities').push().set(activityModel.toMap()).then(
+          (ownerid) => {Fluttertoast.showToast(msg: 'Aktivite oluşturuldu.')});
     } catch (e) {
       Fluttertoast.showToast(msg: 'Hata! Aktivite oluşturulamadı.');
     }
-     
   }
 
   void printFirebase() {
     databaseRef.once().then((DataSnapshot snapshot) {
       print('Data : ${snapshot.value}');
-      print("USER ADI     "+authstate!.email.toString());
+      print("USER ADI     " + authstate!.email.toString());
     });
   }
 
@@ -151,15 +142,15 @@ class _MainPageState extends State<MainPage> {
       ),
     );
     final activityAddButton = (Material(
-      elevation: 30,
+      elevation: 10,
       borderRadius: BorderRadius.circular(50),
       color: Colors.deepPurpleAccent[400],
       child: MaterialButton(
-        padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+        padding: EdgeInsets.all(20.0),
         minWidth: MediaQuery.of(context).size.width,
-        height: 40.0,
+        height: 30.0,
         onPressed: () {
-           addData(
+          addData(
               authstate!.uid,
               userDisplayName!,
               activityIdRandom,
@@ -167,63 +158,79 @@ class _MainPageState extends State<MainPage> {
               date_controller.text,
               maxpeople_controller.text,
               location_controller.text);
-        
         },
         child: Text(
           "Aktivite Oluştur",
+          
           textAlign: TextAlign.center,
           style: TextStyle(
-              fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+              fontSize: 20,   color: const Color(0xFF527DAA), fontWeight: FontWeight.bold,letterSpacing: 2,fontFamily: 'OpenSans',)
         ),
       ),
     ));
     //printFirebase();
     return Scaffold(
-      backgroundColor: Colors.deepPurple[200],
+      //backgroundColor: Colors.deepPurple[200],
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: (Colors.deepPurple[600]),
+        elevation: 0.1,
+        backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
         automaticallyImplyLeading: false,
         title: Text('Aktivite ekleme ekranı'),
-        actions: <Widget>[
-          IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(Icons.home),
-          ),
-        ],
+        // actions: <Widget>[
+        //   IconButton(
+        //     onPressed: () {
+        //       Navigator.pop(context);
+        //     },
+        //     icon: Icon(Icons.home),
+        //   ),
+        // ],
       ),
-      body: FutureBuilder(
-          future: _future,
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Text(snapshot.error.toString());
-            } else {
-              return Container(
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(height: 50.0),
-                    Padding(
-                      padding: EdgeInsets.all(15.0),
-                      child: titlefield,
-                    ),
-                    Padding(padding: EdgeInsets.all(15.0), child: datefield),
-                    Padding(
-                      padding: EdgeInsets.all(15.0),
-                      child: maxpeoplefield,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(15.0),
-                      child: locationfield,
-                    ),
-                    Center(child: activityAddButton),
-                  ],
-                ),
-              );
-            }
-          }),
-          bottomNavigationBar: Bottom(),
+      body: Container(height: double.infinity,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color(0xFF73AEF5),
+                      Color(0xFF61A4F1),
+                      Color(0xFF478DE0),
+                      Color(0xFF398AE5),
+                    ],
+                    stops: [0.1, 0.4, 0.7, 0.9],
+                  ),),
+        child: FutureBuilder(
+            future: _future,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Text(snapshot.error.toString());
+              } else {
+                return Container(
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(height: 50.0),
+                      Padding(
+                        padding: EdgeInsets.all(15.0),
+                        child: titlefield,
+                      ),
+                      Padding(padding: EdgeInsets.all(15.0), child: datefield),
+                      Padding(
+                        padding: EdgeInsets.all(15.0),
+                        child: maxpeoplefield,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(15.0),
+                        child: locationfield,
+                      ),
+                      Center(child: activityAddButton),
+                    ],
+                  ),
+                );
+              }
+            }),
+      ),
+      bottomNavigationBar: Bottom(),
     );
   }
 }

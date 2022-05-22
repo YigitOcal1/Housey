@@ -223,7 +223,7 @@ sendFirestore() async {
           "Kayıt ol",
           textAlign: TextAlign.center,
            style: TextStyle(
-              fontSize: 22,   color: const Color(0xFF527DAA), fontWeight: FontWeight.bold,letterSpacing: 2,fontFamily: 'OpenSans'),
+              fontSize: 20,   color: const Color(0xFF527DAA), fontWeight: FontWeight.bold,letterSpacing: 2,fontFamily: 'OpenSans'),
         
         ),
       ),
@@ -231,7 +231,8 @@ sendFirestore() async {
     return Scaffold(
       appBar: AppBar(
         title: Text("HOUSEY"),
-        backgroundColor: Colors.deepPurple[600],
+         elevation: 0.1,
+          backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
       ),
       backgroundColor: Colors.deepPurple[200],
       body: Center(

@@ -136,8 +136,8 @@ class _ShowActivityState extends State<ShowActivity> {
     //printFirebase();
     return Scaffold(
       appBar: AppBar(
-        elevation: 5.0,
-        backgroundColor: (Colors.deepPurple),
+       elevation: 0.1,
+      backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
         title: Text(
           'Aktivite Arama',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
@@ -209,69 +209,84 @@ class _ShowActivityState extends State<ShowActivity> {
               icon: Icon(Icons.portrait_rounded))
         ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: lists.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Card(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        //Text("Tarih: " + lists[index]["date"]),
-                        //Text("Kişi sayısı: " + lists[index]["maxPeople"]),
-                        ListTile(
-                          contentPadding: EdgeInsets.symmetric(
-                              horizontal: 10.0, vertical: 10.0),
-                          leading: Container(
-                            padding: EdgeInsets.only(right: 12.0),
-                            decoration: new BoxDecoration(
-                                border: new Border(
-                                    right: new BorderSide(
-                                        width: 1.0, color: Colors.white24))),
-                            child: Icon(Icons.autorenew, color: Colors.white),
+      body: Container(height: double.infinity,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color(0xFF73AEF5),
+                      Color(0xFF61A4F1),
+                      Color(0xFF478DE0),
+                      Color(0xFF398AE5),
+                    ],
+                    stops: [0.1, 0.4, 0.7, 0.9],
+                  ),),
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: lists.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Card(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          //Text("Tarih: " + lists[index]["date"]),
+                          //Text("Kişi sayısı: " + lists[index]["maxPeople"]),
+                          ListTile(
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 10.0, vertical: 10.0),
+                            leading: Container(
+                              padding: EdgeInsets.only(right: 12.0),
+                              decoration: new BoxDecoration(
+                                  border: new Border(
+                                      right: new BorderSide(
+                                          width: 1.0, color: Colors.white24))),
+                              child: Icon(Icons.autorenew, color: Colors.white),
+                            ),
+                            title: Text("Başlık: " +
+                                lists[index]["title"] +
+                                "\nTarih: " +
+                                lists[index]["date"] +
+                                "\nKişi sayısı: " +
+                                lists[index]["maxPeople"] +
+                                "\nAktivite Sahibi: " +
+                                lists[index]["ownername"]),
+                            trailing: Icon(Icons.local_activity),
                           ),
-                          title: Text("Başlık: " +
-                              lists[index]["title"] +
-                              "\nTarih: " +
-                              lists[index]["date"] +
-                              "\nKişi sayısı: " +
-                              lists[index]["maxPeople"] +
-                              "\nAktivite Sahibi: " +
-                              lists[index]["ownername"]),
-                          trailing: Icon(Icons.local_activity),
-                        ),
-                      ],
-                    ),
-                  );
-                }),
-          ),
-          // ElevatedButton(
-          //   onPressed: () {
-          //     //deneme();
-          //     getActivity();
-          //   },
-          //   style: ElevatedButton.styleFrom(
-          //       primary: Colors.redAccent,
-          //       minimumSize: Size(85.0, 40.0),
-          //       shape: new RoundedRectangleBorder(
-          //           borderRadius: new BorderRadius.circular(50.0))),
-          //   child: Text('Aktivite listele'),
-          // ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).push(_createRouteCreateActivity());
-            },
-            style: ElevatedButton.styleFrom(
-                primary: Colors.orange[800],
-                minimumSize: Size(85.0, 40.0),
-                shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(50.0))),
-            child: Text('Yeni Aktivite Oluştur'),
-          ),
-        ],
+                        ],
+                      ),
+                    );
+                  }),
+            ),
+            // ElevatedButton(
+            //   onPressed: () {
+            //     //deneme();
+            //     getActivity();
+            //   },
+            //   style: ElevatedButton.styleFrom(
+            //       primary: Colors.redAccent,
+            //       minimumSize: Size(85.0, 40.0),
+            //       shape: new RoundedRectangleBorder(
+            //           borderRadius: new BorderRadius.circular(50.0))),
+            //   child: Text('Aktivite listele'),
+            // ),
+            // ElevatedButton(
+            //   onPressed: () {
+            //     Navigator.of(context).push(_createRouteCreateActivity());
+            //   },
+            //   style: ElevatedButton.styleFrom(
+            //       primary: Colors.orange[800],
+            //       minimumSize: Size(85.0, 40.0),
+            //       shape: new RoundedRectangleBorder(
+            //           borderRadius: new BorderRadius.circular(50.0))),
+            //   child: Text('Yeni Aktivite Oluştur'),
+            // ),
+          ],
+        ),
       ),
       bottomNavigationBar: Bottom(),
     );
