@@ -37,6 +37,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   List<Map<dynamic, dynamic>> activitylists = [];
   List<ActivityModel> activities = [];
   List<ActivityModel> activitiesowner = [];
+
   @override
   void initState() {
     super.initState();
@@ -306,10 +307,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             color: Colors.white24))),
                                 child: IconButton(
                                     onPressed: () {
-                                        deleteActivitywithword(
-                                                    activitiesowner[index]
-                                                        .title
-                                                        .toString());
+                                      deleteActivitywithword(
+                                          activitiesowner[index]
+                                              .title
+                                              .toString());
                                       // AlertDialog(
                                       //   title: Text(activitiesowner[index]
                                       //           .title
@@ -324,12 +325,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       //         child: Text('Hayır')),
                                       //     ElevatedButton(
                                       //         onPressed: () {
-                                              
+
                                       //         },
                                       //         child: Text('Evet'))
                                       //   ],
                                       // );
-                                      
                                     },
                                     icon:
                                         Icon(Icons.delete, color: Colors.red))),
