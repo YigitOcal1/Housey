@@ -132,33 +132,49 @@ Future<void> handleActListData() async{
   Widget build(BuildContext context) {
     return Scaffold(
         //backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
-        appBar: AppBar(
-          elevation: 0.1,
-          backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
-          //elevation: 5.0,
-          //backgroundColor: (Colors.deepPurple),
-          title: Text(
-            'Ana Sayfa',
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-          ),
-          centerTitle: true,
-          automaticallyImplyLeading: false,
-          actions: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(right: 10.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  logout(context);
-                },
-                style: ElevatedButton.styleFrom(
-                    primary: Color(0xFFEEBBC3),
-                    minimumSize: Size(35.0, 40.0),
-                    shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(30.0))),
-                child: Text('Çıkış yap'),
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(50.0),
+          child: SafeArea(
+            child: AppBar(
+              elevation: 1,
+              
+              title: Text(
+                'Ana Sayfa',
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
+              flexibleSpace: Container( 
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color(0xFF1E0B36),
+                      Color(0xFFCA3782),
+                      
+                    ],
+                    stops: [0.1, 0.9],
+                  ),
+                ),),
+              centerTitle: true,
+              automaticallyImplyLeading: false,
+              actions: <Widget>[
+                // Padding(
+                //   padding: EdgeInsets.only(right: 10.0),
+                //   child: ElevatedButton(
+                //     onPressed: () {
+                //       logout(context);
+                //     },
+                //     style: ElevatedButton.styleFrom(
+                //         primary: Color(0xFFEEBBC3),
+                //         minimumSize: Size(35.0, 40.0),
+                //         shape: new RoundedRectangleBorder(
+                //             borderRadius: new BorderRadius.circular(30.0))),
+                //     child: Text('Çıkış yap'),
+                //   ),
+                // ),
+              ],
             ),
-          ],
+          ),
         ),
         body: Container(
           height: double.infinity,
@@ -168,8 +184,14 @@ Future<void> handleActListData() async{
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      Color(0xFF1E0B36),
-                      Color(0xFFCA3782),
+                      // Color(0xFFF5F7FA),
+                      //Color(0xFFC3CFE2),
+                      Color(0xFF66A6FF),
+                      Color(0xFF89F7FE),
+                      
+                      
+                      
+                      
                       
                     ],
                     stops: [0.1, 0.9],
@@ -206,7 +228,8 @@ Future<void> handleActListData() async{
                               //     print("tıklama çalışıyor");
                               //   });
                               // },
-                              tileColor:Color(0xFFEEBBC3),
+                              tileColor:Colors.white,
+                              
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 10.0, vertical: 10.0),
                               leading: Container(
