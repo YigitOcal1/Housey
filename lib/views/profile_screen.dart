@@ -16,6 +16,7 @@ import 'register_screen.dart';
 import 'package:housey/widgets/BottomNavBar.dart';
 import 'home_screen.dart';
 import 'main_page.dart';
+import 'editactivity_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -34,11 +35,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
   ActivityModel activity = ActivityModel();
   List<Map<dynamic, dynamic>> lists = [];
   List<Map<dynamic, dynamic>> activitylists = [];
+  List<ActivityModel> activities = [];
+  List<ActivityModel> activitiesowner = [];
   @override
   void initState() {
     super.initState();
-    getUser();
-    getActivitywithword(authEmail.toString());
+    //getUser();
+    //getActivitywithword(authEmail.toString());
+    //handleActListData();
+    handleActListData();
   }
 
   Route _createRouteCreateHomePage() {
@@ -62,11 +67,100 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  Route _createRouteEditActivityPage() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => EditActivity(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.0, 1.0);
+        const end = Offset.zero;
+        const curve = Curves.ease;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
+  }
+
+  Route _createRouteProfilScreen() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => ProfileScreen(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.0, 1.0);
+        const end = Offset.zero;
+        const curve = Curves.ease;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
+  }
+
   Future<void> logout(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
     Navigator.of(context).push(_createRouteCreateHomePage());
   }
+// Future updateActivity(ActivityModel activityModel) async {
+//     String authid = authstate!.uid;
 
+//     return await databaseRef
+
+//         //child olarak yazınca da oluyor activite id sini nasıl çekcem
+//         .child('activities').update(activityModel.toMap())
+//         .once()
+//         .then((DataSnapshot dataSnapshot) {
+//       print('savpaerlövşwövlşavöclşdscvöwdlşavcöw + ${dataSnapshot.value}');
+//       Map<dynamic, dynamic> values = dataSnapshot.value;
+
+//       values.forEach((key, values) {
+//         if (values['email'] == authEmail) {
+//           lists.add(values);
+//         }
+
+//         setState(() {
+
+//         });
+//       });
+//     });
+//   }
+  Future<List<ActivityModel>> retrieveActivities() async {
+    final List<ActivityModel> result = [];
+    final Query query = databaseRef.child('activities').limitToLast(50);
+    query.onChildAdded.forEach((event) {
+      result.add(ActivityModel.fromMap(event.snapshot.value));
+    });
+
+    return await query.once().then((ignored) => result);
+  }
+
+  Future<void> handleActListData() async {
+    activities = await retrieveActivities();
+    //print(activities[5].toString());
+    for (int i = 0; i < activities.length; i++) {
+      if (activities[i].ownername == authEmail) {
+        activitiesowner.add(activities[i]);
+      }
+    }
+
+    setState(() {});
+  }
+
+  Future deleteActivity(String a) async {
+    // print("activities"+a);
+    // return await databaseRef
+
+    //     //child olarak yazınca da oluyor activite id sini nasıl çekcem
+    //     .child('activities').once().remove();
+  }
   Future getUser() async {
     String authid = authstate!.uid;
 
@@ -92,24 +186,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future getActivitywithword(String word) async {
-    //word=authstate!.email.toString();
-
     return await databaseRef
-
-        //child olarak yazınca da oluyor activite id sini nasıl çekcem
         .child('activities')
+        .orderByChild('title')
+        .equalTo(word)
         .once()
         .then((DataSnapshot dataSnapshot) {
-      print('savpaerlövşwövlşavöclşdscvöwdlşavcöw + ${dataSnapshot.value}');
-      print("vxcvxzbrbfgwagwaefwea  " + authEmail.toString());
-      setState(() {
-        Map<dynamic, dynamic> values = dataSnapshot.value;
-
-        values.forEach((key, values) {
-          if (values['ownername'].contains(word)) {
-            activitylists.add(values);
-          }
+      Map<dynamic, dynamic> values = dataSnapshot.value;
+      values.forEach((key, value) {
+        databaseRef.child('activities').child(key).remove();
+        setState(() {
+          Navigator.of(context).push(_createRouteProfilScreen());
         });
+
         //activity = ActivityModel.fromSnapshot(dataSnapshot.value);
       });
     });
@@ -146,19 +235,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       body: Container(
         height: double.infinity,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color(0xFF73AEF5),
-                      Color(0xFF61A4F1),
-                      Color(0xFF478DE0),
-                      Color(0xFF398AE5),
-                    ],
-                    stops: [0.1, 0.4, 0.7, 0.9],
-                  ),),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF73AEF5),
+              Color(0xFF61A4F1),
+              Color(0xFF478DE0),
+              Color(0xFF398AE5),
+            ],
+            stops: [0.1, 0.4, 0.7, 0.9],
+          ),
+        ),
         child: Column(
           children: [
             IconButton(
@@ -191,7 +281,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Expanded(
               child: ListView.builder(
                   shrinkWrap: true,
-                  itemCount: activitylists.length,
+                  itemCount: activitiesowner.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Card(
                       child: Column(
@@ -200,25 +290,60 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           //Text("Tarih: " + lists[index]["date"]),
                           //Text("Kişi sayısı: " + lists[index]["maxPeople"]),
                           ListTile(
+                            onTap: () {
+                              Navigator.of(context)
+                                  .push(_createRouteEditActivityPage());
+                            },
+                            tileColor: Color.fromARGB(255, 123, 122, 122),
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 10.0, vertical: 10.0),
                             leading: Container(
-                              padding: EdgeInsets.only(right: 12.0),
-                              decoration: new BoxDecoration(
-                                  border: new Border(
-                                      right: new BorderSide(
-                                          width: 1.0, color: Colors.white24))),
-                              child: Icon(Icons.autorenew, color: Colors.white),
-                            ),
+                                padding: EdgeInsets.only(right: 12.0),
+                                decoration: new BoxDecoration(
+                                    border: new Border(
+                                        right: new BorderSide(
+                                            width: 1.0,
+                                            color: Colors.white24))),
+                                child: IconButton(
+                                    onPressed: () {
+                                        getActivitywithword(
+                                                    activitiesowner[index]
+                                                        .title
+                                                        .toString());
+                                      // AlertDialog(
+                                      //   title: Text(activitiesowner[index]
+                                      //           .title
+                                      //           .toString() +
+                                      //       " adlı aktiviteyi silmek istiyor musunuz."),
+                                      //   content: Text('Emin misiniz?'),
+                                      //   actions: [
+                                      //     ElevatedButton(
+                                      //         onPressed: () {
+                                      //           Navigator.pop(context);
+                                      //         },
+                                      //         child: Text('Hayır')),
+                                      //     ElevatedButton(
+                                      //         onPressed: () {
+                                              
+                                      //         },
+                                      //         child: Text('Evet'))
+                                      //   ],
+                                      // );
+                                      
+                                    },
+                                    icon:
+                                        Icon(Icons.delete, color: Colors.red))),
                             title: Text("Başlık: " +
-                                activitylists[index]["title"] +
+                                activitiesowner[index].title.toString() +
                                 "\nTarih: " +
-                                activitylists[index]["date"] +
+                                activitiesowner[index].date.toString() +
                                 "\nKişi sayısı: " +
-                                activitylists[index]["maxPeople"] +
+                                activitiesowner[index].maxPeople.toString() +
                                 "\nAktivite Sahibi: " +
-                                activitylists[index]["ownername"]),
-                            trailing: Icon(Icons.local_activity),
+                                activitiesowner[index].ownername.toString()),
+                            trailing: IconButton(
+                                onPressed: () {},
+                                icon: Icon(Icons.edit, color: Colors.white)),
                           ),
                         ],
                       ),

@@ -57,7 +57,7 @@ class _MainPageState extends State<MainPage> {
       controller: title_controller,
       keyboardType: TextInputType.text,
       validator: (value) {
-        if (value!.isEmpty) {
+        if (value == null || value.isEmpty) {
           return ("Bu alanı boş bırakmazsınız");
         }
         return null;

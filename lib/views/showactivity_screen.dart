@@ -25,9 +25,7 @@ class _ShowActivityState extends State<ShowActivity> {
   List<Map<dynamic, dynamic>> lists = [];
 
   final Future<FirebaseApp> _future = Firebase.initializeApp();
-  String displayTitle = 'burada görünecek';
-  String displayDate = 'burada görünecek';
-  String displayMaxpeople = 'burada görünecek';
+ 
   String displayUsername = '';
   String displayError = '';
   List<String> titleList = [];

@@ -26,6 +26,7 @@ class _AnasayfaScreenState extends State<AnasayfaScreen> {
   final authstate = FirebaseAuth.instance.currentUser;
   ActivityModel activity = ActivityModel();
   List<Map<dynamic, dynamic>> lists = [];
+  List<ActivityModel> activities=[];
 
   final Future<FirebaseApp> _future = Firebase.initializeApp();
   String displayTitle = 'burada görünecek';
@@ -41,7 +42,8 @@ class _AnasayfaScreenState extends State<AnasayfaScreen> {
   @override
   void initState() {
     super.initState();
-    getActivity();
+    //getActivity();
+    handleActListData();
   }
 
   Route _createRouteCreateActivity() {
@@ -88,7 +90,24 @@ class _AnasayfaScreenState extends State<AnasayfaScreen> {
     await FirebaseAuth.instance.signOut();
     Navigator.of(context).push(_createRouteCreateHomePage());
   }
-
+Future <List<ActivityModel>> retrieveActivities()async{
+  final List<ActivityModel> result=[];
+  final Query query=databaseRef.child('activities').limitToLast(4);
+  query.onChildAdded.forEach((event) {
+    result.add(ActivityModel.fromMap(event.snapshot.value));
+   });
+   
+  return await query.once().then((ignored) => result);
+   
+}
+Future<void> handleActListData() async{
+   
+   activities=await retrieveActivities();
+   setState(() {
+          
+        });
+  //print(activities[4].ownername.toString());
+}
   Future getActivity() async {
     await databaseRef
         .child('activities')
@@ -176,7 +195,7 @@ class _AnasayfaScreenState extends State<AnasayfaScreen> {
               Expanded(
                 child: ListView.builder(
                     shrinkWrap: true,
-                    itemCount: lists.length,
+                    itemCount: activities.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Card(
                         child: Column(
@@ -188,7 +207,7 @@ class _AnasayfaScreenState extends State<AnasayfaScreen> {
                               //     print("tıklama çalışıyor");
                               //   });
                               // },
-                              tileColor:Color.fromRGBO(58, 66, 86, 1.0) ,
+                              tileColor:Color.fromARGB(255, 123, 122, 122),
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 10.0, vertical: 10.0),
                               leading: Container(
@@ -200,13 +219,13 @@ class _AnasayfaScreenState extends State<AnasayfaScreen> {
                                 child: Icon(Icons.party_mode, color: Colors.white),
                               ),
                               title: Text("Başlık: " +
-                                  lists[index]["title"] +
+                                  activities[index].title.toString()+
                                   "\nTarih: " +
-                                  lists[index]["date"] +
+                                  activities[index].date.toString() +
                                   "\nKişi sayısı: " +
-                                  lists[index]["maxPeople"] +
+                                  activities[index].maxPeople.toString() +
                                   "\nAktivite Sahibi: " +
-                                  lists[index]["ownername"]),
+                                  activities[index].ownername.toString()),
                               trailing: Icon(Icons.local_activity),
                             ),
                             //Text("Başlık: " + lists[index]["title"]),
