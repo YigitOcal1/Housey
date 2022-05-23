@@ -25,12 +25,16 @@ class _ShowActivityState extends State<ShowActivity> {
   List<Map<dynamic, dynamic>> lists = [];
 
   final Future<FirebaseApp> _future = Firebase.initializeApp();
- 
+  String displayTitle = 'burada görünecek';
+  String displayDate = 'burada görünecek';
+  String displayMaxpeople = 'burada görünecek';
   String displayUsername = '';
   String displayError = '';
   List<String> titleList = [];
   List<String> dateList = [];
   List<String> maxpeopleList = [];
+List<ActivityModel> activities = [];
+  List<ActivityModel> activitiessearch = [];
 
   Route _createRouteCreateActivity() {
     return PageRouteBuilder(
@@ -50,7 +54,28 @@ class _ShowActivityState extends State<ShowActivity> {
       },
     );
   }
+Future<List<ActivityModel>> retrieveActivities() async {
+    final List<ActivityModel> result = [];
+    final Query query = databaseRef.child('activities').limitToLast(50);
+    query.onChildAdded.forEach((event) {
+      result.add(ActivityModel.fromMap(event.snapshot.value));
+    });
 
+    return await query.once().then((ignored) => result);
+  }
+
+  Future<void> handleActListData(String a) async {
+    activities = await retrieveActivities();
+    //print(activities[5].toString());
+    activitiessearch.clear();
+    for (int i = 0; i < activities.length; i++) {
+      if (activities[i].title.toString().contains(a)) {
+        activitiessearch.add(activities[i]);
+      }
+    }
+
+    setState(() {});
+  }
 
   Future getActivity() async {
     String authid = authstate!.uid;
@@ -167,7 +192,7 @@ class _ShowActivityState extends State<ShowActivity> {
                             hintText:
                                 'Aktivite aramak için bir sözcük giriniz.'),
                         onSubmitted: (value) {
-                          getActivitywithword(value);
+                          handleActListData(value);
                         },
                       ),
                     ),
@@ -226,7 +251,7 @@ class _ShowActivityState extends State<ShowActivity> {
             Expanded(
               child: ListView.builder(
                   shrinkWrap: true,
-                  itemCount: lists.length,
+                  itemCount: activitiessearch.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Card(
                       child: Column(
@@ -246,13 +271,13 @@ class _ShowActivityState extends State<ShowActivity> {
                               child: Icon(Icons.autorenew, color: Colors.white),
                             ),
                             title: Text("Başlık: " +
-                                lists[index]["title"] +
+                                activitiessearch[index].title.toString() +
                                 "\nTarih: " +
-                                lists[index]["date"] +
+                                activitiessearch[index].date.toString()  +
                                 "\nKişi sayısı: " +
-                                lists[index]["maxPeople"] +
+                                activitiessearch[index].maxPeople.toString()  +
                                 "\nAktivite Sahibi: " +
-                                lists[index]["ownername"]),
+                                activitiessearch[index].ownername.toString() ),
                             trailing: Icon(Icons.local_activity),
                           ),
                         ],

@@ -185,7 +185,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
-  Future getActivitywithword(String word) async {
+  Future deleteActivitywithword(String word) async {
     return await databaseRef
         .child('activities')
         .orderByChild('title')
@@ -306,7 +306,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             color: Colors.white24))),
                                 child: IconButton(
                                     onPressed: () {
-                                        getActivitywithword(
+                                        deleteActivitywithword(
                                                     activitiesowner[index]
                                                         .title
                                                         .toString());
