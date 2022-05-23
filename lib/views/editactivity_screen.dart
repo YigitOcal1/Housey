@@ -33,6 +33,10 @@ class _EditActivityState extends State<EditActivity> {
   final databaseRef = FirebaseDatabase.instance.reference();
   final authstate = FirebaseAuth.instance.currentUser;
   ActivityModel activity = ActivityModel();
+  String? userDisplayName = FirebaseAuth.instance.currentUser?.email.toString();
+  String delimiter = '/@';
+
+  final activityIdRandom = DateTime.now().toString();
   List<Map<dynamic, dynamic>> lists = [];
   late ActivityModel activityData;
   _initializeControllers() {
@@ -51,6 +55,24 @@ class _EditActivityState extends State<EditActivity> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _initializeControllers();
+  }
+
+  Future updateActivity(String ownerid, String ownername, String activityid,
+      String title, String date, String maxpeople, String location) async {
+    ActivityModel activityModel = ActivityModel(
+        ownerid: ownerid,
+        ownername: ownername,
+        activityid: activityid,
+        title: title,
+        date: date,
+        maxPeople: maxpeople,
+        location: location);
+    try {
+      databaseRef.child('activities').update(activityModel.toMap()).then(
+          (ownerid) => {Fluttertoast.showToast(msg: 'Aktivite düzenlendi.')});
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'Hata! Aktivite oluşturulamadı.');
+    }
   }
 
   @override
@@ -143,6 +165,35 @@ class _EditActivityState extends State<EditActivity> {
         ),
       ),
     );
+    final activityAddButton = (Material(
+      elevation: 10,
+      borderRadius: BorderRadius.circular(50),
+      color: Colors.deepPurpleAccent[400],
+      child: MaterialButton(
+        padding: EdgeInsets.all(20.0),
+        minWidth: MediaQuery.of(context).size.width,
+        height: 30.0,
+        onPressed: () {
+          updateActivity(
+              authstate!.uid,
+              userDisplayName!,
+              activityIdRandom,
+              titlecontroller.text,
+              datecontroller.text,
+              maxpeople.text,
+              locationcontroller.text);
+        },
+        child: Text("Aktivite Düzenle",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20,
+              color: const Color(0xFF527DAA),
+              fontWeight: FontWeight.bold,
+              letterSpacing: 2,
+              fontFamily: 'OpenSans',
+            )),
+      ),
+    ));
     return Scaffold(
       //backgroundColor: Colors.deepPurple[200],
       resizeToAvoidBottomInset: false,
@@ -150,7 +201,7 @@ class _EditActivityState extends State<EditActivity> {
         elevation: 0.1,
         backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
         automaticallyImplyLeading: false,
-        title: Text('Aktivite düzenlme ekranı'),
+        title: Text('Aktivite düzenleme ekranı'),
         // actions: <Widget>[
         //   IconButton(
         //     onPressed: () {
@@ -199,6 +250,7 @@ class _EditActivityState extends State<EditActivity> {
                         padding: EdgeInsets.all(15.0),
                         child: locationfield,
                       ),
+                      Center(child: activityAddButton),
                     ],
                   ),
                 );
