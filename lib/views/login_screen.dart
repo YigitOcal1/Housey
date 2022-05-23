@@ -63,9 +63,9 @@ class _LoginScreenState extends State<LoginScreen> {
       controller: email_controller,
       keyboardType: TextInputType.emailAddress,
       style: TextStyle(
-              color: Colors.black,
-              fontFamily: 'OpenSans',
-            ),
+        color: Colors.white,
+        fontFamily: 'OpenSans',
+      ),
       validator: (value) {
         if (value!.isEmpty) {
           return ("Geçerli bir email adresi giriniz.");
@@ -77,11 +77,10 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-        
-        prefixIcon: Icon(Icons.email,
-        color: Colors.white),
+        prefixIcon: Icon(Icons.email, color: Colors.white),
         contentPadding: EdgeInsets.fromLTRB(20, 20, 20, 20),
         hintText: "Email",
+        hintStyle: TextStyle(color: Colors.white70),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -92,9 +91,9 @@ class _LoginScreenState extends State<LoginScreen> {
       controller: password_controller,
       obscureText: true,
       style: TextStyle(
-              color: Colors.black,
-              fontFamily: 'OpenSans',
-            ),
+        color: Colors.white,
+        fontFamily: 'OpenSans',
+      ),
       validator: (value) {
         if (value!.isEmpty) {
           return ("Şifre giriniz.");
@@ -106,67 +105,97 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       textInputAction: TextInputAction.done,
       decoration: InputDecoration(
-        prefixIcon: Icon(Icons.password,color: Colors.white),
+        prefixIcon: Icon(Icons.password, color: Colors.white),
         contentPadding: EdgeInsets.fromLTRB(20, 20, 20, 20),
         hintText: "Şifre",
+        hintStyle: TextStyle(color: Colors.white70),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),
       ),
     );
 
-    final loginButton = (Material(
-      elevation: 10,
-      borderRadius: BorderRadius.circular(50),
-      color: Colors.deepPurpleAccent[400],
+    // final loginButton = (Material(
+    //   elevation: 10,
+    //   borderRadius: BorderRadius.circular(50),
+    //   color: Colors.deepPurpleAccent[400],
+    //   child: MaterialButton(
+    //     padding: EdgeInsets.all(20.0),
+    //     minWidth: MediaQuery.of(context).size.width,
+    //     onPressed: () {
+    //       logIn(email_controller.text, password_controller.text);
+    //     },
+    //     child: Text(
+    //       "Giriş Yap",
+    //       textAlign: TextAlign.center,
+    //       style: TextStyle(
+    //         fontSize: 20,
+    //         color: const Color(0xFF527DAA),
+    //         fontWeight: FontWeight.bold,
+    //         letterSpacing: 2,
+    //         fontFamily: 'OpenSans',
+    //       ),
+    //     ),
+    //   ),
+    // ));
+final loginButton = (Material(
+      elevation: 5,
+      borderRadius: BorderRadius.circular(25.0),
+      color: Color(0xFF232946),
       child: MaterialButton(
         padding: EdgeInsets.all(20.0),
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
-          logIn(email_controller.text, password_controller.text);
+         logIn(email_controller.text, password_controller.text);
         },
         child: Text(
           "Giriş Yap",
           textAlign: TextAlign.center,
           style: TextStyle(
-              fontSize: 20,   color: const Color(0xFF527DAA), fontWeight: FontWeight.bold,letterSpacing: 2,fontFamily: 'OpenSans',),
+            fontSize: 20,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 2,
+            fontFamily: 'OpenSans',
+          ),
         ),
       ),
     ));
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("HOUSEY"),
-         elevation: 0.1,
-          backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
-      ),
-      backgroundColor: Colors.deepPurple[200],
+      // appBar: AppBar(
+      //  title: Image.asset('assets/My_project_1.png'),
+      //   elevation: 0.1,
+      //   backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
+      // ),
+      
       body: Center(
+        
         child: Container(
-           height: double.infinity,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color(0xFF73AEF5),
-                      Color(0xFF61A4F1),
-                      Color(0xFF478DE0),
-                      Color(0xFF398AE5),
-                    ],
-                    stops: [0.1, 0.4, 0.7, 0.9],
-                  ),
-                ),
-          //color: Colors.deepPurple[200],
+          
+          height: double.infinity,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(0xFFCA3782),
+                Color(0xFF1E0B36),
+              ],
+              stops: [0.1, 0.9],
+            ),
+          ),
           child: Padding(
             padding: EdgeInsets.all(8.0),
             child: Form(
               key: _formKey,
               child: Column(
+                
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Image.asset('assets/My_project_1.png'),
                   SizedBox(
                     height: 100,
                   ),
@@ -185,7 +214,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      
                       GestureDetector(
                         onTap: () {
                           Navigator.push(
@@ -197,7 +225,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: "Hesabınız yoksa kaydolmak için tıklayabilirsiniz. ",
+                                text:
+                                    "Hesabınız yoksa kaydolmak için tıklayabilirsiniz. ",
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 15.0,

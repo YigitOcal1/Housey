@@ -84,9 +84,9 @@ class _BottomState extends State<Bottom> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        backgroundColor: Color(0xFF232946),
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.blueAccent[100],
@@ -108,12 +108,14 @@ class _BottomState extends State<Bottom> {
               icon: const Icon(
                 Icons.portrait_rounded,
               ),
-              label: "Profil"),
+              label: "Profil",
+              ),
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.create_rounded,
               ),
-              label: "Aktivite Oluştur"),
+              label: "Aktivite Oluştur",
+              ),
         ],
         onTap: (int index) {
           setState(() {

@@ -151,7 +151,7 @@ Future<void> handleActListData() async{
                   logout(context);
                 },
                 style: ElevatedButton.styleFrom(
-                    primary: Colors.purple[400],
+                    primary: Color(0xFFEEBBC3),
                     minimumSize: Size(35.0, 40.0),
                     shape: new RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(30.0))),
@@ -168,12 +168,11 @@ Future<void> handleActListData() async{
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      Color(0xFF73AEF5),
-                      Color(0xFF61A4F1),
-                      Color(0xFF478DE0),
-                      Color(0xFF398AE5),
+                      Color(0xFF1E0B36),
+                      Color(0xFFCA3782),
+                      
                     ],
-                    stops: [0.1, 0.4, 0.7, 0.9],
+                    stops: [0.1, 0.9],
                   ),),
           child: Column(
             
@@ -207,7 +206,7 @@ Future<void> handleActListData() async{
                               //     print("tıklama çalışıyor");
                               //   });
                               // },
-                              tileColor:Color.fromARGB(255, 123, 122, 122),
+                              tileColor:Color(0xFFEEBBC3),
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 10.0, vertical: 10.0),
                               leading: Container(

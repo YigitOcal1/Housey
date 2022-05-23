@@ -33,32 +33,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
       try {
         await _auth
             .createUserWithEmailAndPassword(email: email, password: password)
-            .then((value) => {sendFirestore()}
-            )
-            
+            .then((value) => {sendFirestore()})
             .catchError((e) {
-          Fluttertoast.showToast(msg:  'Hata! Hesap oluşturulamadı.');
+          Fluttertoast.showToast(msg: 'Hata! Hesap oluşturulamadı.');
         });
       } on FirebaseAuthException catch (error) {
         errormsg = "Kayıt başarısız";
       }
-      
     }
   }
-sendFirestore() async {
+
+  sendFirestore() async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     User? user = _auth.currentUser;
     UserModel usermodel = UserModel();
     usermodel.email = user!.email;
-    usermodel.uid=user.uid;
-    usermodel.username=user.email!.replaceAll("@gmail.com", "");
-    
+    usermodel.uid = user.uid;
+    usermodel.username = user.email!.replaceAll("@gmail.com", "");
 
     await firestore.collection("users").doc(user.uid).set(usermodel.toMap());
-    
+
     Fluttertoast.showToast(msg: "Hesap oluşturuldu");
     Navigator.of(context).push(_createRouteMain());
   }
+
   Route _createRouteMain() {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => AnasayfaScreen(),
@@ -79,33 +77,27 @@ sendFirestore() async {
   }
 
   Future addUser(
-   
     String username,
     String email,
     String password,
   ) async {
-    if(email!=""){
-    final UserModel usermodel = UserModel(
-        
-        email: email,
-        password: password,
-        username: username);
-    try {
-      databaseRef
-          .child('users')
-          .push()
-          .set(usermodel.toMap())
-          .then((uid) => {Fluttertoast.showToast(msg: 'Hesap oluşturuldu.')});
-      Navigator.of(context).push(_createRouteMain());
-    } catch (e) {
-      Fluttertoast.showToast(msg: 'Hata! Hesap oluşturulamadı.');}
-    }
-    else{
-       Fluttertoast.showToast(msg: 'Hata! Hesap oluşturulamadı.');
+    if (email != "") {
+      final UserModel usermodel =
+          UserModel(email: email, password: password, username: username);
+      try {
+        databaseRef
+            .child('users')
+            .push()
+            .set(usermodel.toMap())
+            .then((uid) => {Fluttertoast.showToast(msg: 'Hesap oluşturuldu.')});
+        Navigator.of(context).push(_createRouteMain());
+      } catch (e) {
+        Fluttertoast.showToast(msg: 'Hata! Hesap oluşturulamadı.');
+      }
+    } else {
+      Fluttertoast.showToast(msg: 'Hata! Hesap oluşturulamadı.');
     }
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -130,31 +122,30 @@ sendFirestore() async {
       autofocus: false,
       controller: emailcontroller,
       validator: (value) {
-          if (value!.isEmpty) {
-            return ("Lütfen email adresinizi giriniz");
-          }
-          // reg expression for email validation
-          if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
-              .hasMatch(value)) {
-            return ("Lütfen geçerli bir email adresi giriniz");
-          }
-          return null;
-        },
+        if (value!.isEmpty) {
+          return ("Lütfen email adresinizi giriniz");
+        }
+        // reg expression for email validation
+        if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value)) {
+          return ("Lütfen geçerli bir email adresi giriniz");
+        }
+        return null;
+      },
       onSaved: (value) {
         emailcontroller.text = value!;
-      }, style: TextStyle(
-              color: Colors.black,
-              fontFamily: 'OpenSans',
-            ),
+      },
+      style: TextStyle(
+        color: Colors.white,
+        fontFamily: 'OpenSans',
+      ),
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-        //fillColor: Colors.amber,
-        filled: true,
-            
-          prefixIcon: Icon(Icons.email,color: Colors.white),
+          //fillColor: Colors.amber,
+          filled: true,
+          prefixIcon: Icon(Icons.email, color: Colors.white),
           contentPadding: EdgeInsets.fromLTRB(20, 20, 20, 20),
           hintText: "Email",
-          
+          hintStyle: TextStyle(color: Colors.white70),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           )),
@@ -164,22 +155,27 @@ sendFirestore() async {
       autofocus: false,
       controller: passwordcontroller,
       validator: (value) {
-          RegExp regex = new RegExp(r'^.{6,}$');
-          if (value!.isEmpty) {
-            return ("Kayıtt olabilmek için şifre giriniz");
-          }
-          if (!regex.hasMatch(value)) {
-            return ("Geçerli bir şifre giriniz.(Min. 6 Karakter)");
-          }
-        },
+        RegExp regex = new RegExp(r'^.{6,}$');
+        if (value!.isEmpty) {
+          return ("Kayıtt olabilmek için şifre giriniz");
+        }
+        if (!regex.hasMatch(value)) {
+          return ("Geçerli bir şifre giriniz.(Min. 6 Karakter)");
+        }
+      },
       onSaved: (value) {
         passwordcontroller.text = value!;
       },
+       style: TextStyle(
+        color: Colors.white,
+        fontFamily: 'OpenSans',
+      ),
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-          prefixIcon: Icon(Icons.password_outlined,color: Colors.white),
+          prefixIcon: Icon(Icons.password_outlined, color: Colors.white),
           contentPadding: EdgeInsets.fromLTRB(20, 20, 20, 20),
           hintText: "Şifre",
+          hintStyle: TextStyle(color: Colors.white70),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           )),
@@ -189,69 +185,96 @@ sendFirestore() async {
       controller: confirmpasswordcontroller,
       obscureText: true,
       validator: (value) {
-          if (confirmpasswordcontroller.text !=
-              passwordcontroller.text) {
-            return "Şifreler eşleşmiyor";
-          }
-          return null;
-        },
+        if (confirmpasswordcontroller.text != passwordcontroller.text) {
+          return "Şifreler eşleşmiyor";
+        }
+        return null;
+      },
       onSaved: (value) {
         confirmpasswordcontroller.text = value!;
       },
+       style: TextStyle(
+        color: Colors.white,
+        fontFamily: 'OpenSans',
+      ),
       textInputAction: TextInputAction.done,
       decoration: InputDecoration(
-          prefixIcon: Icon(Icons.password_outlined,color: Colors.white),
+          prefixIcon: Icon(Icons.password_outlined, color: Colors.white),
           contentPadding: EdgeInsets.fromLTRB(20, 20, 20, 20),
           hintText: "Şifrenizi onaylayınız",
+          hintStyle: TextStyle(color: Colors.white70),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           )),
     );
+    // final registerButton = (Material(
+    //   elevation: 10,
+    //   borderRadius: BorderRadius.circular(50),
+    //   color: Colors.deepPurpleAccent[400],
+    //   child: MaterialButton(
+    //     padding: EdgeInsets.all(20),
+    //     minWidth: MediaQuery.of(context).size.width,
+    //     onPressed: () {
+    //       register(emailcontroller.text, passwordcontroller.text);
+    //       //addUser( emailcontroller.text.replaceAll("@gmail.com", ""), emailcontroller.text,
+    //       //passwordcontroller.text);
+    //     },
+    //     child: Text(
+    //       "Kayıt ol",
+    //       textAlign: TextAlign.center,
+    //       style: TextStyle(
+    //           fontSize: 20,
+    //           color: const Color(0xFF527DAA),
+    //           fontWeight: FontWeight.bold,
+    //           letterSpacing: 2,
+    //           fontFamily: 'OpenSans'),
+    //     ),
+    //   ),
+    // ));
     final registerButton = (Material(
-      elevation: 10,
-      borderRadius: BorderRadius.circular(50),
-      color: Colors.deepPurpleAccent[400],
+      elevation: 5,
+      borderRadius: BorderRadius.circular(25.0),
+      color: Color(0xFF232946),
       child: MaterialButton(
         padding: EdgeInsets.all(20),
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
-          register(emailcontroller.text, passwordcontroller.text);
-          //addUser( emailcontroller.text.replaceAll("@gmail.com", ""), emailcontroller.text,
-              //passwordcontroller.text);
+           register(emailcontroller.text, passwordcontroller.text);
         },
         child: Text(
           "Kayıt ol",
           textAlign: TextAlign.center,
-           style: TextStyle(
-              fontSize: 20,   color: const Color(0xFF527DAA), fontWeight: FontWeight.bold,letterSpacing: 2,fontFamily: 'OpenSans'),
-        
+          style: TextStyle(
+              fontSize: 20,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 2,
+              fontFamily: 'OpenSans'),
         ),
       ),
     ));
     return Scaffold(
-      appBar: AppBar(
-        title: Text("HOUSEY"),
-         elevation: 0.1,
-          backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
-      ),
-      backgroundColor: Colors.deepPurple[200],
+      // appBar: AppBar(
+      //   title: Image.asset('assets/My_project_1.png'),
+      //   elevation: 0.1,
+      //   backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
+      // ),
+     
       body: Center(
         child: Container(
-           height: double.infinity,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color(0xFF73AEF5),
-                      Color(0xFF61A4F1),
-                      Color(0xFF478DE0),
-                      Color(0xFF398AE5),
-                    ],
-                    stops: [0.1, 0.4, 0.7, 0.9],
-                  ),
-                ),
+          height: double.infinity,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(0xFFCA3782),
+                Color(0xFF1E0B36),
+              ],
+              stops: [0.1, 0.9],
+            ),
+          ),
           //color: Colors.deepPurple[200],
           child: Padding(
             padding: EdgeInsets.all(8.0),
@@ -261,7 +284,8 @@ sendFirestore() async {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  
+                  Image.asset('assets/My_project_1.png'),
+                  SizedBox(height:55.0),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: emailfield,
@@ -281,7 +305,6 @@ sendFirestore() async {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      
                       GestureDetector(
                         onTap: () {
                           Navigator.push(
@@ -293,7 +316,8 @@ sendFirestore() async {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: "Hesabınız varsa giriş için tıklayabilirsiniz. ",
+                                text:
+                                    "Hesabınız varsa giriş için tıklayabilirsiniz. ",
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 15.0,
