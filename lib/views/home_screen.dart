@@ -78,6 +78,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    
     final loginButton = (Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(25.0),
@@ -126,8 +127,10 @@ class _HomePageState extends State<HomePage> {
     ));
     double screenHeight = MediaQuery.of(context).size.height;
     return WillPopScope(
+      
       onWillPop: () async => false,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         // drawer: Drawer(
         //   child: ListView(
         //     padding: EdgeInsets.zero,

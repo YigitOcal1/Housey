@@ -163,6 +163,7 @@ final loginButton = (Material(
     ));
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       // appBar: AppBar(
       //  title: Image.asset('assets/My_project_1.png'),
       //   elevation: 0.1,

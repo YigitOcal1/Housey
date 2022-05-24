@@ -28,6 +28,8 @@ class _MainPageState extends State<MainPage> {
 
   Future addData(String ownerid, String ownername, String activityid,
       String title, String date, String maxpeople, String location) async {
+        //List<String> a=["w","w"];
+        List<String> b=[""];
     ActivityModel activityModel = ActivityModel(
         ownerid: ownerid,
         ownername: ownername,
@@ -35,7 +37,9 @@ class _MainPageState extends State<MainPage> {
         title: title,
         date: date,
         maxPeople: maxpeople,
-        location: location);
+        location: location,
+        participantList: b);
+        
     try {
       databaseRef.child('activities').push().set(activityModel.toMap()).then(
           (ownerid) => {Fluttertoast.showToast(msg: 'Aktivite oluşturuldu.')});
@@ -44,18 +48,17 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
-  void printFirebase() {
-    databaseRef.once().then((DataSnapshot snapshot) {
-      print('Data : ${snapshot.value}');
-      print("USER ADI     " + authstate!.email.toString());
-    });
-  }
+  
 
   @override
   Widget build(BuildContext context) {
     final titlefield = TextFormField(
       controller: title_controller,
       keyboardType: TextInputType.text,
+      style: TextStyle(
+        color: Colors.white,
+        fontFamily: 'OpenSans',
+      ),
       validator: (value) {
         if (value == null || value.isEmpty) {
           return ("Bu alanı boş bırakmazsınız");
@@ -70,6 +73,7 @@ class _MainPageState extends State<MainPage> {
         prefixIcon: Icon(Icons.title),
         contentPadding: EdgeInsets.all(20),
         hintText: "Başlık",
+        hintStyle: TextStyle(color: Colors.white70),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -78,6 +82,10 @@ class _MainPageState extends State<MainPage> {
     final datefield = TextFormField(
       controller: date_controller,
       keyboardType: TextInputType.datetime,
+      style: TextStyle(
+        color: Colors.white,
+        fontFamily: 'OpenSans',
+      ),
       validator: (value) {
         if (value!.isEmpty) {
           return ("Bu alanı boş bırakmazsınız");
@@ -92,6 +100,7 @@ class _MainPageState extends State<MainPage> {
         prefixIcon: Icon(Icons.date_range),
         contentPadding: EdgeInsets.all(20),
         hintText: "Tarih",
+        hintStyle: TextStyle(color: Colors.white70),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -100,6 +109,10 @@ class _MainPageState extends State<MainPage> {
     final maxpeoplefield = TextFormField(
       controller: maxpeople_controller,
       keyboardType: TextInputType.number,
+      style: TextStyle(
+        color: Colors.white,
+        fontFamily: 'OpenSans',
+      ),
       validator: (value) {
         if (value!.isEmpty) {
           return ("Bu alanı boş bırakmazsınız");
@@ -114,6 +127,7 @@ class _MainPageState extends State<MainPage> {
         prefixIcon: Icon(Icons.people),
         contentPadding: EdgeInsets.all(20),
         hintText: "Kişi sayısı",
+        hintStyle: TextStyle(color: Colors.white70),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -122,6 +136,10 @@ class _MainPageState extends State<MainPage> {
     final locationfield = TextFormField(
       controller: location_controller,
       keyboardType: TextInputType.streetAddress,
+      style: TextStyle(
+        color: Colors.white,
+        fontFamily: 'OpenSans',
+      ),
       validator: (value) {
         if (value!.isEmpty) {
           return ("Bu alanı boş bırakmazsınız");
@@ -136,6 +154,7 @@ class _MainPageState extends State<MainPage> {
         prefixIcon: Icon(Icons.location_city),
         contentPadding: EdgeInsets.all(20),
         hintText: "Aktivitenin yer alacağı konum",
+        hintStyle: TextStyle(color: Colors.white70),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -172,22 +191,17 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       //backgroundColor: Colors.deepPurple[200],
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        elevation: 0.1,
-        backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
-        automaticallyImplyLeading: false,
-        title: Text('Aktivite ekleme ekranı'),
-        // actions: <Widget>[
-        //   IconButton(
-        //     onPressed: () {
-        //       Navigator.pop(context);
-        //     },
-        //     icon: Icon(Icons.home),
-        //   ),
-        // ],
-      ),
-      body: Container(height: double.infinity,
-                width: double.infinity,
+      appBar: PreferredSize(
+          preferredSize: Size.fromHeight(50.0),
+          child: SafeArea(
+            child: AppBar(
+              elevation: 1,
+              
+              title: Text(
+                'Aktivite Ekleme',
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              flexibleSpace: Container( 
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
@@ -198,7 +212,42 @@ class _MainPageState extends State<MainPage> {
                       
                     ],
                     stops: [0.1, 0.9],
-                  ),),
+                  ),
+                ),),
+              centerTitle: true,
+              automaticallyImplyLeading: false,
+              actions: <Widget>[
+                // Padding(
+                //   padding: EdgeInsets.only(right: 10.0),
+                //   child: ElevatedButton(
+                //     onPressed: () {
+                //       logout(context);
+                //     },
+                //     style: ElevatedButton.styleFrom(
+                //         primary: Color(0xFFEEBBC3),
+                //         minimumSize: Size(35.0, 40.0),
+                //         shape: new RoundedRectangleBorder(
+                //             borderRadius: new BorderRadius.circular(30.0))),
+                //     child: Text('Çıkış yap'),
+                //   ),
+                // ),
+              ],
+            ),
+          ),
+        ),
+      body: Container(height: double.infinity,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(0xFFCA3782),
+                Color(0xFF1E0B36),
+              ],
+              stops: [0.1, 0.9],
+            ),
+          ),
         child: FutureBuilder(
             future: _future,
             builder: (context, snapshot) {

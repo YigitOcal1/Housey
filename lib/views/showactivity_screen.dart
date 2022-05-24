@@ -76,95 +76,129 @@ Future<List<ActivityModel>> retrieveActivities() async {
 
     setState(() {});
   }
-
-  Future getActivity() async {
-    String authid = authstate!.uid;
-
-    //child olarak yazınca da oluyor activite id sini nasıl çekcem
+Future addParticipant(String ownerid, String ownername, String activityid,
+      String title, String date, String maxpeople, String location,String participantId) async {
+        List<String> b=[participantId];
+         ActivityModel activityModel = ActivityModel(
+        ownerid: ownerid,
+        ownername: ownername,
+        activityid: activityid,
+        title: title,
+        date: date,
+        maxPeople: maxpeople,
+        location: location,
+        participantList: b);
     return await databaseRef
         .child('activities')
+        .orderByChild('title')
+        .equalTo(title)
         .once()
         .then((DataSnapshot dataSnapshot) {
-      //final LinkedHashMap value =dataSnapshot.value;
-
-      //print(value);
-      //print("data okundu ::   "+dataSnapshot.value.toString());
-      //rint("wqewq fasdxxx "+value['title']);
-      //activity=ActivityModel.fromMap(value);
-
-      //print("title demene "+activity.toString());
-      //print('savpaerlövşwövlşavöclşdscvöwdlşavcöw + ${dataSnapshot.value}');
-      setState(() {
-        Map<dynamic, dynamic> values = dataSnapshot.value;
-        lists.clear();
-        values.forEach((key, values) {
-          lists.add(values);
-          print(values.toString());
-          //print(values["userid"]);
-
-          //print(values["title"]);
+      Map<dynamic, dynamic> values = dataSnapshot.value;
+      values.forEach((key, value) {
+        databaseRef.child('activities').child(key).update(activityModel.toMap()).then(
+          (ownerid) => {Fluttertoast.showToast(msg: 'Aktiviteye başarıyla katıldınız')});
+        setState(() {
+          
+          //Navigator.of(context).push(_createRouteProfilScreen());
         });
+
         //activity = ActivityModel.fromSnapshot(dataSnapshot.value);
       });
     });
   }
+  // Future getActivity() async {
+  //   String authid = authstate!.uid;
 
-  Future getActivitywithword(String word) async {
-    String authid = authstate!.uid;
-    print("method çalıştı gelen kelime" + word);
-    return await databaseRef
+  //   //child olarak yazınca da oluyor activite id sini nasıl çekcem
+  //   return await databaseRef
+  //       .child('activities')
+  //       .once()
+  //       .then((DataSnapshot dataSnapshot) {
+  //     //final LinkedHashMap value =dataSnapshot.value;
 
-        //child olarak yazınca da oluyor activite id sini nasıl çekcem
-        .child('activities')
-        .once()
-        .then((DataSnapshot dataSnapshot) {
-      print('savpaerlövşwövlşavöclşdscvöwdlşavcöw + ${dataSnapshot.value}');
-      setState(() {
-        Map<dynamic, dynamic> values = dataSnapshot.value;
-        lists.clear();
-        values.forEach((key, values) {
-          if (values['title'].contains(word)) {
-            lists.add(values);
+  //     //print(value);
+  //     //print("data okundu ::   "+dataSnapshot.value.toString());
+  //     //rint("wqewq fasdxxx "+value['title']);
+  //     //activity=ActivityModel.fromMap(value);
 
-            displayError = "";
-          } else {
-            //bir kere daha boş olarak geldiği için else dönüyor.
+  //     //print("title demene "+activity.toString());
+  //     //print('savpaerlövşwövlşavöclşdscvöwdlşavcöw + ${dataSnapshot.value}');
+  //     setState(() {
+  //       Map<dynamic, dynamic> values = dataSnapshot.value;
+  //       lists.clear();
+  //       values.forEach((key, values) {
+  //         lists.add(values);
+  //         print(values.toString());
+  //         //print(values["userid"]);
 
-            displayError =
-                "SONUÇ BULUNAMADI. Lütfen doğru arama yaptığınızdan emin olunuz.";
-          }
+  //         //print(values["title"]);
+  //       });
+  //       //activity = ActivityModel.fromSnapshot(dataSnapshot.value);
+  //     });
+  //   });
+  // }
 
-          //print(lists);
-          print(values["userid"]);
-          //displayTitle = values['title'];
-          //displayUsername=values['ownername'];
-          //print("titledebug  " + displayTitle);
-          //print(values["title"]);
-          //displayDate = values['date'];
-          //displayMaxpeople = values['maxPeople'];
-        });
-        //activity = ActivityModel.fromSnapshot(dataSnapshot.value);
-      });
-    });
-  }
+  // Future getActivitywithword(String word) async {
+  //   String authid = authstate!.uid;
+  //   print("method çalıştı gelen kelime" + word);
+  //   return await databaseRef
 
-  void printFirebase() {
-    databaseRef.once().then((DataSnapshot snapshot) {
-      print('Data : ${snapshot.value}');
-    });
-  }
+  //       //child olarak yazınca da oluyor activite id sini nasıl çekcem
+  //       .child('activities')
+  //       .once()
+  //       .then((DataSnapshot dataSnapshot) {
+  //     print('savpaerlövşwövlşavöclşdscvöwdlşavcöw + ${dataSnapshot.value}');
+  //     setState(() {
+  //       Map<dynamic, dynamic> values = dataSnapshot.value;
+  //       lists.clear();
+  //       values.forEach((key, values) {
+  //         if (values['title'].contains(word)) {
+  //           lists.add(values);
+
+  //           displayError = "";
+  //         } else {
+  //           //bir kere daha boş olarak geldiği için else dönüyor.
+
+  //           displayError =
+  //               "SONUÇ BULUNAMADI. Lütfen doğru arama yaptığınızdan emin olunuz.";
+  //         }
+
+  //         print(values["userid"]);
+          
+  //       });
+  //       //activity = ActivityModel.fromSnapshot(dataSnapshot.value);
+  //     });
+  //   });
+  // }
+
+  
 
   @override
   Widget build(BuildContext context) {
-    //printFirebase();
+    
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
        elevation: 0.1,
       backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
         title: Text(
-          'Aktivite Arama',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-        ),
+                'Aktivite Arama',
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              flexibleSpace: Container( 
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color(0xFF1E0B36),
+                      Color(0xFFCA3782),
+                      
+                    ],
+                    stops: [0.1, 0.9],
+                  ),
+                ),),
         centerTitle: true,
         automaticallyImplyLeading: false,
         bottom: PreferredSize(
@@ -259,6 +293,11 @@ Future<List<ActivityModel>> retrieveActivities() async {
                           //Text("Tarih: " + lists[index]["date"]),
                           //Text("Kişi sayısı: " + lists[index]["maxPeople"]),
                           ListTile(
+                            onTap: () {
+                               addParticipant( activities[index].ownerid.toString(),  activities[index].ownername.toString(), 
+                                 activities[index].activityid.toString(),  activities[index].title.toString(),  activities[index].date.toString(),
+                                   activities[index].maxPeople.toString(),  activities[index].location.toString(),  authstate!.email.toString());
+                            },
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 10.0, vertical: 10.0),
                             leading: Container(

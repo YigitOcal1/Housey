@@ -38,6 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   List<Map<dynamic, dynamic>> activitylists = [];
   List<ActivityModel> activities = [];
   List<ActivityModel> activitiesowner = [];
+  List<ActivityModel> activitiesjoined = [];
 
   @override
   void initState() {
@@ -46,6 +47,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     //getActivitywithword(authEmail.toString());
     //handleActListData();
     handleActListData();
+    handleJoinedActListData();
   }
 
   Route _createRouteCreateHomePage() {
@@ -155,6 +157,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     setState(() {});
   }
+ Future<void> handleJoinedActListData() async {
+    activities = await retrieveActivities();
+    //print(activities[5].toString());
+    for (int i = 0; i < activities.length; i++) {
+      if (activities[i].participantList!.contains(authEmail)) {
+        activitiesjoined.add(activities[i]);
+      }
+    }
+
+    setState(() {});
+  }
 
   Future deleteActivity(String a) async {
     // print("activities"+a);
@@ -209,15 +222,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       routes: {'/edit': (context) => const EditActivity()},
       home: Scaffold(
         appBar: AppBar(
           elevation: 0.1,
           backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
           title: Text(
-            'Profil',
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-          ),
+                'Profil',
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              flexibleSpace: Container( 
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color(0xFF1E0B36),
+                      Color(0xFFCA3782),
+                      
+                    ],
+                    stops: [0.1, 0.9],
+                  ),
+                ),),
           centerTitle: true,
           automaticallyImplyLeading: false,
           actions: <Widget>[
@@ -245,12 +272,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Color(0xFF73AEF5),
-                Color(0xFF61A4F1),
-                Color(0xFF478DE0),
-                Color(0xFF398AE5),
+                Color(0xFFCA3782),
+                Color(0xFF1E0B36),
               ],
-              stops: [0.1, 0.4, 0.7, 0.9],
+              stops: [0.1, 0.9],
             ),
           ),
           child: Column(
@@ -268,7 +293,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     color: Colors.black,
                     fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 60.0),
+              //SizedBox(height: 60.0),
               Padding(
                 padding: EdgeInsets.only(top: 15.0),
                 child: Text(
@@ -281,6 +306,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     letterSpacing: 1.5,
                   ),
                 ),
+              ),
+               Padding(
+                padding: EdgeInsets.only(top: 15.0),
+                child:activitiesowner.length==0 ? 
+                Text(
+                  'Sistemde şu anda oluşturmuş olduğunuz herhangi bir aktiviteniz bulunmamaktadır.',
+                  style: TextStyle(
+                    fontSize: 22.0,
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    letterSpacing: 1.5,
+                  ),
+                ):null,
               ),
               Expanded(
                 child: ListView.builder(
@@ -350,6 +389,101 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         arguments: activities[index]);
                                   },
                                   icon: Icon(Icons.edit, color: Colors.white)),
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
+                    
+              ),
+              //SizedBox(height: 20.0),
+              Padding(
+                padding: EdgeInsets.only(top: 15.0),
+                child: Text(
+                  'Katıldığım aktiviteler',
+                  style: TextStyle(
+                    fontSize: 22.0,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.w300,
+                    color: Colors.black,
+                    letterSpacing: 1.5,
+                  ),
+                ),
+              ),
+               Padding(
+                padding: EdgeInsets.only(top: 15.0),
+                child:activitiesjoined.length==0 ? 
+                Text(
+                  'Sistemde şu anda katıldığınız herhangi bir aktiviteniz bulunmamaktadır.',
+                  style: TextStyle(
+                    fontSize: 22.0,
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    letterSpacing: 1.5,
+                  ),
+                ):null,
+              ),
+              Expanded(
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: activitiesjoined.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Card(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            //Text("Tarih: " + lists[index]["date"]),
+                            //Text("Kişi sayısı: " + lists[index]["maxPeople"]),
+                            ListTile(
+                              onTap: () {
+                                Navigator.of(context)
+                                    .push(_createRouteEditActivityPage());
+                              },
+                              tileColor: Color.fromARGB(255, 123, 122, 122),
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 10.0, vertical: 10.0),
+                              leading: Container(
+                                  padding: EdgeInsets.only(right: 12.0),
+                                  decoration: new BoxDecoration(
+                                      border: new Border(
+                                          right: new BorderSide(
+                                              width: 1.0,
+                                              color: Colors.white24))),
+                                  child: IconButton(
+                                      onPressed: () {
+                                       
+                                        // AlertDialog(
+                                        //   title: Text(activitiesowner[index]
+                                        //           .title
+                                        //           .toString() +
+                                        //       " adlı aktiviteyi silmek istiyor musunuz."),
+                                        //   content: Text('Emin misiniz?'),
+                                        //   actions: [
+                                        //     ElevatedButton(
+                                        //         onPressed: () {
+                                        //           Navigator.pop(context);
+                                        //         },
+                                        //         child: Text('Hayır')),
+                                        //     ElevatedButton(
+                                        //         onPressed: () {
+
+                                        //         },
+                                        //         child: Text('Evet'))
+                                        //   ],
+                                        // );
+                                      },
+                                      icon: Icon(Icons.ballot_outlined,
+                                          color: Colors.red))),
+                              title: Text("Başlık: " +
+                                  activitiesjoined[index].title.toString() +
+                                  "\nTarih: " +
+                                  activitiesjoined[index].date.toString() +
+                                  "\nKişi sayısı: " +
+                                  activitiesjoined[index].maxPeople.toString() +
+                                  "\nAktivite Sahibi: " +
+                                  activitiesjoined[index].ownername.toString()),
+                              
                             ),
                           ],
                         ),

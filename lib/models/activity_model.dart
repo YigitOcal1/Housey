@@ -9,6 +9,7 @@ class ActivityModel {
   String? date;
   String? maxPeople;
   String? location;
+  List<String>? participantList;
   //UserModel? activityOwner;
 
   ActivityModel(
@@ -18,9 +19,11 @@ class ActivityModel {
       this.title,
       this.date,
       this.maxPeople,
-      this.location});
+      this.location,
+      this.participantList});
 
  factory ActivityModel.fromSnapshot(DataSnapshot snapshot) {
+  
     return ActivityModel(
     ownerid: snapshot.value['ownerid'],
     ownername: snapshot.value['ownername'],
@@ -28,7 +31,8 @@ class ActivityModel {
     title :snapshot.value['title'],
     date : snapshot.value['date'],
     maxPeople : snapshot.value['maxPeople'],
-    location : snapshot.value['location'],);
+    location : snapshot.value['location'],
+    participantList: snapshot.value['participantList']);
     
   }
   factory ActivityModel.fromMap(map) {
@@ -40,6 +44,7 @@ class ActivityModel {
       date: map['date'],
       maxPeople: map['maxPeople'],
       location: map['location'],
+      participantList: List<String>.from(map['participantList'])
     );
   }
   Map<String, dynamic> toMap() {
@@ -51,6 +56,7 @@ class ActivityModel {
       'date': date,
       'maxPeople': maxPeople,
       'location': location,
+      'participantList':List<dynamic>.from(participantList!)
     };
   }
 }
