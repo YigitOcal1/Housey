@@ -157,7 +157,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       validator: (value) {
         RegExp regex = new RegExp(r'^.{6,}$');
         if (value!.isEmpty) {
-          return ("Kayıtt olabilmek için şifre giriniz");
+          return ("Kayıt olabilmek için şifre giriniz");
         }
         if (!regex.hasMatch(value)) {
           return ("Geçerli bir şifre giriniz.(Min. 6 Karakter)");

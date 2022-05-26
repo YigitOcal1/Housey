@@ -40,11 +40,13 @@ class _MainPageState extends State<MainPage> {
         location: location,
         participantList: b);
         
-    try {
+    
+      if(title!=""&& date!="" && maxpeople!="" && location!=""){
       databaseRef.child('activities').push().set(activityModel.toMap()).then(
-          (ownerid) => {Fluttertoast.showToast(msg: 'Aktivite oluşturuldu.')});
-    } catch (e) {
-      Fluttertoast.showToast(msg: 'Hata! Aktivite oluşturulamadı.');
+          (ownerid) => {Fluttertoast.showToast(msg: 'Aktivite oluşturuldu.')}
+      );}
+     else{
+      Fluttertoast.showToast(msg: 'Aktivite oluşturulamadı. Lütfen boş alanları doldurup tekrar deneyiniz.');
     }
   }
 
@@ -60,10 +62,11 @@ class _MainPageState extends State<MainPage> {
         fontFamily: 'OpenSans',
       ),
       validator: (value) {
-        if (value == null || value.isEmpty) {
-          return ("Bu alanı boş bırakmazsınız");
+        
+        if (value!.isEmpty) {
+          return ("Başlık alanı boş bırakılamaz");
         }
-        return null;
+        
       },
       onSaved: (value) {
         title_controller.text = value!;
