@@ -33,7 +33,7 @@ class _ShowActivityState extends State<ShowActivity> {
   List<String> titleList = [];
   List<String> dateList = [];
   List<String> maxpeopleList = [];
-List<ActivityModel> activities = [];
+  List<ActivityModel> activities = [];
   List<ActivityModel> activitiessearch = [];
 
   Route _createRouteCreateActivity() {
@@ -54,7 +54,8 @@ List<ActivityModel> activities = [];
       },
     );
   }
-Future<List<ActivityModel>> retrieveActivities() async {
+
+  Future<List<ActivityModel>> retrieveActivities() async {
     final List<ActivityModel> result = [];
     final Query query = databaseRef.child('activities').limitToLast(50);
     query.onChildAdded.forEach((event) {
@@ -69,17 +70,29 @@ Future<List<ActivityModel>> retrieveActivities() async {
     //print(activities[5].toString());
     activitiessearch.clear();
     for (int i = 0; i < activities.length; i++) {
-      if (activities[i].title.toString().contains(a)) {
+      if (activities[i]
+          .title
+          .toString()
+          .toLowerCase()
+          .contains(a.toLowerCase())) {
         activitiessearch.add(activities[i]);
       }
     }
 
     setState(() {});
   }
-Future addParticipant(String ownerid, String ownername, String activityid,
-      String title, String date, String maxpeople, String location,String participantId) async {
-        List<String> b=[participantId];
-         ActivityModel activityModel = ActivityModel(
+
+  Future addParticipant(
+      String ownerid,
+      String ownername,
+      String activityid,
+      String title,
+      String date,
+      String maxpeople,
+      String location,
+      String participantId) async {
+    List<String> b = [participantId];
+    ActivityModel activityModel = ActivityModel(
         ownerid: ownerid,
         ownername: ownername,
         activityid: activityid,
@@ -96,10 +109,14 @@ Future addParticipant(String ownerid, String ownername, String activityid,
         .then((DataSnapshot dataSnapshot) {
       Map<dynamic, dynamic> values = dataSnapshot.value;
       values.forEach((key, value) {
-        databaseRef.child('activities').child(key).update(activityModel.toMap()).then(
-          (ownerid) => {Fluttertoast.showToast(msg: 'Aktiviteye başarıyla katıldınız')});
+        databaseRef
+            .child('activities')
+            .child(key)
+            .update(activityModel.toMap())
+            .then((ownerid) => {
+                  Fluttertoast.showToast(msg: 'Aktiviteye başarıyla katıldınız')
+                });
         setState(() {
-          
           //Navigator.of(context).push(_createRouteProfilScreen());
         });
 
@@ -165,40 +182,37 @@ Future addParticipant(String ownerid, String ownername, String activityid,
   //         }
 
   //         print(values["userid"]);
-          
+
   //       });
   //       //activity = ActivityModel.fromSnapshot(dataSnapshot.value);
   //     });
   //   });
   // }
 
-  
-
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-       elevation: 0.1,
-      backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
+        elevation: 0.1,
+        backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
         title: Text(
-                'Aktivite Arama',
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-              flexibleSpace: Container( 
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color(0xFF1E0B36),
-                      Color(0xFFCA3782),
-                      
-                    ],
-                    stops: [0.1, 0.9],
-                  ),
-                ),),
+          'Aktivite Arama',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(0xFF1E0B36),
+                Color(0xFFCA3782),
+              ],
+              stops: [0.1, 0.9],
+            ),
+          ),
+        ),
         centerTitle: true,
         automaticallyImplyLeading: false,
         bottom: PreferredSize(
@@ -232,7 +246,7 @@ Future addParticipant(String ownerid, String ownername, String activityid,
                     ),
                     InkWell(
                       child: Icon(
-                        Icons.local_activity,
+                        Icons.security_rounded,
                         color: Colors.grey,
                       ),
                       onTap: () {},
@@ -244,20 +258,7 @@ Future addParticipant(String ownerid, String ownername, String activityid,
           ),
         ),
         actions: <Widget>[
-          // Padding(
-          //   padding: EdgeInsets.only(right: 10.0),
-          //   child: ElevatedButton(
-          //     onPressed: () {
-          //       Navigator.pop(context);
-          //     },
-          //     style: ElevatedButton.styleFrom(
-          //         primary: Colors.purple[400],
-          //         minimumSize: Size(35.0, 40.0),
-          //         shape: new RoundedRectangleBorder(
-          //             borderRadius: new BorderRadius.circular(30.0))),
-          //     child: Text('Geri Dön'),
-          //   ),
-          // ),
+         
           IconButton(
               onPressed: () {
                 Navigator.push(context,
@@ -266,19 +267,20 @@ Future addParticipant(String ownerid, String ownername, String activityid,
               icon: Icon(Icons.portrait_rounded))
         ],
       ),
-      body: Container(height: double.infinity,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color(0xFFCA3782),
-                Color(0xFF1E0B36),
-              ],
-              stops: [0.1, 0.9],
-            ),
+      body: Container(
+        height: double.infinity,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFFCA3782),
+              Color(0xFF1E0B36),
+            ],
+            stops: [0.1, 0.9],
           ),
+        ),
         child: Column(
           children: [
             Expanded(
@@ -287,65 +289,97 @@ Future addParticipant(String ownerid, String ownername, String activityid,
                   itemCount: activitiessearch.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Card(
+                      color: Colors.transparent,
                       child: Column(
+                        
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          //Text("Tarih: " + lists[index]["date"]),
-                          //Text("Kişi sayısı: " + lists[index]["maxPeople"]),
                           ListTile(
-                            onTap: () {
-                               addParticipant( activities[index].ownerid.toString(),  activities[index].ownername.toString(), 
-                                 activities[index].activityid.toString(),  activities[index].title.toString(),  activities[index].date.toString(),
-                                   activities[index].maxPeople.toString(),  activities[index].location.toString(),  authstate!.email.toString());
-                            },
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                            tileColor: Color(0xFF232946),
+                            onTap: () {},
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 10.0, vertical: 10.0),
                             leading: Container(
-                              padding: EdgeInsets.only(right: 12.0),
+                              padding: EdgeInsets.all(10.0),
                               decoration: new BoxDecoration(
+                                //borderRadius: BorderRadius.only(topRight: Radius.circular(30)),
                                   border: new Border(
                                       right: new BorderSide(
-                                          width: 1.0, color: Colors.white24))),
-                              child: Icon(Icons.autorenew, color: Colors.white),
+                                          width: 2.5, color: Colors.white24))),
+                              child: Icon(Icons.people_alt_outlined, color: Colors.white70),
                             ),
-                            title: Text("Başlık: " +
-                                activitiessearch[index].title.toString() +
-                                "\nTarih: " +
-                                activitiessearch[index].date.toString()  +
-                                "\nKişi sayısı: " +
-                                activitiessearch[index].maxPeople.toString()  +
-                                "\nAktivite Sahibi: " +
-                                activitiessearch[index].ownername.toString() ),
-                            trailing: Icon(Icons.local_activity),
+                            title: Text(
+                              "Başlık: " +
+                                  activitiessearch[index].title.toString() +
+                                  "\nTarih: " +
+                                  activitiessearch[index].date.toString() +
+                                  "\nKişi sayısı: " +
+                                  activitiessearch[index].maxPeople.toString() +
+                                  "\nAktivite Sahibi: " +
+                                  activitiessearch[index].ownername.toString(),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'OpenSans',
+                              ),
+                            ),
+                            trailing: IconButton(
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text(activities[index]
+                                                  .title
+                                                  .toString() +
+                                              " adlı aktiviteye katılmak istiyor musunuz."),
+                                          actions: [
+                                            ElevatedButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('Hayır')),
+                                            ElevatedButton(
+                                                onPressed: () {
+                                                  addParticipant(
+                                                      activities[index]
+                                                          .ownerid
+                                                          .toString(),
+                                                      activities[index]
+                                                          .ownername
+                                                          .toString(),
+                                                      activities[index]
+                                                          .activityid
+                                                          .toString(),
+                                                      activities[index]
+                                                          .title
+                                                          .toString(),
+                                                      activities[index]
+                                                          .date
+                                                          .toString(),
+                                                      activities[index]
+                                                          .maxPeople
+                                                          .toString(),
+                                                      activities[index]
+                                                          .location
+                                                          .toString(),
+                                                      authstate!.email
+                                                          .toString());
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('Evet'))
+                                          ],
+                                        );
+                                      });
+                                },
+                                icon: Icon(Icons.play_circle_outlined,
+                                    color: Colors.green[700])),
                           ),
                         ],
                       ),
                     );
                   }),
             ),
-            // ElevatedButton(
-            //   onPressed: () {
-            //     //deneme();
-            //     getActivity();
-            //   },
-            //   style: ElevatedButton.styleFrom(
-            //       primary: Colors.redAccent,
-            //       minimumSize: Size(85.0, 40.0),
-            //       shape: new RoundedRectangleBorder(
-            //           borderRadius: new BorderRadius.circular(50.0))),
-            //   child: Text('Aktivite listele'),
-            // ),
-            // ElevatedButton(
-            //   onPressed: () {
-            //     Navigator.of(context).push(_createRouteCreateActivity());
-            //   },
-            //   style: ElevatedButton.styleFrom(
-            //       primary: Colors.orange[800],
-            //       minimumSize: Size(85.0, 40.0),
-            //       shape: new RoundedRectangleBorder(
-            //           borderRadius: new BorderRadius.circular(50.0))),
-            //   child: Text('Yeni Aktivite Oluştur'),
-            // ),
           ],
         ),
       ),

@@ -26,7 +26,7 @@ class _AnasayfaScreenState extends State<AnasayfaScreen> {
   final authstate = FirebaseAuth.instance.currentUser;
   ActivityModel activity = ActivityModel();
   List<Map<dynamic, dynamic>> lists = [];
-  List<ActivityModel> activities=[];
+  List<ActivityModel> activities = [];
 
   final Future<FirebaseApp> _future = Firebase.initializeApp();
   String displayTitle = 'burada görünecek';
@@ -38,6 +38,7 @@ class _AnasayfaScreenState extends State<AnasayfaScreen> {
   List<String> dateList = [];
   List<String> maxpeopleList = [];
   bool isLoading = true;
+  List<String> b = [];
 
   @override
   void initState() {
@@ -45,7 +46,8 @@ class _AnasayfaScreenState extends State<AnasayfaScreen> {
     //getActivity();
     handleActListData();
   }
-Route _createRouteProfilScreen() {
+
+  Route _createRouteProfilScreen() {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => ProfileScreen(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -108,24 +110,22 @@ Route _createRouteProfilScreen() {
     await FirebaseAuth.instance.signOut();
     Navigator.of(context).push(_createRouteCreateHomePage());
   }
-Future <List<ActivityModel>> retrieveActivities()async{
-  final List<ActivityModel> result=[];
-  final Query query=databaseRef.child('activities').limitToLast(4);
-  query.onChildAdded.forEach((event) {
-    result.add(ActivityModel.fromMap(event.snapshot.value));
-   });
-   
-  return await query.once().then((ignored) => result);
-   
-}
-Future<void> handleActListData() async{
-   
-   activities=await retrieveActivities();
-   setState(() {
-          
-        });
-  //print(activities[4].ownername.toString());
-}
+
+  Future<List<ActivityModel>> retrieveActivities() async {
+    final List<ActivityModel> result = [];
+    final Query query = databaseRef.child('activities').limitToLast(4);
+    query.onChildAdded.forEach((event) {
+      result.add(ActivityModel.fromMap(event.snapshot.value));
+    });
+
+    return await query.once().then((ignored) => result);
+  }
+
+  Future<void> handleActListData() async {
+    activities = await retrieveActivities();
+    setState(() {});
+    //print(activities[4].ownername.toString());
+  }
   // Future getActivity() async {
   //   await databaseRef
   //       .child('activities')
@@ -146,10 +146,17 @@ Future<void> handleActListData() async{
   //   });
   // }
 
-  Future addParticipant(String ownerid, String ownername, String activityid,
-      String title, String date, String maxpeople, String location,String participantId) async {
-        List<String> b=[participantId];
-         ActivityModel activityModel = ActivityModel(
+  Future addParticipant(
+      String ownerid,
+      String ownername,
+      String activityid,
+      String title,
+      String date,
+      String maxpeople,
+      String location,
+      String participantId) async {
+    b.add(participantId);
+    ActivityModel activityModel = ActivityModel(
         ownerid: ownerid,
         ownername: ownername,
         activityid: activityid,
@@ -165,14 +172,27 @@ Future<void> handleActListData() async{
         .once()
         .then((DataSnapshot dataSnapshot) {
       Map<dynamic, dynamic> values = dataSnapshot.value;
-      values.forEach((key, value) {if(ownerid!=authstate!.uid){
-        databaseRef.child('activities').child(key).update(activityModel.toMap()).then(
-          (ownerid) => {Fluttertoast.showToast(msg: 'Aktiviteye başarıyla katıldınız')});}
-          else{
-            Fluttertoast.showToast(msg: 'Kendi oluşturduğunuz aktiviteye katılmazsınız');
+      values.forEach((key, value) {
+        if (ownerid != authstate!.uid) {
+          if (!b.contains(authstate!.email.toString())) {
+            databaseRef
+                .child('activities')
+                .child(key)
+                .update(activityModel.toMap())
+                .then((ownerid) => {
+                      Fluttertoast.showToast(
+                          msg: 'Aktiviteye başarıyla katıldınız')
+                    });
+          } else {
+            Fluttertoast.showToast(
+                msg:
+                    'Daha önceden katıldığınız aktiviteye tekrar katılmazsınız');
           }
+        } else {
+          Fluttertoast.showToast(
+              msg: 'Kendi oluşturduğunuz aktiviteye katılmazsınız');
+        }
         setState(() {
-          
           //Navigator.of(context).push(_createRouteProfilScreen());
         });
 
@@ -180,22 +200,23 @@ Future<void> handleActListData() async{
       });
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: false,
         //backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(50.0),
           child: SafeArea(
             child: AppBar(
               elevation: 1,
-              
               title: Text(
                 'Ana Sayfa',
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
-              flexibleSpace: Container( 
+              flexibleSpace: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
@@ -203,11 +224,11 @@ Future<void> handleActListData() async{
                     colors: [
                       Color(0xFF1E0B36),
                       Color(0xFFCA3782),
-                      
                     ],
                     stops: [0.1, 0.9],
                   ),
-                ),),
+                ),
+              ),
               centerTitle: true,
               automaticallyImplyLeading: false,
               actions: <Widget>[
@@ -244,18 +265,16 @@ Future<void> handleActListData() async{
             ),
           ),
           child: Column(
-            
             children: [
-              
               Padding(
                 padding: EdgeInsets.only(top: 15.0),
                 child: Text(
                   'Sizin için önerilen aktiviteler',
                   style: TextStyle(
-                    fontSize: 22.0,
-                    fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.w300,
-                    color: Colors.black,
+                    fontSize: 26.0,
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                     letterSpacing: 1.5,
                   ),
                 ),
@@ -266,6 +285,7 @@ Future<void> handleActListData() async{
                     itemCount: activities.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Card(
+                        color: Colors.transparent,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -275,12 +295,10 @@ Future<void> handleActListData() async{
                               //     print("tıklama çalışıyor");
                               //   });
                               // },
-                              tileColor:Color.fromARGB(255, 123, 122, 122),
-                              onTap: (){
-                                addParticipant( activities[index].ownerid.toString(),  activities[index].ownername.toString(), 
-                                 activities[index].activityid.toString(),  activities[index].title.toString(),  activities[index].date.toString(),
-                                   activities[index].maxPeople.toString(),  activities[index].location.toString(),  authstate!.email.toString());
-                              },
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30)),
+                              tileColor: Color(0xFF232946),
+                              onTap: () {},
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 10.0, vertical: 10.0),
                               leading: Container(
@@ -288,21 +306,77 @@ Future<void> handleActListData() async{
                                 decoration: new BoxDecoration(
                                     border: new Border(
                                         right: new BorderSide(
-                                            width: 1.0, color: Colors.white24))),
-                                child: Icon(Icons.party_mode, color: Colors.white,
+                                            width: 2.5,
+                                            color: Colors.white24))),
+                                child: Icon(
+                                  Icons.people_alt_outlined,
+                                  color: Colors.white70,
                                 ),
                               ),
                               title: Text("Başlık: " +
-                                  activities[index].title.toString()+
+                                  activities[index].title.toString() +
                                   "\nTarih: " +
                                   activities[index].date.toString() +
                                   "\nKişi sayısı: " +
                                   activities[index].maxPeople.toString() +
                                   "\nAktivite Sahibi: " +
-                                  activities[index].ownername.toString()),
-                              trailing: Icon(Icons.local_activity),
+                                  activities[index].ownername.toString(),
+                                  style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'OpenSans',
+                                ),),
+                              trailing: IconButton(
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                             title: Text(activities[index]
+                                              .title
+                                              .toString() +
+                                          " adlı aktiviteye katılmak istiyor musunuz."),
+                                      actions: [
+                                        ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text('Hayır')),
+                                        ElevatedButton(
+                                            onPressed: () {
+                                              addParticipant(
+                                                  activities[index]
+                                                      .ownerid
+                                                      .toString(),
+                                                  activities[index]
+                                                      .ownername
+                                                      .toString(),
+                                                  activities[index]
+                                                      .activityid
+                                                      .toString(),
+                                                  activities[index]
+                                                      .title
+                                                      .toString(),
+                                                  activities[index]
+                                                      .date
+                                                      .toString(),
+                                                  activities[index]
+                                                      .maxPeople
+                                                      .toString(),
+                                                  activities[index]
+                                                      .location
+                                                      .toString(),
+                                                  authstate!.email.toString());
+                                                   Navigator.pop(context);
+                                            },
+                                            child: Text('Evet'))
+                                      ],
+                                          );
+                                        });
+                                    
+                                  },
+                                  icon: Icon(Icons.play_circle_outlined,
+                                      color: Colors.green[700])),
                             ),
-                           
                           ],
                         ),
                       );

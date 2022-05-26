@@ -162,12 +162,12 @@ class _MainPageState extends State<MainPage> {
     );
     final activityAddButton = (Material(
       elevation: 10,
-      borderRadius: BorderRadius.circular(50),
-      color: Colors.deepPurpleAccent[400],
+      borderRadius: BorderRadius.circular(25.0),
+      color: Color(0xFF232946),
       child: MaterialButton(
         padding: EdgeInsets.all(20.0),
         minWidth: MediaQuery.of(context).size.width,
-        height: 30.0,
+        
         onPressed: () {
           addData(
               authstate!.uid,
@@ -182,8 +182,13 @@ class _MainPageState extends State<MainPage> {
           "Aktivite Oluştur",
           
           textAlign: TextAlign.center,
-          style: TextStyle(
-              fontSize: 20,   color: const Color(0xFF527DAA), fontWeight: FontWeight.bold,letterSpacing: 2,fontFamily: 'OpenSans',)
+           style: TextStyle(
+            fontSize: 20,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 2,
+            fontFamily: 'OpenSans',
+          ),
         ),
       ),
     ));

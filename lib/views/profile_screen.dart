@@ -157,7 +157,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     setState(() {});
   }
- Future<void> handleJoinedActListData() async {
+
+  Future<void> handleJoinedActListData() async {
     activities = await retrieveActivities();
     //print(activities[5].toString());
     for (int i = 0; i < activities.length; i++) {
@@ -229,22 +230,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
           elevation: 0.1,
           backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
           title: Text(
-                'Profil',
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            'Profil',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xFF1E0B36),
+                  Color(0xFFCA3782),
+                ],
+                stops: [0.1, 0.9],
               ),
-              flexibleSpace: Container( 
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color(0xFF1E0B36),
-                      Color(0xFFCA3782),
-                      
-                    ],
-                    stops: [0.1, 0.9],
-                  ),
-                ),),
+            ),
+          ),
           centerTitle: true,
           automaticallyImplyLeading: false,
           actions: <Widget>[
@@ -255,11 +256,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   logout(context);
                 },
                 style: ElevatedButton.styleFrom(
-                    primary: Colors.purple[400],
+                    primary: Color(0xFF232946),
                     minimumSize: Size(35.0, 40.0),
                     shape: new RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(30.0))),
-                child: Text('Çıkış yap'),
+                child: Icon(
+                  Icons.power_settings_new_sharp,
+                ),
               ),
             ),
           ],
@@ -280,13 +283,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           child: Column(
             children: [
+              CircleAvatar(
+                backgroundImage: NetworkImage(
+                    'https://www.woolha.com/media/2020/03/eevee.png'),
+                radius: 50,
+                foregroundColor: Colors.red,
+              ),
               IconButton(
                   onPressed: () {
                     //getActivitywithword('');
                   },
                   icon: Icon(Icons.portrait_rounded)),
               Text(
-                authEmail!.replaceAll("@gmail.com", "").toString(),
+                "Merhaba, " +
+                    authEmail!.replaceAll("@gmail.com", "").toString(),
                 //lists[0]["username"],
                 style: TextStyle(
                     fontSize: 22.0,
@@ -299,27 +309,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Text(
                   'Oluşturduğum aktiviteler',
                   style: TextStyle(
-                    fontSize: 22.0,
-                    fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.w300,
-                    color: Colors.black,
+                    fontSize: 26.0,
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                     letterSpacing: 1.5,
                   ),
                 ),
               ),
-               Padding(
+              Padding(
                 padding: EdgeInsets.only(top: 15.0),
-                child:activitiesowner.length==0 ? 
-                Text(
-                  'Sistemde şu anda oluşturmuş olduğunuz herhangi bir aktiviteniz bulunmamaktadır.',
-                  style: TextStyle(
-                    fontSize: 22.0,
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                    letterSpacing: 1.5,
-                  ),
-                ):null,
+                child: activitiesowner.length == 0
+                    ? Text(
+                        'Sistemde şu anda oluşturmuş olduğunuz herhangi bir aktiviteniz bulunmamaktadır.',
+                        style: TextStyle(
+                          fontSize: 22.0,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          letterSpacing: 1.5,
+                        ),
+                      )
+                    : null,
               ),
               Expanded(
                 child: ListView.builder(
@@ -327,6 +338,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     itemCount: activitiesowner.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Card(
+                        color: Colors.transparent,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -337,7 +349,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 Navigator.of(context)
                                     .push(_createRouteEditActivityPage());
                               },
-                              tileColor: Color.fromARGB(255, 123, 122, 122),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30)),
+                              tileColor: Color(0xFF232946),
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 10.0, vertical: 10.0),
                               leading: Container(
@@ -375,14 +389,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       },
                                       icon: Icon(Icons.delete,
                                           color: Colors.red))),
-                              title: Text("Başlık: " +
-                                  activitiesowner[index].title.toString() +
-                                  "\nTarih: " +
-                                  activitiesowner[index].date.toString() +
-                                  "\nKişi sayısı: " +
-                                  activitiesowner[index].maxPeople.toString() +
-                                  "\nAktivite Sahibi: " +
-                                  activitiesowner[index].ownername.toString()),
+                              title: Text(
+                                "Başlık: " +
+                                    activitiesowner[index].title.toString() +
+                                    "\nTarih: " +
+                                    activitiesowner[index].date.toString() +
+                                    "\nKişi sayısı: " +
+                                    activitiesowner[index]
+                                        .maxPeople
+                                        .toString() +
+                                    "\nAktivite Sahibi: " +
+                                    activitiesowner[index].ownername.toString(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'OpenSans',
+                                ),
+                              ),
                               trailing: IconButton(
                                   onPressed: () {
                                     Navigator.pushNamed(context, "/edit",
@@ -394,7 +416,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       );
                     }),
-                    
               ),
               //SizedBox(height: 20.0),
               Padding(
@@ -402,27 +423,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Text(
                   'Katıldığım aktiviteler',
                   style: TextStyle(
-                    fontSize: 22.0,
-                    fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.w300,
-                    color: Colors.black,
+                    fontSize: 26.0,
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                     letterSpacing: 1.5,
                   ),
                 ),
               ),
-               Padding(
+              Padding(
                 padding: EdgeInsets.only(top: 15.0),
-                child:activitiesjoined.length==0 ? 
-                Text(
-                  'Sistemde şu anda katıldığınız herhangi bir aktiviteniz bulunmamaktadır.',
-                  style: TextStyle(
-                    fontSize: 22.0,
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                    letterSpacing: 1.5,
-                  ),
-                ):null,
+                child: activitiesjoined.length == 0
+                    ? Text(
+                        'Sistemde şu anda katıldığınız herhangi bir aktiviteniz bulunmamaktadır.',
+                        style: TextStyle(
+                          fontSize: 22.0,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          letterSpacing: 1.5,
+                        ),
+                      )
+                    : null,
               ),
               Expanded(
                 child: ListView.builder(
@@ -430,6 +452,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     itemCount: activitiesjoined.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Card(
+                        color: Colors.transparent,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -440,7 +463,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 Navigator.of(context)
                                     .push(_createRouteEditActivityPage());
                               },
-                              tileColor: Color.fromARGB(255, 123, 122, 122),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30)),
+                              tileColor: Color(0xFF232946),
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 10.0, vertical: 10.0),
                               leading: Container(
@@ -452,7 +477,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               color: Colors.white24))),
                                   child: IconButton(
                                       onPressed: () {
-                                       
                                         // AlertDialog(
                                         //   title: Text(activitiesowner[index]
                                         //           .title
@@ -473,17 +497,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         //   ],
                                         // );
                                       },
-                                      icon: Icon(Icons.ballot_outlined,
-                                          color: Colors.red))),
-                              title: Text("Başlık: " +
-                                  activitiesjoined[index].title.toString() +
-                                  "\nTarih: " +
-                                  activitiesjoined[index].date.toString() +
-                                  "\nKişi sayısı: " +
-                                  activitiesjoined[index].maxPeople.toString() +
-                                  "\nAktivite Sahibi: " +
-                                  activitiesjoined[index].ownername.toString()),
-                              
+                                      icon: Icon(Icons.cancel_sharp,
+                                          color: Colors.red.shade300))),
+                              title: Text(
+                                "Başlık: " +
+                                    activitiesjoined[index].title.toString() +
+                                    "\nTarih: " +
+                                    activitiesjoined[index].date.toString() +
+                                    "\nKişi sayısı: " +
+                                    activitiesjoined[index]
+                                        .maxPeople
+                                        .toString() +
+                                    "\nAktivite Sahibi: " +
+                                    activitiesjoined[index]
+                                        .ownername
+                                        .toString(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'OpenSans',
+                                ),
+                              ),
                             ),
                           ],
                         ),
