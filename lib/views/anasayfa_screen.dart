@@ -174,20 +174,14 @@ class _AnasayfaScreenState extends State<AnasayfaScreen> {
       Map<dynamic, dynamic> values = dataSnapshot.value;
       values.forEach((key, value) {
         if (ownerid != authstate!.uid) {
-          if (!b.contains(authstate!.email.toString())) {
-            databaseRef
-                .child('activities')
-                .child(key)
-                .update(activityModel.toMap())
-                .then((ownerid) => {
-                      Fluttertoast.showToast(
-                          msg: 'Aktiviteye başarıyla katıldınız')
-                    });
-          } else {
-            Fluttertoast.showToast(
-                msg:
-                    'Daha önceden katıldığınız aktiviteye tekrar katılmazsınız');
-          }
+          databaseRef
+              .child('activities')
+              .child(key)
+              .update(activityModel.toMap())
+              .then((ownerid) => {
+                    Fluttertoast.showToast(
+                        msg: 'Aktiviteye başarıyla katıldınız')
+                  });
         } else {
           Fluttertoast.showToast(
               msg: 'Kendi oluşturduğunuz aktiviteye katılmazsınız');
@@ -313,66 +307,68 @@ class _AnasayfaScreenState extends State<AnasayfaScreen> {
                                   color: Colors.white70,
                                 ),
                               ),
-                              title: Text("Başlık: " +
-                                  activities[index].title.toString() +
-                                  "\nTarih: " +
-                                  activities[index].date.toString() +
-                                  "\nKişi sayısı: " +
-                                  activities[index].maxPeople.toString() +
-                                  "\nAktivite Sahibi: " +
-                                  activities[index].ownername.toString(),
-                                  style: TextStyle(
+                              title: Text(
+                                "Başlık: " +
+                                    activities[index].title.toString() +
+                                    "\nTarih: " +
+                                    activities[index].date.toString() +
+                                    "\nKişi sayısı: " +
+                                    activities[index].maxPeople.toString() +
+                                    "\nAktivite Sahibi: " +
+                                    activities[index].ownername.toString(),
+                                style: TextStyle(
                                   color: Colors.white,
                                   fontFamily: 'OpenSans',
-                                ),),
+                                ),
+                              ),
                               trailing: IconButton(
                                   onPressed: () {
                                     showDialog(
                                         context: context,
                                         builder: (BuildContext context) {
                                           return AlertDialog(
-                                             title: Text(activities[index]
-                                              .title
-                                              .toString() +
-                                          " adlı aktiviteye katılmak istiyor musunuz."),
-                                      actions: [
-                                        ElevatedButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: Text('Hayır')),
-                                        ElevatedButton(
-                                            onPressed: () {
-                                              addParticipant(
-                                                  activities[index]
-                                                      .ownerid
-                                                      .toString(),
-                                                  activities[index]
-                                                      .ownername
-                                                      .toString(),
-                                                  activities[index]
-                                                      .activityid
-                                                      .toString(),
-                                                  activities[index]
-                                                      .title
-                                                      .toString(),
-                                                  activities[index]
-                                                      .date
-                                                      .toString(),
-                                                  activities[index]
-                                                      .maxPeople
-                                                      .toString(),
-                                                  activities[index]
-                                                      .location
-                                                      .toString(),
-                                                  authstate!.email.toString());
-                                                   Navigator.pop(context);
-                                            },
-                                            child: Text('Evet'))
-                                      ],
+                                            title: Text(activities[index]
+                                                    .title
+                                                    .toString() +
+                                                " adlı aktiviteye katılmak istiyor musunuz."),
+                                            actions: [
+                                              ElevatedButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text('Hayır')),
+                                              ElevatedButton(
+                                                  onPressed: () {
+                                                    addParticipant(
+                                                        activities[index]
+                                                            .ownerid
+                                                            .toString(),
+                                                        activities[index]
+                                                            .ownername
+                                                            .toString(),
+                                                        activities[index]
+                                                            .activityid
+                                                            .toString(),
+                                                        activities[index]
+                                                            .title
+                                                            .toString(),
+                                                        activities[index]
+                                                            .date
+                                                            .toString(),
+                                                        activities[index]
+                                                            .maxPeople
+                                                            .toString(),
+                                                        activities[index]
+                                                            .location
+                                                            .toString(),
+                                                        authstate!.email
+                                                            .toString());
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text('Evet'))
+                                            ],
                                           );
                                         });
-                                    
                                   },
                                   icon: Icon(Icons.play_circle_outlined,
                                       color: Colors.green[700])),

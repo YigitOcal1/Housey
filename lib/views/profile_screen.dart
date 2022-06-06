@@ -345,10 +345,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             //Text("Tarih: " + lists[index]["date"]),
                             //Text("Kişi sayısı: " + lists[index]["maxPeople"]),
                             ListTile(
-                              onTap: () {
-                                Navigator.of(context)
-                                    .push(_createRouteEditActivityPage());
-                              },
+                              onTap: () {},
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30)),
                               tileColor: Color(0xFF232946),
@@ -373,8 +370,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         //           .toString() +
                                         //       " adlı aktiviteyi silmek istiyor musunuz."),
                                         //   content: Text('Emin misiniz?'),
-                                        //   actions: [
                                         //     ElevatedButton(
+                                        //   actions: [
                                         //         onPressed: () {
                                         //           Navigator.pop(context);
                                         //         },
@@ -459,10 +456,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             //Text("Tarih: " + lists[index]["date"]),
                             //Text("Kişi sayısı: " + lists[index]["maxPeople"]),
                             ListTile(
-                              onTap: () {
-                                Navigator.of(context)
-                                    .push(_createRouteEditActivityPage());
-                              },
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30)),
                               tileColor: Color(0xFF232946),
