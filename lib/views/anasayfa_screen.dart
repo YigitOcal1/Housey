@@ -9,7 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:housey/views/home_screen.dart';
 import 'package:housey/views/main_page.dart';
 import 'profile_screen.dart';
-import 'package:housey/widgets/BottomNavBar.dart';
+import 'package:housey/components/widgets/BottomNavBar.dart';
 
 class AnasayfaScreen extends StatefulWidget {
   const AnasayfaScreen({Key? key}) : super(key: key);

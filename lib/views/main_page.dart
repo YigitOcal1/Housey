@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:housey/models/activity_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:housey/widgets/BottomNavBar.dart';
+import 'package:housey/components/widgets/BottomNavBar.dart';
 import 'showactivity_screen.dart';
 
 class MainPage extends StatefulWidget {
