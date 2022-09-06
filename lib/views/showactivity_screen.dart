@@ -7,7 +7,7 @@ import 'package:housey/models/activity_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:housey/views/main_page.dart';
 import 'profile_screen.dart';
-import 'package:housey/widgets/BottomNavBar.dart';
+import 'package:housey/components/widgets/BottomNavBar.dart';
 
 class ShowActivity extends StatefulWidget {
   @override
@@ -117,78 +117,14 @@ class _ShowActivityState extends State<ShowActivity> {
                   Fluttertoast.showToast(msg: 'Aktiviteye başarıyla katıldınız')
                 });
         setState(() {
-          //Navigator.of(context).push(_createRouteProfilScreen());
+          
         });
 
-        //activity = ActivityModel.fromSnapshot(dataSnapshot.value);
+       
       });
     });
   }
-  // Future getActivity() async {
-  //   String authid = authstate!.uid;
-
-  //   //child olarak yazınca da oluyor activite id sini nasıl çekcem
-  //   return await databaseRef
-  //       .child('activities')
-  //       .once()
-  //       .then((DataSnapshot dataSnapshot) {
-  //     //final LinkedHashMap value =dataSnapshot.value;
-
-  //     //print(value);
-  //     //print("data okundu ::   "+dataSnapshot.value.toString());
-  //     //rint("wqewq fasdxxx "+value['title']);
-  //     //activity=ActivityModel.fromMap(value);
-
-  //     //print("title demene "+activity.toString());
-  //     //print('savpaerlövşwövlşavöclşdscvöwdlşavcöw + ${dataSnapshot.value}');
-  //     setState(() {
-  //       Map<dynamic, dynamic> values = dataSnapshot.value;
-  //       lists.clear();
-  //       values.forEach((key, values) {
-  //         lists.add(values);
-  //         print(values.toString());
-  //         //print(values["userid"]);
-
-  //         //print(values["title"]);
-  //       });
-  //       //activity = ActivityModel.fromSnapshot(dataSnapshot.value);
-  //     });
-  //   });
-  // }
-
-  // Future getActivitywithword(String word) async {
-  //   String authid = authstate!.uid;
-  //   print("method çalıştı gelen kelime" + word);
-  //   return await databaseRef
-
-  //       //child olarak yazınca da oluyor activite id sini nasıl çekcem
-  //       .child('activities')
-  //       .once()
-  //       .then((DataSnapshot dataSnapshot) {
-  //     print('savpaerlövşwövlşavöclşdscvöwdlşavcöw + ${dataSnapshot.value}');
-  //     setState(() {
-  //       Map<dynamic, dynamic> values = dataSnapshot.value;
-  //       lists.clear();
-  //       values.forEach((key, values) {
-  //         if (values['title'].contains(word)) {
-  //           lists.add(values);
-
-  //           displayError = "";
-  //         } else {
-  //           //bir kere daha boş olarak geldiği için else dönüyor.
-
-  //           displayError =
-  //               "SONUÇ BULUNAMADI. Lütfen doğru arama yaptığınızdan emin olunuz.";
-  //         }
-
-  //         print(values["userid"]);
-
-  //       });
-  //       //activity = ActivityModel.fromSnapshot(dataSnapshot.value);
-  //     });
-  //   });
-  // }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

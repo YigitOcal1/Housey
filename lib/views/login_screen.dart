@@ -138,7 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
     //     ),
     //   ),
     // ));
-final loginButton = (Material(
+    final loginButton = (Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(25.0),
       color: Color(0xFF232946),
@@ -146,7 +146,7 @@ final loginButton = (Material(
         padding: EdgeInsets.all(20.0),
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
-         logIn(email_controller.text, password_controller.text);
+          logIn(email_controller.text, password_controller.text);
         },
         child: Text(
           "Giriş Yap",
@@ -164,16 +164,8 @@ final loginButton = (Material(
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      // appBar: AppBar(
-      //  title: Image.asset('assets/My_project_1.png'),
-      //   elevation: 0.1,
-      //   backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
-      // ),
-      
       body: Center(
-        
         child: Container(
-          
           height: double.infinity,
           width: double.infinity,
           decoration: BoxDecoration(
@@ -192,7 +184,6 @@ final loginButton = (Material(
             child: Form(
               key: _formKey,
               child: Column(
-                
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

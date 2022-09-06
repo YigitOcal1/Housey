@@ -13,7 +13,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:housey/views/main_page.dart';
 import 'login_screen.dart';
 import 'register_screen.dart';
-import 'package:housey/widgets/BottomNavBar.dart';
+import 'package:housey/components/widgets/BottomNavBar.dart';
 import 'home_screen.dart';
 import 'main_page.dart';
 

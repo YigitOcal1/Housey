@@ -18,10 +18,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'deneme',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home:StreamBuilder(
+        debugShowCheckedModeBanner: false,
+        title: 'Housey',
+        home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (ctx, snapShot) {
             if (snapShot.connectionState == ConnectionState.waiting) {
@@ -30,10 +29,11 @@ class MyApp extends StatelessWidget {
             if (snapShot.hasData) {
               return AnasayfaScreen();
             } else {
-              return HomePage(title: 'Housey',);
+              return HomePage(
+                title: 'Housey',
+              );
             }
           },
-        )
-    );
+        ));
   }
 }
