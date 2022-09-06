@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:housey/components/widgets/RoutesAnimations.dart';
 import 'package:housey/models/activity_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:housey/views/home_screen.dart';
@@ -47,68 +48,9 @@ class _AnasayfaScreenState extends State<AnasayfaScreen> {
     handleActListData();
   }
 
-  Route _createRouteProfilScreen() {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => ProfileScreen(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        const begin = Offset(0.0, 1.0);
-        const end = Offset.zero;
-        const curve = Curves.ease;
-
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
-        );
-      },
-    );
-  }
-
-  Route _createRouteCreateActivity() {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => MainPage(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        const begin = Offset(0.0, 1.0);
-        const end = Offset.zero;
-        const curve = Curves.ease;
-
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
-        );
-      },
-    );
-  }
-
-  Route _createRouteCreateHomePage() {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => HomePage(
-        title: 'Housey',
-      ),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        const begin = Offset(0.0, 1.0);
-        const end = Offset.zero;
-        const curve = Curves.ease;
-
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
-        );
-      },
-    );
-  }
-
   Future<void> logout(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
-    Navigator.of(context).push(_createRouteCreateHomePage());
+    Navigator.of(context).push(RouteAnimations().createRouteCreateHomePage());
   }
 
   Future<List<ActivityModel>> retrieveActivities() async {
@@ -124,27 +66,7 @@ class _AnasayfaScreenState extends State<AnasayfaScreen> {
   Future<void> handleActListData() async {
     activities = await retrieveActivities();
     setState(() {});
-    //print(activities[4].ownername.toString());
   }
-  // Future getActivity() async {
-  //   await databaseRef
-  //       .child('activities')
-  //       .limitToLast(3)
-  //       .once()
-  //       .then((DataSnapshot dataSnapshot) {
-  //     Map<dynamic, dynamic> values = dataSnapshot.value;
-  //     lists.clear();
-  //     values.forEach((key, values) {
-  //       lists.add(values);
-
-  //       print(values.toString());
-  //       setState(() {
-  //         isLoading = false;
-  //       });
-  //       //activity = ActivityModel.fromSnapshot(dataSnapshot.value);
-  //     });
-  //   });
-  // }
 
   Future addParticipant(
       String ownerid,

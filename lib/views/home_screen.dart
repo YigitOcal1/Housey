@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:housey/components/widgets/RoutesAnimations.dart';
+import 'package:housey/utils/constants.dart';
 import 'package:housey/views/main_page.dart';
 import 'login_screen.dart';
 import 'register_screen.dart';
@@ -38,43 +40,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Route _createRouteLogin() {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => LoginScreen(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        const begin = Offset(0.0, 1.0);
-        const end = Offset.zero;
-        const curve = Curves.ease;
 
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
-        );
-      },
-    );
-  }
-
-  Route _createRouteRegister() {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => RegisterScreen(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        const begin = Offset(0.0, 1.0);
-        const end = Offset.zero;
-        const curve = Curves.ease;
-
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
-        );
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,12 +48,12 @@ class _HomePageState extends State<HomePage> {
     final loginButton = (Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(25.0),
-      color: Color(0xFF232946),
+      color: Constants().colorTheme,
       child: MaterialButton(
         padding: EdgeInsets.all(20.0),
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
-          Navigator.of(context).push(_createRouteLogin());
+          Navigator.of(context).push(RouteAnimations().createRouteLogin());
         },
         child: Text(
           "Giriş Yap",
@@ -106,12 +72,12 @@ class _HomePageState extends State<HomePage> {
     final registerButton = (Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(25.0),
-      color: Color(0xFF232946),
+      color: Color(Constants.colorCode),
       child: MaterialButton(
         padding: EdgeInsets.all(20),
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
-          Navigator.of(context).push(_createRouteRegister());
+          Navigator.of(context).push(RouteAnimations().createRouteRegisterScreen());
         },
         child: Text(
           "Kayıt ol",
@@ -131,90 +97,9 @@ class _HomePageState extends State<HomePage> {
       onWillPop: () async => false,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        // drawer: Drawer(
-        //   child: ListView(
-        //     padding: EdgeInsets.zero,
-        //     children: <Widget>[
-        //       DrawerHeader(
-        //         decoration: BoxDecoration(
-        //           color: Colors.blue,
-        //         ),
-        //         child: Text(
-        //           'Housey',
-        //           style: TextStyle(
-        //             color: Colors.white,
-        //             fontSize: 24,
-        //           ),
-        //         ),
-        //       ),
-        //       ListTile(
-        //         leading: Icon(Icons.home),
-        //         title: Text('Home'),
-        //         onTap: () {
-        //           Navigator.push(
-        //               context,
-        //               MaterialPageRoute(
-        //                   builder: (context) => HomePage(title: 'Home')));
-        //         },
-        //       ),
-        //       ListTile(
-        //         leading: Icon(Icons.login),
-        //         title: Text('Giriş yap'),
-        //         onTap: () {
-        //           Navigator.push(context,
-        //               MaterialPageRoute(builder: (context) => LoginScreen()));
-        //         },
-        //       ),
-        //       ListTile(
-        //         leading: Icon(Icons.account_circle),
-        //         title: Text('Kayıt ol'),
-        //         onTap: () {
-        //           Navigator.push(
-        //               context,
-        //               MaterialPageRoute(
-        //                   builder: (context) => RegisterScreen()));
-        //         },
-        //       ),
-        //     ],
-        //   ),
-        // ),
+       
         backgroundColor: Colors.deepPurple[200],
-        // appBar: AppBar(
-        //   title: Image.asset('assets/My_project_1.png'),
-        //   elevation: 0.1,
-        //   backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
-        //   automaticallyImplyLeading: false,
-        //   leading: Builder(
-        //     builder: (context) => IconButton(
-        //         onPressed: () => Scaffold.of(context).openDrawer(),
-        //         icon: Icon(Icons.menu_rounded)),
-        //   ),
-        //   actions: <Widget>[
-        //     IconButton(
-        //       onPressed: () {
-        //         Navigator.push(
-        //             context,
-        //             MaterialPageRoute(
-        //                 builder: (context) => HomePage(title: 'Home')));
-        //       },
-        //       icon: Icon(Icons.home),
-        //     ),
-        //     IconButton(
-        //         onPressed: () {
-        //           Navigator.push(
-        //               context,
-        //               MaterialPageRoute(
-        //                   builder: (context) => RegisterScreen()));
-        //         },
-        //         icon: Icon(Icons.app_registration_rounded)),
-        //     IconButton(
-        //         onPressed: () {
-        //           Navigator.push(context,
-        //               MaterialPageRoute(builder: (context) => LoginScreen()));
-        //         },
-        //         icon: Icon(Icons.login))
-        //   ],
-        // ),
+       
         body: Center(
           child: Container(
             height: double.infinity,
