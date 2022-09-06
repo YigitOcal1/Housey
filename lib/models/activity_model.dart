@@ -10,7 +10,7 @@ class ActivityModel {
   String? maxPeople;
   String? location;
   List<String>? participantList;
-  //UserModel? activityOwner;
+
 
   ActivityModel(
       {this.ownerid,
