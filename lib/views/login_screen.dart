@@ -1,13 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:housey/views/main_page.dart';
+import 'package:housey/components/widgets/RoutesAnimations.dart';
+import 'package:housey/utils/constants.dart';
 import 'package:housey/views/register_screen.dart';
-import 'package:housey/views/showactivity_screen.dart';
-import 'anasayfa_screen.dart';
+
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -21,24 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   String? errormsg;
 
-  Route _createRouteMain() {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => AnasayfaScreen(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        const begin = Offset(0.0, 1.0);
-        const end = Offset.zero;
-        const curve = Curves.ease;
 
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
-        );
-      },
-    );
-  }
 
   void logIn(String email, String password) async {
     if (_formKey.currentState!.validate()) {
@@ -47,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
             .signInWithEmailAndPassword(email: email, password: password)
             .then((uid) => {
                   Fluttertoast.showToast(msg: 'Giriş Başarılı'),
-                  Navigator.pushReplacement(context, _createRouteMain()),
+                  Navigator.pushReplacement(context, RouteAnimations().createRouteCreateMainScreen()),
                 });
       } on FirebaseAuthException catch (error) {
         errormsg = "Giriş başarısız";
@@ -115,29 +96,6 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
 
-    // final loginButton = (Material(
-    //   elevation: 10,
-    //   borderRadius: BorderRadius.circular(50),
-    //   color: Colors.deepPurpleAccent[400],
-    //   child: MaterialButton(
-    //     padding: EdgeInsets.all(20.0),
-    //     minWidth: MediaQuery.of(context).size.width,
-    //     onPressed: () {
-    //       logIn(email_controller.text, password_controller.text);
-    //     },
-    //     child: Text(
-    //       "Giriş Yap",
-    //       textAlign: TextAlign.center,
-    //       style: TextStyle(
-    //         fontSize: 20,
-    //         color: const Color(0xFF527DAA),
-    //         fontWeight: FontWeight.bold,
-    //         letterSpacing: 2,
-    //         fontFamily: 'OpenSans',
-    //       ),
-    //     ),
-    //   ),
-    // ));
     final loginButton = (Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(25.0),
@@ -168,17 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Container(
           height: double.infinity,
           width: double.infinity,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color(0xFFCA3782),
-                Color(0xFF1E0B36),
-              ],
-              stops: [0.1, 0.9],
-            ),
-          ),
+          decoration: Constants().boxDecorationApp,
           child: Padding(
             padding: EdgeInsets.all(8.0),
             child: Form(
@@ -187,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset('assets/My_project_1.png'),
+                  Image.asset(Constants.houseyLogoPath),
                   SizedBox(
                     height: 100,
                   ),
