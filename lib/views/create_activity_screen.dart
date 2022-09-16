@@ -8,12 +8,12 @@ import 'package:housey/components/widgets/BottomNavBar.dart';
 import 'package:housey/utils/constants.dart';
 import 'showactivity_screen.dart';
 
-class MainPage extends StatefulWidget {
+class CreateActivityScreen extends StatefulWidget {
   @override
-  _MainPageState createState() => _MainPageState();
+  _CreateActivityScreenState createState() => _CreateActivityScreenState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _CreateActivityScreenState extends State<CreateActivityScreen> {
   final textcontroller = TextEditingController();
   final title_controller = TextEditingController();
   final date_controller = TextEditingController();
@@ -26,30 +26,6 @@ class _MainPageState extends State<MainPage> {
 
   final activityIdRandom = DateTime.now().toString();
   final Future<FirebaseApp> _future = Firebase.initializeApp();
-
-  Future addData(String ownerid, String ownername, String activityid,
-      String title, String date, String maxpeople, String location) async {
-    //List<String> a=["w","w"];
-    List<String> b = [""];
-    ActivityModel activityModel = ActivityModel(
-        ownerid: ownerid,
-        ownername: ownername,
-        activityid: activityid,
-        title: title,
-        date: date,
-        maxPeople: maxpeople,
-        location: location,
-        participantList: b);
-
-    if (title != "" && date != "" && maxpeople != "" && location != "") {
-      databaseRef.child('activities').push().set(activityModel.toMap()).then(
-          (ownerid) => {Fluttertoast.showToast(msg: 'Aktivite oluşturuldu.')});
-    } else {
-      Fluttertoast.showToast(
-          msg:
-              'Aktivite oluşturulamadı. Lütfen boş alanları doldurup tekrar deneyiniz.');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

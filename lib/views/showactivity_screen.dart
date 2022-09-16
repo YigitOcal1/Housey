@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:housey/models/activity_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:housey/utils/constants.dart';
-import 'package:housey/views/main_page.dart';
+import 'package:housey/views/create_activity_screen.dart';
 import 'profile_screen.dart';
 import 'package:housey/components/widgets/BottomNavBar.dart';
 

@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'views/login_screen.dart';
 import 'views/register_screen.dart';
 import 'views/home_screen.dart';
-import 'views/anasayfa_screen.dart';
+import 'views/main_screen.dart';
 import 'views/splash_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
                 return SplashScreen();
               }
               if (snapShot.hasData) {
-                return AnasayfaScreen();
+                return const MainScreen();
               } else {
                 return HomePage(
                   title: 'Housey',

@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:housey/components/widgets/RoutesAnimations.dart';
 import 'package:housey/utils/constants.dart';
-import 'package:housey/views/main_page.dart';
+import 'package:housey/views/create_activity_screen.dart';
 import 'login_screen.dart';
 import 'register_screen.dart';
 

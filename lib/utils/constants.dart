@@ -7,6 +7,8 @@ class Constants {
   Color colorTheme = const Color(colorCode);
   NetworkImage networkImagePlaceHolder =
       const NetworkImage('https://www.woolha.com/media/2020/03/eevee.png');
+  
+  static const String houseyLogoPath='assets/My_project_1.png';
 
   Container flexibleSpaceContainer = Container(
     decoration: const BoxDecoration(
@@ -49,41 +51,6 @@ class Constants {
       stops: [0.1, 0.9],
     ),
   );
-
-
-TextFormField emailField=TextFormField(
-      keyboardType: TextInputType.emailAddress,
-      autofocus: false,
-      controller: emailcontroller,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return ("Lütfen email adresinizi giriniz");
-        }
-        // reg expression for email validation
-        if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value)) {
-          return ("Lütfen geçerli bir email adresi giriniz");
-        }
-        return null;
-      },
-      onSaved: (value) {
-        emailcontroller.text = value!;
-      },
-      style: TextStyle(
-        color: Colors.white,
-        fontFamily: 'OpenSans',
-      ),
-      textInputAction: TextInputAction.next,
-      decoration: InputDecoration(
-          //fillColor: Colors.amber,
-          filled: true,
-          prefixIcon: Icon(Icons.email, color: Colors.white),
-          contentPadding: EdgeInsets.fromLTRB(20, 20, 20, 20),
-          hintText: "Email",
-          hintStyle: TextStyle(color: Colors.white70),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-          )),
-    );
 
 
 

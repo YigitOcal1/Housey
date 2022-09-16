@@ -6,16 +6,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:housey/models/activity_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:housey/views/home_screen.dart';
-import 'package:housey/views/main_page.dart';
+import 'package:housey/views/create_activity_screen.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:housey/views/main_page.dart';
+import 'package:housey/views/create_activity_screen.dart';
 import 'login_screen.dart';
 import 'register_screen.dart';
 import 'package:housey/components/widgets/BottomNavBar.dart';
 import 'home_screen.dart';
-import 'main_page.dart';
+import 'create_activity_screen.dart';
 
 class EditActivity extends StatefulWidget {
   const EditActivity({Key? key}) : super(key: key);

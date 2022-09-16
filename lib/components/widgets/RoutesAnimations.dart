@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:housey/views/anasayfa_screen.dart';
+import 'package:housey/views/main_screen.dart';
 import 'package:housey/views/login_screen.dart';
-import 'package:housey/views/main_page.dart';
+import 'package:housey/views/create_activity_screen.dart';
 import 'package:housey/views/register_screen.dart';
 import 'package:housey/views/showactivity_screen.dart';
 import 'package:housey/views/profile_screen.dart';
@@ -32,7 +32,7 @@ class RouteAnimations  {
   }
 Route createRouteCreateAnasayfa() {
   return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) => AnasayfaScreen(),
+    pageBuilder: (context, animation, secondaryAnimation) => MainScreen(),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(0.0, 1.0);
       const end = Offset.zero;
@@ -47,7 +47,7 @@ Route createRouteCreateAnasayfa() {
     },
   );
 }
-Route createRouteCreateExplore() {
+Route createRouteShowActivityScreen() {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) => ShowActivity(),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -83,7 +83,7 @@ Route createRouteCreateProfile() {
 }
 Route createRouteCreateAddActivity() {
   return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) => MainPage(),
+    pageBuilder: (context, animation, secondaryAnimation) => CreateActivityScreen(),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(0.0, 1.0);
       const end = Offset.zero;
@@ -136,9 +136,9 @@ Route createRouteCreateAddActivity() {
       },
     );
   }
-    Route createRouteMain() {
+    Route createRouteCreateMainScreen() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => AnasayfaScreen(),
+      pageBuilder: (context, animation, secondaryAnimation) => MainScreen(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         const begin = Offset(0.0, 1.0);
         const end = Offset.zero;
@@ -192,7 +192,7 @@ Route createRouteEditActivityPage() {
   }
   Route createRouteCreateActivity() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => MainPage(),
+      pageBuilder: (context, animation, secondaryAnimation) => CreateActivityScreen(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         const begin = Offset(0.0, 1.0);
         const end = Offset.zero;

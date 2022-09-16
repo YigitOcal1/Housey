@@ -8,17 +8,17 @@ import 'package:housey/components/widgets/RoutesAnimations.dart';
 import 'package:housey/models/activity_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:housey/views/home_screen.dart';
-import 'package:housey/views/main_page.dart';
+import 'package:housey/views/create_activity_screen.dart';
 import 'profile_screen.dart';
 import 'package:housey/components/widgets/BottomNavBar.dart';
 
-class AnasayfaScreen extends StatefulWidget {
-  const AnasayfaScreen({Key? key}) : super(key: key);
+class MainScreen extends StatefulWidget {
+  const MainScreen({Key? key}) : super(key: key);
   @override
-  _AnasayfaScreenState createState() => _AnasayfaScreenState();
+  _MainScreenState createState() => _MainScreenState();
 }
 
-class _AnasayfaScreenState extends State<AnasayfaScreen> {
+class _MainScreenState extends State<MainScreen> {
   final textcontroller = TextEditingController();
   final titlecontroller = TextEditingController();
   final datecontroller = TextEditingController();
