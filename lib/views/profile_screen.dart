@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:housey/components/widgets/RoutesAnimations.dart';
 import 'package:housey/models/activity_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:housey/utils/constants.dart';
 import 'package:housey/views/home_screen.dart';
 import 'package:housey/views/main_page.dart';
 import 'package:flutter/services.dart';
@@ -43,73 +45,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    
+
     handleActListData();
     handleJoinedActListData();
   }
 
-  Route _createRouteCreateHomePage() {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => HomePage(
-        title: 'Housey',
-      ),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        const begin = Offset(0.0, 1.0);
-        const end = Offset.zero;
-        const curve = Curves.ease;
-
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
-        );
-      },
-    );
-  }
-
-  Route _createRouteEditActivityPage() {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => EditActivity(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        const begin = Offset(0.0, 1.0);
-        const end = Offset.zero;
-        const curve = Curves.ease;
-
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
-        );
-      },
-    );
-  }
-
-  Route _createRouteProfilScreen() {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => ProfileScreen(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        const begin = Offset(0.0, 1.0);
-        const end = Offset.zero;
-        const curve = Curves.ease;
-
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
-        );
-      },
-    );
-  }
-
   Future<void> logout(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
-    Navigator.of(context).push(_createRouteCreateHomePage());
+    Navigator.of(context).push(RouteAnimations().createRouteCreateHomePage());
   }
 // Future updateActivity(ActivityModel activityModel) async {
 //     String authid = authstate!.uid;
@@ -168,13 +111,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     setState(() {});
   }
 
-  Future deleteActivity(String a) async {
-    // print("activities"+a);
-    // return await databaseRef
-
-    //     //child olarak yazınca da oluyor activite id sini nasıl çekcem
-    //     .child('activities').once().remove();
-  }
   Future getUser() async {
     String authid = authstate!.uid;
 
@@ -210,7 +146,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       values.forEach((key, value) {
         databaseRef.child('activities').child(key).remove();
         setState(() {
-          Navigator.of(context).push(_createRouteProfilScreen());
+          Navigator.of(context)
+              .push(RouteAnimations().createRouteProfilScreen());
         });
 
         //activity = ActivityModel.fromSnapshot(dataSnapshot.value);
@@ -231,19 +168,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             'Profil',
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Color(0xFF1E0B36),
-                  Color(0xFFCA3782),
-                ],
-                stops: [0.1, 0.9],
-              ),
-            ),
-          ),
+          flexibleSpace: Constants().flexibleSpaceContainer,
           centerTitle: true,
           automaticallyImplyLeading: false,
           actions: <Widget>[
@@ -268,22 +193,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         body: Container(
           height: double.infinity,
           width: double.infinity,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color(0xFFCA3782),
-                Color(0xFF1E0B36),
-              ],
-              stops: [0.1, 0.9],
-            ),
-          ),
+          decoration: Constants().boxDecorationApp,
           child: Column(
             children: [
               CircleAvatar(
-                backgroundImage: NetworkImage(
-                    'https://www.woolha.com/media/2020/03/eevee.png'),
+                backgroundImage: Constants().networkImagePlaceHolder,
                 radius: 50,
                 foregroundColor: Colors.red,
               ),
@@ -517,110 +431,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ],
           ),
         ),
-        //     body: Column(
-        //        crossAxisAlignment: CrossAxisAlignment.center,
-        //           mainAxisAlignment: MainAxisAlignment.center,
-        //       children: [
-        //         Column(
-
-        //           children: [
-
-        //               IconButton(
-        //         onPressed: () {
-        //          getActivitywithword('');
-        //         },
-        //         icon: Icon(Icons.portrait_rounded)),
-        //             Text(
-        //               authEmail!.replaceAll("@gmail.com", "").toString(),
-        //               //lists[0]["username"],
-        //               style: TextStyle(
-        //                   fontSize: 22.0,
-        //                   color: Colors.black,
-        //                   fontWeight: FontWeight.bold),
-        //             ),
-        //           Text(
-        //         "Bilgi",
-        //         style: TextStyle(
-        //           color: Colors.redAccent,
-        //           fontStyle: FontStyle.normal,
-        //           fontSize: 28.0,
-        //         ),
-        //       ),
-        //       Text(
-        //        'Oluşturduğum aktiviteler',
-        //         style: TextStyle(
-        //           fontSize: 22.0,
-        //           fontStyle: FontStyle.italic,
-        //           fontWeight: FontWeight.w300,
-        //           color: Colors.black,
-        //           letterSpacing: 2.0,
-        //         ),
-        //       ),
-        //           ],
-        //         ),
-        //         Container(
-        // child: Padding(
-        //   padding: const EdgeInsets.symmetric(
-        //       vertical: 30.0, horizontal: 40.0),
-        //   child: Column(
-        //     mainAxisAlignment: MainAxisAlignment.center,
-        //     crossAxisAlignment: CrossAxisAlignment.start,
-        //     children: [
-        //     Expanded(
-        //         child: ListView.builder(
-        //   shrinkWrap: true,
-        //   itemCount: lists.length,
-        //   itemBuilder: (BuildContext context, int index) {
-        //     return Card(
-        //       child: Column(
-        //         crossAxisAlignment: CrossAxisAlignment.start,
-        //         children: <Widget>[
-        //           //Text("Tarih: " + lists[index]["date"]),
-        //           //Text("Kişi sayısı: " + lists[index]["maxPeople"]),
-        //           ListTile(
-        //             contentPadding: EdgeInsets.symmetric(
-        //                 horizontal: 10.0, vertical: 10.0),
-        //             leading: Container(
-        //               padding: EdgeInsets.only(right: 12.0),
-        //               decoration: new BoxDecoration(
-        //                   border: new Border(
-        //                       right: new BorderSide(
-        //                           width: 1.0, color: Colors.white24))),
-        //               child: Icon(Icons.autorenew, color: Colors.white),
-        //             ),
-        //             title: Text("Başlık: " +
-        //                 activitylists[index]["title"] +
-        //                 "\nTarih: " +
-        //                 activitylists[index]["date"] +
-        //                 "\nKişi sayısı: " +
-        //                 activitylists[index]["maxPeople"] +
-        //                 "\nAktivite Sahibi: " +
-        //                 activitylists[index]["ownername"]),
-        //             trailing: Icon(Icons.local_activity),
-        //           ),
-        //         ],
-        //       ),
-        //     );
-        //   }),
-        //       ),
-        //       Text(
-        //               '',
-        //               //activitylists[0]["title"],
-        //               style: TextStyle(
-        //                   fontSize: 22.0,
-        //                   color: Colors.black,
-        //                   fontWeight: FontWeight.normal),
-        //             ),
-        //     ],
-        //   ),
-        // )),
-        //         SizedBox(
-        //           height: 20,
-
-        //         ),
-
-        //       ],
-        //     ),
         bottomNavigationBar: Bottom(),
       ),
     );

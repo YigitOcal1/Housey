@@ -40,11 +40,8 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-    
     final loginButton = (Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(25.0),
@@ -77,9 +74,10 @@ class _HomePageState extends State<HomePage> {
         padding: EdgeInsets.all(20),
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
-          Navigator.of(context).push(RouteAnimations().createRouteRegisterScreen());
+          Navigator.of(context)
+              .push(RouteAnimations().createRouteRegisterScreen());
         },
-        child: Text(
+        child: const Text(
           "Kayıt ol",
           textAlign: TextAlign.center,
           style: TextStyle(
@@ -93,13 +91,10 @@ class _HomePageState extends State<HomePage> {
     ));
     double screenHeight = MediaQuery.of(context).size.height;
     return WillPopScope(
-      
       onWillPop: () async => false,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-       
         backgroundColor: Colors.deepPurple[200],
-       
         body: Center(
           child: Container(
             height: double.infinity,

@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:housey/models/activity_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:housey/components/widgets/BottomNavBar.dart';
+import 'package:housey/utils/constants.dart';
 import 'showactivity_screen.dart';
 
 class MainPage extends StatefulWidget {
@@ -28,8 +29,8 @@ class _MainPageState extends State<MainPage> {
 
   Future addData(String ownerid, String ownername, String activityid,
       String title, String date, String maxpeople, String location) async {
-        //List<String> a=["w","w"];
-        List<String> b=[""];
+    //List<String> a=["w","w"];
+    List<String> b = [""];
     ActivityModel activityModel = ActivityModel(
         ownerid: ownerid,
         ownername: ownername,
@@ -39,18 +40,16 @@ class _MainPageState extends State<MainPage> {
         maxPeople: maxpeople,
         location: location,
         participantList: b);
-        
-    
-      if(title!=""&& date!="" && maxpeople!="" && location!=""){
+
+    if (title != "" && date != "" && maxpeople != "" && location != "") {
       databaseRef.child('activities').push().set(activityModel.toMap()).then(
-          (ownerid) => {Fluttertoast.showToast(msg: 'Aktivite oluşturuldu.')}
-      );}
-     else{
-      Fluttertoast.showToast(msg: 'Aktivite oluşturulamadı. Lütfen boş alanları doldurup tekrar deneyiniz.');
+          (ownerid) => {Fluttertoast.showToast(msg: 'Aktivite oluşturuldu.')});
+    } else {
+      Fluttertoast.showToast(
+          msg:
+              'Aktivite oluşturulamadı. Lütfen boş alanları doldurup tekrar deneyiniz.');
     }
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -62,11 +61,9 @@ class _MainPageState extends State<MainPage> {
         fontFamily: 'OpenSans',
       ),
       validator: (value) {
-        
         if (value!.isEmpty) {
           return ("Başlık alanı boş bırakılamaz");
         }
-        
       },
       onSaved: (value) {
         title_controller.text = value!;
@@ -170,7 +167,6 @@ class _MainPageState extends State<MainPage> {
       child: MaterialButton(
         padding: EdgeInsets.all(20.0),
         minWidth: MediaQuery.of(context).size.width,
-        
         onPressed: () {
           addData(
               authstate!.uid,
@@ -183,9 +179,8 @@ class _MainPageState extends State<MainPage> {
         },
         child: Text(
           "Aktivite Oluştur",
-          
           textAlign: TextAlign.center,
-           style: TextStyle(
+          style: TextStyle(
             fontSize: 20,
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -200,62 +195,26 @@ class _MainPageState extends State<MainPage> {
       //backgroundColor: Colors.deepPurple[200],
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0),
-          child: SafeArea(
-            child: AppBar(
-              elevation: 1,
-              
-              title: Text(
-                'Aktivite Ekleme',
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-              flexibleSpace: Container( 
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color(0xFF1E0B36),
-                      Color(0xFFCA3782),
-                      
-                    ],
-                    stops: [0.1, 0.9],
-                  ),
-                ),),
-              centerTitle: true,
-              automaticallyImplyLeading: false,
-              actions: <Widget>[
-                // Padding(
-                //   padding: EdgeInsets.only(right: 10.0),
-                //   child: ElevatedButton(
-                //     onPressed: () {
-                //       logout(context);
-                //     },
-                //     style: ElevatedButton.styleFrom(
-                //         primary: Color(0xFFEEBBC3),
-                //         minimumSize: Size(35.0, 40.0),
-                //         shape: new RoundedRectangleBorder(
-                //             borderRadius: new BorderRadius.circular(30.0))),
-                //     child: Text('Çıkış yap'),
-                //   ),
-                // ),
-              ],
+        preferredSize: Size.fromHeight(50.0),
+        child: SafeArea(
+          child: AppBar(
+            elevation: 1,
+            title: Text(
+              'Aktivite Ekleme',
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             ),
+            flexibleSpace: Constants().flexibleSpaceContainer,
+            centerTitle: true,
+            automaticallyImplyLeading: false,
+            actions: <Widget>[],
           ),
         ),
-      body: Container(height: double.infinity,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color(0xFFCA3782),
-                Color(0xFF1E0B36),
-              ],
-              stops: [0.1, 0.9],
-            ),
-          ),
+      ),
+      body: Container(
+        height: double.infinity,
+        width: double.infinity,
+        decoration: Constants().boxDecorationApp,
         child: FutureBuilder(
             future: _future,
             builder: (context, snapshot) {

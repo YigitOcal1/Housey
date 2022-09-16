@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:housey/models/activity_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:housey/utils/constants.dart';
 import 'package:housey/views/main_page.dart';
 import 'profile_screen.dart';
 import 'package:housey/components/widgets/BottomNavBar.dart';
@@ -36,25 +37,7 @@ class _ShowActivityState extends State<ShowActivity> {
   List<ActivityModel> activities = [];
   List<ActivityModel> activitiessearch = [];
 
-  Route _createRouteCreateActivity() {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => MainPage(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        const begin = Offset(0.0, 1.0);
-        const end = Offset.zero;
-        const curve = Curves.ease;
-
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
-        );
-      },
-    );
-  }
-
+  
   Future<List<ActivityModel>> retrieveActivities() async {
     final List<ActivityModel> result = [];
     final Query query = databaseRef.child('activities').limitToLast(50);
@@ -206,17 +189,7 @@ class _ShowActivityState extends State<ShowActivity> {
       body: Container(
         height: double.infinity,
         width: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFFCA3782),
-              Color(0xFF1E0B36),
-            ],
-            stops: [0.1, 0.9],
-          ),
-        ),
+        decoration: Constants().boxDecorationApp,
         child: Column(
           children: [
             Expanded(

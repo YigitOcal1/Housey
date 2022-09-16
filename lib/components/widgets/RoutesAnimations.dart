@@ -7,6 +7,8 @@ import 'package:housey/views/showactivity_screen.dart';
 import 'package:housey/views/profile_screen.dart';
 import 'package:housey/views/home_screen.dart';
 
+import '../../views/editactivity_screen.dart';
+
 class RouteAnimations  {
    Route createRouteCreateHomePage() {
     return PageRouteBuilder(
@@ -119,6 +121,78 @@ Route createRouteCreateAddActivity() {
   Route createRouteRegisterScreen() {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => RegisterScreen(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.0, 1.0);
+        const end = Offset.zero;
+        const curve = Curves.ease;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
+  }
+    Route createRouteMain() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => AnasayfaScreen(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.0, 1.0);
+        const end = Offset.zero;
+        const curve = Curves.ease;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
+  }
+Route createRouteEditActivityPage() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => EditActivity(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.0, 1.0);
+        const end = Offset.zero;
+        const curve = Curves.ease;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
+  }
+   Route createRouteProfilScreen() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => ProfileScreen(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.0, 1.0);
+        const end = Offset.zero;
+        const curve = Curves.ease;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
+  }
+  Route createRouteCreateActivity() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => MainPage(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         const begin = Offset(0.0, 1.0);
         const end = Offset.zero;

@@ -6,6 +6,7 @@ import 'views/register_screen.dart';
 import 'views/home_screen.dart';
 import 'views/anasayfa_screen.dart';
 import 'views/splash_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,23 +18,28 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Housey',
-        home: StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (ctx, snapShot) {
-            if (snapShot.connectionState == ConnectionState.waiting) {
-              return SplashScreen();
-            }
-            if (snapShot.hasData) {
-              return AnasayfaScreen();
-            } else {
-              return HomePage(
-                title: 'Housey',
-              );
-            }
-          },
-        ));
+    return MultiProvider(
+      providers: [
+        
+      ],
+      child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Housey',
+          home: StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (ctx, snapShot) {
+              if (snapShot.connectionState == ConnectionState.waiting) {
+                return SplashScreen();
+              }
+              if (snapShot.hasData) {
+                return AnasayfaScreen();
+              } else {
+                return HomePage(
+                  title: 'Housey',
+                );
+              }
+            },
+          )),
+    );
   }
 }
