@@ -1,0 +1,1 @@
+enum LoadingState { loading, loaded }

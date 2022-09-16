@@ -7,12 +7,14 @@ import 'package:housey/components/widgets/RoutesAnimations.dart';
 import 'package:housey/models/activity_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:housey/utils/constants.dart';
+import 'package:housey/view_model/profile_viewmodel.dart';
 import 'package:housey/views/home_screen.dart';
 import 'package:housey/views/create_activity_screen.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:housey/views/create_activity_screen.dart';
+import 'package:provider/provider.dart';
 import 'login_screen.dart';
 import 'register_screen.dart';
 import 'package:housey/components/widgets/BottomNavBar.dart';
@@ -157,6 +159,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<ProfileViewModel>(context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: {'/edit': (context) => const EditActivity()},
@@ -176,7 +179,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               padding: EdgeInsets.only(right: 10.0),
               child: ElevatedButton(
                 onPressed: () {
-                  logout(context);
+                  viewModel.logOut();
                 },
                 style: ElevatedButton.styleFrom(
                     primary: Color(0xFF232946),

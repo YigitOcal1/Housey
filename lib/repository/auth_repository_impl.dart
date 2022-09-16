@@ -18,7 +18,7 @@ class AuthRepositoryImpl implements AuthRepository {
   final authstate = FirebaseAuth.instance.currentUser;
 
   @override
-  void logIn(String email, String password) async {
+  Future<void> logIn(String email, String password) async {
     String? errormsg;
     try {
       await _auth
@@ -33,7 +33,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  void register(String email, String password) async {
+  Future<void> register(String email, String password) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     User? user = _auth.currentUser;
     UserModel usermodel = UserModel();
@@ -60,7 +60,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future addUserToDatabase(
+  Future<void> addUserToDatabase(
       String username, String email, String password) async {
     if (email != "") {
       final UserModel usermodel =
@@ -77,5 +77,11 @@ class AuthRepositoryImpl implements AuthRepository {
     } else {
       Fluttertoast.showToast(msg: 'Hata! Hesap oluşturulamadı.');
     }
+  }
+
+  @override
+  Future<void> logOut() async {
+    await FirebaseAuth.instance.signOut();
+    //Navigator.of(context).push(RouteAnimations().createRouteCreateHomePage());
   }
 }
