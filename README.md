@@ -1,6 +1,18 @@
 # Housey
 
-Housey is a social media application built with [Flutter](https://flutter.dev/) and [Dart](https://dart.dev/). It is using both [Firebase Cloud Firestore](https://firebase.google.com/docs/firestore) and [Firebase Real-time Database](https://firebase.google.com/docs/database) for data operations. Housey created by using MVVM Architecture Pattern and Clean Architecture. To managing states both Provider and ChangeNotifier are used.
+<h3> Housey is a new generation social media application built with; </h3>
+
+## Tech Stack
+
+- [Flutter](https://flutter.dev/) and [Dart](https://dart.dev/)
+- [MVVM Architecture](https://dart.dev/)
+- [Clean Architecture](https://pub.dev/packages/flutter_clean_architecture)
+- [Firebase Cloud Firestore](https://firebase.google.com/docs/firestore)
+- [Firebase Real-time Database](https://firebase.google.com/docs/database)
+- [Firebase Authentication](https://firebase.google.com/docs/auth)
+- [Provider](https://pub.dev/packages/provider) and ChangeNotifier
+- [GetIt](https://pub.dev/packages/get_it)
+
 
 ## Screens
 
